@@ -25,16 +25,19 @@ class HeaderWidget extends StatelessWidget {
           fit: BoxFit.cover,
         ),
         Positioned(
-          bottom: 8, // Separación del borde inferior
-          right: 8, // Separación del borde derecho
-          child: IconButton(
-            icon: Icon(
-              isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
-              color: Colors.white, // Asegúrate de que sea visible sobre la imagen
-            ),
-            onPressed: onToggleTheme,
-          ),
-        ),
+  bottom: 8,
+  right: 8,
+  child: Container(
+    color: Colors.black.withOpacity(0.05), // Fondo semitransparente para verificar
+    child: IconButton(
+      icon: Icon(
+        isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
+        color: Colors.white, // Asegúrate de que sea visible
+      ),
+      onPressed: onToggleTheme,
+    ),
+  ),
+),
       ],
     );
   }
