@@ -103,7 +103,11 @@ class _AppTutorialScreenState extends State<AppTutorialScreen> {
             child: TextButton(
               child: const Text('Saltar'),
               onPressed: () {
-                GoRouter.of(context).go('/home_screen');
+                try {
+      GoRouter.of(context).go('/home_screen');
+    } catch (e) {
+      debugPrint('Error al navegar a /home_screen: $e');
+    }
               },
             ),
           ),
