@@ -1,4 +1,4 @@
-import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
+import 'package:escom_mobile_app/presentation/providers/alumno_provider.dart';
 import 'package:escom_mobile_app/shared/shared.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
