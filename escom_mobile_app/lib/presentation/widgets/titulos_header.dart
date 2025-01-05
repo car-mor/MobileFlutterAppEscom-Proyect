@@ -29,7 +29,7 @@ class TitulosHeader extends ConsumerWidget {
 
     // Color de fondo dependiendo del estado de isDarkMode y tieneFondo
     final Color fondoColor = tieneFondo
-    ? (isDarkMode ? const Color.fromARGB(255, 134, 134, 134) : const Color.fromARGB(22, 81, 81, 81)) // Fondo gris cuando tieneFondo es true
+    ? (isDarkMode ? const Color.fromARGB(255, 51, 51, 51) : const Color.fromARGB(22, 81, 81, 81)) // Fondo gris cuando tieneFondo es true
     : Colors.transparent; // Fondo transparente cuando tieneFondo es false
  
     //Color del texto dependiendo el tema
