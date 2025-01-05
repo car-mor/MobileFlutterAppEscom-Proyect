@@ -1,98 +1,145 @@
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:escom_mobile_app/domain/domain.dart';
-// import 'package:escom_mobile_app/infrastructure/infrastructure.dart';
-// final authProvider = StateNotifierProvider<AuthNotifier,AuthState>((ref) {
+import 'package:escom_mobile_app/domain/repositories/auth_repository.dart';
+import 'package:escom_mobile_app/presentation/providers/auth_repository_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import '../../domain/entities/auth_user_model.dart';
 
-//   final authRepository = AuthRepositoryImpl();
+final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+  final prefs = ref.watch(sharedPreferencesProvider);
+  final authRepository = ref.watch(authRepositoryProvider);
+  return AuthNotifier(authRepository: authRepository, localStorage: prefs);
+});
 
-//   return AuthNotifier(
-//     authRepository: authRepository
-//   );
-// });
+// Provider para SharedPreferences
+final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
+  throw UnimplementedError();
+});
 
+class AuthState {
+  final bool isAuthenticated;
+  final String? token;
+  final AuthUser? user;
+  final String? errorMessage;
 
+  AuthState({
+    this.isAuthenticated = false,
+    this.token,
+    this.user,
+    this.errorMessage,
+  });
 
-// class AuthNotifier extends StateNotifier<AuthState> {
+  AuthState copyWith({
+    bool? isAuthenticated,
+    String? token,
+    AuthUser? user,
+  }) {
+    return AuthState(
+      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
+      token: token ?? this.token,
+      user: user ?? this.user,
+    );
+  }
+}
 
-//   final AuthRepository authRepository;
+class AuthNotifier extends StateNotifier<AuthState> {
+  final AuthRepository authRepository;
+  final SharedPreferences localStorage;
 
-//   AuthNotifier({
-//     required this.authRepository
-//   }): super( AuthState() );
-  
+  AuthNotifier({
+    required this.authRepository,
+    required this.localStorage,
+  }) : super(AuthState()) {
+    checkAuthStatus();
+  }
 
-//   Future<void> loginUser( String email, String password ) async {
-//     await Future.delayed(const Duration(milliseconds: 500));
+  Future<void> register({
+    required String identifier,
+    required String password,
+    required TipoUsuario tipoUsuario,
+    required Map<String, dynamic> userData,
+  }) async {
+    try {
+      final response = await authRepository.register(
+        identifier: identifier,
+        password: password,
+        tipoUsuario: tipoUsuario,
+        userData: userData,
+      );
+      
+      final user = AuthUser.fromJson(response['user']);
+      await _saveToLocalStorage(response['token'], user);
+      
+      state = state.copyWith(
+        isAuthenticated: true,
+        token: response['token'],
+        user: user,
+      );
+    } catch (e) {
+      _clearAuthState();
+      throw Exception(e.toString());
+    }
+  }
 
-//     try {
-//       final user = await authRepository.login(email, password);
-//       _setLoggedUser( user );
+  Future<void> login({
+    required String identifier,
+    required String password,
+  }) async {
+    try {
+      final response = await authRepository.login(
+        identifier: identifier,
+        password: password,
+      );
+      
+      final user = AuthUser.fromJson(response['user']);
+      await _saveToLocalStorage(response['token'], user);
+      
+      state = state.copyWith(
+        isAuthenticated: true,
+        token: response['token'],
+        user: user,
+      );
+    } catch (e) {
+      _clearAuthState();
+      throw Exception(e.toString());
+    }
+  }
 
-//     } on CustomError catch (e) {
-//       logout( e.message );
-//     } catch (e){
-//       logout( 'Error no controlado' );
-//     }
-
-//     // final user = await authRepository.login(email, password);
-//     // state =state.copyWith(user: user, authStatus: AuthStatus.authenticated)
-
-//   }
-
-//   void registerUser( String email, String password ) async {
+  Future<void> checkAuthStatus() async {
+    final token = localStorage.getString('token');
+    final userStr = localStorage.getString('user');
     
-//   }
+    if (token == null || userStr == null) {
+      _clearAuthState();
+      return;
+    }
 
-//   void checkAuthStatus() async {
-    
-//   }
+    try {
+      final response = await authRepository.checkAuthStatus(token);
+      final user = AuthUser.fromJson(response['user']);
+      
+      state = state.copyWith(
+        isAuthenticated: true,
+        token: token,
+        user: user,
+      );
+    } catch (e) {
+      logout();
+    }
+  }
 
-//   void _setLoggedUser( User user ) {
-//     // TODO: necesito guardar el token físicamente
-//     state = state.copyWith(
-//       user: user,
-//       authStatus: AuthStatus.authenticated,
-//     );
-//   }
+  Future<void> logout() async {
+    await localStorage.remove('token');
+    await localStorage.remove('user');
+    _clearAuthState();
+  }
 
-//   Future<void> logout([ String? errorMessage ]) async {
-//     // TODO: limpiar token
-//     state = state.copyWith(
-//       authStatus: AuthStatus.notAuthenticated,
-//       user: null,
-//       errorMessage: errorMessage
-//     );
-//   }
+  Future<void> _saveToLocalStorage(String token, AuthUser user) async {
+    await localStorage.setString('token', token);
+    await localStorage.setString('user', jsonEncode(user.toJson()));
+  }
 
-// }
-
-
-
-// enum AuthStatus { checking, authenticated, notAuthenticated }
-
-// class AuthState {
-
-//   final AuthStatus authStatus;
-//   final User? user;
-//   final String errorMessage;
-
-//   AuthState({
-//     this.authStatus = AuthStatus.checking, 
-//     this.user, 
-//     this.errorMessage = ''
-//   });
-
-//   AuthState copyWith({
-//     AuthStatus? authStatus,
-//     User? user,
-//     String? errorMessage,
-//   }) => AuthState(
-//     authStatus: authStatus ?? this.authStatus,
-//     user: user ?? this.user,
-//     errorMessage: errorMessage ?? this.errorMessage
-//   );
-
-
-
-
-// }
+  void _clearAuthState() {
+    state = AuthState();
+  }
+}

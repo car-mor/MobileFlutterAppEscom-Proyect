@@ -1,11 +1,17 @@
-
-import '../entities/user.dart';
+import '../entities/auth_user_model.dart';
 
 abstract class AuthRepository {
+  Future<Map<String, dynamic>> register({
+    required String identifier,
+    required String password,
+    required TipoUsuario tipoUsuario,
+    required Map<String, dynamic> userData,
+  });
 
-  Future<User> login( String email, String password );
-  Future<User> register( String email, String password, String fullName );
-  Future<User> checkAuthStatus( String token );
+  Future<Map<String, dynamic>> login({
+    required String identifier,
+    required String password,
+  });
 
+  Future<Map<String, dynamic>> checkAuthStatus(String token);
 }
-
