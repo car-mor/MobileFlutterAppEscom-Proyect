@@ -1,4 +1,5 @@
 import 'package:escom_mobile_app/config/menu/menu_items.dart';
+import 'package:escom_mobile_app/presentation/widgets/titulos_header.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -31,7 +32,7 @@ class _SideMenuState extends State<SideMenu> {
         children: [
           // Enlaces personalizados
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),
+            padding: const EdgeInsets.all(1),
             child: Center(
               //padding: EdgeInsets.fromLTRB(14, hasNotch ? 0 : 10, 10, 8),
               child: Row(
@@ -39,7 +40,12 @@ class _SideMenuState extends State<SideMenu> {
                 children: [
                   Flexible(
                     child: _buildLink(
-            'Directorio', 
+            const TitulosHeader(
+              titulo: "Directorio",
+              tituloNegrita: false,
+              tamanoTitulo: 12,
+              tieneFondo: false,
+            ),
             Uri.parse('https://www.ipn.mx/directorio-telefonico.html'), 
             context
                     ),
@@ -47,7 +53,12 @@ class _SideMenuState extends State<SideMenu> {
                   const SizedBox(width: 10),
                   Flexible(
                     child: _buildLink(
-            'Correo', 
+            const TitulosHeader(
+              titulo: "Correo",
+              tituloNegrita: false,
+              tamanoTitulo: 12,
+              tieneFondo: false,
+            ),
             Uri.parse('https://www.ipn.mx/correo-electronico.html'), 
             context
                     ),
@@ -55,7 +66,12 @@ class _SideMenuState extends State<SideMenu> {
                   const SizedBox(width: 10),
                   Flexible(
                     child: _buildLink(
-            'Calendario', 
+            const TitulosHeader(
+              titulo: "Calendario",
+              tituloNegrita: false,
+              tamanoTitulo: 12,
+              tieneFondo: false,
+            ),
             Uri.parse('https://www.ipn.mx/calendario-academico.html'), 
             context
                     ),
@@ -63,7 +79,12 @@ class _SideMenuState extends State<SideMenu> {
                   const SizedBox(width: 10),
                   Flexible(
                     child: _buildLink(
-            'Buzón', 
+            const TitulosHeader(
+              titulo: "Buzón",
+              tituloNegrita: false,
+              tamanoTitulo: 12,
+              tieneFondo: false,
+            ),
             Uri.parse('https://www.ipn.mx/buzon.html'), 
             context
                     ),
@@ -141,19 +162,12 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   /// Función para construir un enlace personalizado
-  Widget _buildLink(String text, Uri url, BuildContext context) {
-    return InkWell(
-      onTap: () => _launchURL(url, context),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Color.fromARGB(255, 0, 0, 0),
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
-        ),
-      ),
-    );
-  }
+ Widget _buildLink(Widget tituloWidget, Uri url, BuildContext context) {
+  return InkWell(
+    onTap: () => _launchURL(url, context),
+    child: tituloWidget, // Renderiza el widget personalizado directamente
+  );
+}
 
   /// Función para abrir un enlace externo
   Future<void> _launchURL(Uri url, BuildContext context) async {

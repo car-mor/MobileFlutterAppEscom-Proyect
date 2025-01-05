@@ -58,6 +58,7 @@ class _GaleriaTomaProtestaView extends ConsumerWidget {
                   subtituloNegrita: false,
                   tamanoTitulo: 28,
                   tamanoSubtitulo: 18,
+                  tieneFondo: true,
                 ),
           ),
           const Placeholder(
