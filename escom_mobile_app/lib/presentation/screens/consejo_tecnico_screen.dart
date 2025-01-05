@@ -4,7 +4,6 @@ class ConsejoTecnicoScreen extends StatelessWidget {
 
   static const String name = 'consejo_tecnico_screen';
 
-
   const ConsejoTecnicoScreen({super.key});
 
   @override
