@@ -29,7 +29,6 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = ref.watch(themeProvider);
     // Observar el estado de autenticación
-    final authState = ref.watch(authProvider);
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
