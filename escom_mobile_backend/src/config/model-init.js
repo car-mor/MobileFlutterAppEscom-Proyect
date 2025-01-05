@@ -1,33 +1,164 @@
-const { Alumno } = require('../models/alumno.model');
-const { Profesor } = require('../models/profesor.model');
-const { Usuario } = require('../models/usuario.model');
-const { Horario } = require('../models/horario.model');
-const { Grupo } = require('../models/grupo.model');
+const { DataTypes } = require('sequelize');
+const sequelize = require('./db'); // Conexión a la base de datos
 
-// Relación Alumno - Usuario (1:1)
-Alumno.hasOne(Usuario, { foreignKey: 'alumnoId', as: 'usuario' });
-Usuario.belongsTo(Alumno, { foreignKey: 'alumnoId', as: 'alumno' });
+// Modelo Usuario
+const Usuario = sequelize.define('Usuario', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  identifier: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  tipoUsuario: {
+    type: DataTypes.ENUM('alumno', 'profesor'),
+    allowNull: false,
+  },
+});
 
-// Relación Profesor - Usuario (1:1)
-Profesor.hasOne(Usuario, { foreignKey: 'profesorId', as: 'usuario' });
-Usuario.belongsTo(Profesor, { foreignKey: 'profesorId', as: 'profesor' });
+// Modelo Alumno
+const Alumno = sequelize.define('Alumno', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  boleta: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true,
+  },
+  nombre: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  curp: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  carrera: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  telefono: {
+    type: DataTypes.STRING,
+  },
+  correo: {
+    type: DataTypes.STRING,
+    unique: true,
+  },
+});
 
-// Relación Horario - Alumno (N:1)
-Horario.belongsTo(Alumno, { foreignKey: 'boleta', as: 'alumno' });
-Alumno.hasMany(Horario, { foreignKey: 'boleta', as: 'horarios' });
+// Modelo Profesor
+const Profesor = sequelize.define('Profesor', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  curp: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  nombre: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  cargo: {
+    type: DataTypes.STRING,
+  },
+  departamento: {
+    type: DataTypes.STRING,
+  },
+  telefono: {
+    type: DataTypes.STRING,
+  },
+  correo: {
+    type: DataTypes.STRING,
+    unique: true,
+  },
+});
 
-// Relación Horario - Profesor (N:1)
-Horario.belongsTo(Profesor, { foreignKey: 'curpProfesor', as: 'profesor' });
-Profesor.hasMany(Horario, { foreignKey: 'curpProfesor', as: 'horarios' });
+// Modelo Grupo
+const Grupo = sequelize.define('Grupo', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  grupo: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  carrera: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  dia: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  horaInicio: {
+    type: DataTypes.TIME,
+    allowNull: false,
+  },
+  horaTermino: {
+    type: DataTypes.TIME,
+    allowNull: false,
+  },
+});
 
-// Relación Horario - Grupo (N:1)
-Horario.belongsTo(Grupo, { foreignKey: 'idGrupo', as: 'grupo' });
-Grupo.hasMany(Horario, { foreignKey: 'idGrupo', as: 'horarios' });
+// Modelo Horario
+const Horario = sequelize.define('Horario', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  boleta: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  curpProfesor: { // Cambiar el nombre a algo como "profesorId" para mayor claridad
+    type: DataTypes.INTEGER, // Cambiar a INTEGER
+    allowNull: false,
+  },
+  idGrupo: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+});
 
+
+// Relaciones
+Usuario.hasOne(Alumno, { foreignKey: 'usuarioId' });
+Alumno.belongsTo(Usuario, { foreignKey: 'usuarioId' });
+
+Usuario.hasOne(Profesor, { foreignKey: 'usuarioId' });
+Profesor.belongsTo(Usuario, { foreignKey: 'usuarioId' });
+
+Alumno.hasMany(Horario, { foreignKey: 'boleta' });
+Horario.belongsTo(Alumno, { foreignKey: 'boleta' });
+
+Profesor.hasMany(Horario, { foreignKey: 'curpProfesor' });
+Horario.belongsTo(Profesor, { foreignKey: 'curpProfesor' });
+
+Grupo.hasMany(Horario, { foreignKey: 'idGrupo' });
+Horario.belongsTo(Grupo, { foreignKey: 'idGrupo' });
+
+// Exportar modelos
 module.exports = {
+  Usuario,
   Alumno,
   Profesor,
-  Usuario,
-  Horario,
   Grupo,
+  Horario,
 };
