@@ -1,22 +1,13 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-const Alumno = sequelize.define('Alumno', {
+const Grupo = sequelize.define('Grupo', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  boleta: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: true,
-  },
-  nombre: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  curp: {
+  grupo: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -24,17 +15,20 @@ const Alumno = sequelize.define('Alumno', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  telefono: {
+  dia: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
-  correo: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    unique: true,
+  horaInicio: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  horaTermino: {
+    type: DataTypes.DATE,
+    allowNull: false,
   },
 }, {
   timestamps: true,
 });
 
-module.exports = { Alumno };
+module.exports = { Grupo };

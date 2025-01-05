@@ -1,11 +1,63 @@
+import 'package:escom_mobile_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:escom_mobile_app/presentation/widgets/widgets.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static const String name = '/login_screen';
 
   const LoginScreen({super.key});
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  void showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  void onFormSubmit() async {
+    if (formKey.currentState?.validate() ?? false) {
+      // Mostrar un loading mientras hacemos la solicitud
+      showSnackbar(context, 'Iniciando sesión...');
+
+      final curp = emailController.text.trim();
+      final boleta = passwordController.text.trim();
+
+      try {
+        // Llamada al backend para autenticar al usuario
+        final response = await authenticateUser(curp, boleta);
+
+        // Verificar si el widget sigue montado antes de usar el BuildContext
+        if (!mounted) return; // Si el widget ya no está montado, no hacer nada
+
+        if (response['token'] != null) {
+          // Si la respuesta contiene un token, guardar el token
+          final token = response['token'];
+          saveToken(token);
+
+          // Navegar a la siguiente pantalla
+          context.push('/home');
+        } else {
+          showSnackbar(context, response['message'] ?? 'Error desconocido');
+        }
+      } catch (error) {
+        if (mounted) { // Verificar si sigue montado antes de mostrar el snackbar
+          showSnackbar(context, 'Ocurrió un error: $error');
+        }
+      }
+    } else {
+      if (mounted) { // Verificar si sigue montado antes de mostrar el snackbar
+        showSnackbar(context, 'Por favor, revisa los campos');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,71 +68,100 @@ class LoginScreen extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         body: GeometricalBackground(
-          child: LayoutBuilder(builder: (context, constraints) {
-            return SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 40),
-                  // Icon Banner
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      final imageWidth = constraints.maxWidth * 0.4; // La mitad del ancho de la pantalla
-                      return Image.asset(
-                        'assets/images/escudoESCOM.png',
-                        width: imageWidth,
-                        fit: BoxFit.fitWidth, // Ajusta el alto proporcionalmente
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 10),
-
-                  Container(
-                    height:
-                        size.height - 260, // 80 los dos sizebox y 100 el ícono
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: scaffoldBackgroundColor,
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(100)),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 40),
+                    // Icon Banner
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        final imageWidth = constraints.maxWidth * 0.4; // La mitad del ancho de la pantalla
+                        return Image.asset(
+                          'assets/images/escudoESCOM.png',
+                          width: imageWidth,
+                          fit: BoxFit.fitWidth, // Ajusta el alto proporcionalmente
+                        );
+                      },
                     ),
-                    child: const _LoginForm(),
-                  )
-                ],
-              ),
-            );
-          }),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: size.height - 260, // 80 los dos sizebox y 100 el ícono
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: scaffoldBackgroundColor,
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(100)),
+                      ),
+                      child: const _LoginForm(),
+                    )
+                  ],
+                ),
+              );
+            }
+          ),
         ),
       ),
     );
   }
 }
 
-class _LoginForm extends StatelessWidget {
+class _LoginForm extends StatefulWidget {
   const _LoginForm();
 
   @override
-  Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
+  _LoginFormState createState() => _LoginFormState();
+}
 
-    void showSnackbar(BuildContext context, String message) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(message)));
-    }
+class _LoginFormState extends State<_LoginForm> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
-    void onFormSubmit() {
-      if (formKey.currentState?.validate() ?? false) {
-        // Lógica de autenticación aquí
-        showSnackbar(context, 'Formulario enviado correctamente');
-      } else {
-        showSnackbar(context, 'Por favor, revisa los campos');
+  void showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  void onFormSubmit() async {
+    if (formKey.currentState?.validate() ?? false) {
+      // Mostrar un loading mientras hacemos la solicitud
+      showSnackbar(context, 'Iniciando sesión...');
+
+      final curp = emailController.text.trim();
+      final boleta = passwordController.text.trim();
+
+      try {
+        // Llamada al backend para autenticar al usuario
+        final response = await authenticateUser(curp, boleta);
+
+        if (!mounted) return;  // Asegúrate de que el widget esté montado
+
+        if (response['token'] != null) {
+          // Si la respuesta contiene un token, guardar el token
+          final token = response['token'];
+          saveToken(token);
+
+          // Navegar a la siguiente pantalla, por ejemplo, el home
+          context.push('/home');
+        } else {
+          showSnackbar(context, response['message'] ?? 'Error desconocido');
+        }
+      } catch (error) {
+        if (!mounted) return;  // Asegúrate de que el widget esté montado
+        showSnackbar(context, 'Ocurrió un error: $error');
       }
+    } else {
+      showSnackbar(context, 'Por favor, revisa los campos');
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
 
     return Padding(
@@ -94,14 +175,13 @@ class _LoginForm extends StatelessWidget {
             const SizedBox(height: 40),
             CustomTextFormField(
               label: 'CURP',
-              keyboardType: TextInputType.emailAddress,
-              //controller: emailController,
+              controller: emailController, // Activar el controlador
+              keyboardType: TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'El CURP es requerido';
                 }
-                if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value)) {
+                if (!RegExp(r"^[A-Z]{4}\d{6}[A-Z]{6}\d{2}$").hasMatch(value)) {
                   return 'CURP no válido';
                 }
                 return null;
@@ -110,8 +190,8 @@ class _LoginForm extends StatelessWidget {
             const SizedBox(height: 30),
             CustomTextFormField(
               label: 'Boleta',
+              controller: passwordController, // Activar el controlador
               obscureText: true,
-              //controller: passwordController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'La boleta es requerida';
@@ -150,3 +230,4 @@ class _LoginForm extends StatelessWidget {
     );
   }
 }
+

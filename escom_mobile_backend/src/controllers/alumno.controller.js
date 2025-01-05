@@ -1,24 +1,64 @@
-const AlumnoService = require('../services/alumno.service');
+const { Alumno } = require('../models/alumno.model');
 
-const getAlumnos = async (req, res) => {
+exports.getAlumnos = async (req, res) => {
   try {
-    const alumnos = await AlumnoService.getAll();
+    const alumnos = await Alumno.findAll();
     res.json(alumnos);
   } catch (error) {
-    res.status(500).json({ message: 'Error al obtener alumnos', error });
+    res.status(500).json({ error: error.message });
   }
-};
+}; 
 
-const createAlumno = async (req, res) => {
+exports.getAlumnoById = async (req, res) => {
   try {
-    const alumno = await AlumnoService.create(req.body);
-    res.status(201).json(alumno);
+    const { id } = req.params;
+    const alumno = await Alumno.findByPk(id);
+    if (!alumno) return res.status(404).json({ message: 'Alumno no encontrado' });
+    res.json(alumno);
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear alumno', error });
+    res.status(500).json({ error: error.message });
   }
 };
 
-module.exports = {
-  getAlumnos,
-  createAlumno,
+exports.createAlumno = async (req, res) => {
+  try {
+    const nuevoAlumno = await Alumno.create(req.body);
+    res.status(201).json(nuevoAlumno);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
+
+exports.updateAlumno = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const alumno = await Alumno.findByPk(id);
+    if (!alumno) return res.status(404).json({ message: 'Alumno no encontrado' });
+
+    await alumno.update(req.body);
+    res.json(alumno);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.deleteAlumno = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const alumno = await Alumno.findByPk(id);
+    if (!alumno) return res.status(404).json({ message: 'Alumno no encontrado' });
+
+    await alumno.destroy();
+    res.json({ message: 'Alumno eliminado' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// module.exports = {
+//   getAlumnos,
+//   getAlumnoById,
+//   createAlumno,
+//   updateAlumno,
+//   deleteAlumno,
+// };
