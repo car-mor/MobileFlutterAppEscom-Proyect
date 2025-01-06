@@ -1,17 +1,18 @@
-const { Sequelize } = require('sequelize');
-require('dotenv').config();
+import mysql from "mysql2/promise"
 
-// Inicializar la conexión
-const sequelize = new Sequelize('escomdb', process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: process.env.DB_HOST,
-  dialect: 'mysql',
-});
+export const connectionMySQL = await mysql.createConnection(
+    {
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        port: process.env.DB_PORT
+    }
+)
 
-// Probar la conexión
-sequelize
-  .authenticate()
-  .then(() => console.log('Conexión a la base de datos exitosa'))
-  .catch(err => console.error('Error de conexión a la base de datos:', err));
-
-// Exportar la instancia de Sequelize
-module.exports = sequelize;
+try {
+  await connectionMySQL.connect();
+  console.log("Database connection successful");
+} catch (err) {
+  console.error("Database connection error:", err);
+}
