@@ -52,16 +52,27 @@ class _HistoryView extends ConsumerWidget {
           const Padding(
             padding: EdgeInsets.only(top: 20, bottom: 14),
             child: TitulosHeader(
-                  titulo: "X",
-                  subtitulo: "X",
+                  titulo: "Historia & escudo",
+                  subtitulo: "Conócenos",
                   tituloNegrita: true,
                   subtituloNegrita: false,
                   tamanoTitulo: 28,
                   tamanoSubtitulo: 18,
+                  tieneFondo: true,
                 ),
           ),
-          const Placeholder(
-            fallbackHeight: 200,
+
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: Text(
+                'Después de varios intentos que se hicieron al respecto, en 1993 un grupo de trabajo integrado por la Secretaría Académica del Instituto, elaboró un proyecto en el que se propuso la creación de la Escuela Superior de Cómputo, bajo la sigla (ESCOM) y al interior de ella la carrera de Ingeniero en Sistemas Computacionales.\n\n Dicho documento fue presentado, en apego a la normatividad vigente, a la comisión de Planes y Programas del Consejo Nacional Consultivo del IPN, el cual fue aprobado por la misma Comisión en la sesión del 5 de agosto de 1993. Contando con la autorización, el documento fue remitido al pleno del H. Consejo General Consultivo del IPN, en donde, fue aprobado en la Sesión Ordinaria del 13 de agosto de 1993 surgiendo así la Escuela Superior de Cómputo.',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+              ),
+            ),
           ),
 
 
