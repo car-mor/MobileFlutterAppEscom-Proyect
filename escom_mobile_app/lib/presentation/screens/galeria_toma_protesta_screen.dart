@@ -61,9 +61,7 @@ class _GaleriaTomaProtestaView extends ConsumerWidget {
                   tieneFondo: true,
                 ),
           ),
-          const Placeholder(
-            fallbackHeight: 200,
-          ),
+          const ImageGallery(),
 
 
           const FooterWidget(
