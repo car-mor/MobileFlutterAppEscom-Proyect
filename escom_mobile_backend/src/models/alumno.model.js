@@ -1,8 +1,7 @@
 import { connectionMySQL } from '../config/db.js'
 
-
 export class AlumnoModel{
-  static async obtenerTodosLosUsuarios () {
+  static async obtenerHorarioAlumno (alumno) {
     try{
       const [usuario] = await connectionMySQL.query(`
         SELECT 
@@ -29,17 +28,12 @@ export class AlumnoModel{
         JOIN 
             moviles.materias m ON h.idMateria = m.idMateria
         WHERE 
-            h.boleta = '2024630087'
-`
-      )
-      console.log(usuario);
+            h.boleta = ?`,alumno)
       return usuario
     }
     catch(error){
       console.error("Error al obtener todos los usuarios:", error);
       throw error;
     }
-    
-    
   }
 }

@@ -430,4 +430,9 @@ MenuItem(
      title: 'Licencias',
      link: '/licenses_screen',
      icon: Icons.document_scanner),
+
+  MenuItem(
+     title: 'Iniciar sesión',
+     link: '/login_screen',
+     icon: Icons.login),
 ];

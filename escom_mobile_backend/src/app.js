@@ -4,6 +4,8 @@ import cors from "cors"
 import dotenv from 'dotenv'
 
 import { alumnoRouter } from './routes/alumno.routes.js'
+import { profesorRouter } from "./routes/profesor.routes.js"
+import { authRouter } from "./routes/auth.routes.js"
 
 dotenv.config()
 export const crearApp=(Modelos)=>{
@@ -30,6 +32,8 @@ export const crearApp=(Modelos)=>{
     app.use(express.json())
 
     app.use('/api/alumno',alumnoRouter(Modelos))
+    app.use('/api/profesor',profesorRouter(Modelos))
+    app.use('/api/auth',authRouter(Modelos))
 
     
 

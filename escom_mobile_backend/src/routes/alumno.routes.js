@@ -5,9 +5,7 @@ export const alumnoRouter = (Modelos) => {
   const alumnoRouter = Router()
   const alumnoController = new AlumnoController (Modelos)
 
-  alumnoRouter.get('/', alumnoController.obtenerTodosLosUsuarios)
-  alumnoRouter.get('/:Correo', alumnoController.obtenerUsuarioPorCorreo)
-  alumnoRouter.get('/identificador/:id', alumnoController.obtenerUsuarioPorId)
+  alumnoRouter.post('/', alumnoController.obtenerHorarioAlumno)
 
   return alumnoRouter
 }

@@ -1,1 +1,0 @@
-export 'repositories/alumno_repository.dart';
