@@ -147,7 +147,7 @@ class _LoginFormState extends State<_LoginForm> {
               keyboardType: TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'El CURP es requerido';
+                  return 'La boleta es requerido';
                 }
                 if (!RegExp(r"^\d{10}$").hasMatch(value)) {
                   return 'Boleta invalida';
@@ -162,10 +162,10 @@ class _LoginFormState extends State<_LoginForm> {
               obscureText: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'La boleta es requerida';
+                  return 'La contraseña es requerida';
                 }
                 if (value.length < 6) {
-                  return 'La boleta debe tener al menos 6 caracteres';
+                  return 'La contraseña debe tener al menos 6 caracteres';
                 }
                 return null;
               },
