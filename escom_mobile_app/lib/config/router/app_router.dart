@@ -25,20 +25,11 @@ final appRouter = GoRouter(
     ),
 
     GoRoute(
-      path: '/register_screen',
-      name: RegisterScreen.name,
-      builder: (context, state) => const RegisterScreen(),
-    ),
-
-
-    GoRoute(
       path: '/student_screen/:studentId',
       name: StudentScreen.name,
       builder: (context, state) => const StudentScreen(),
     ),
 
-    
-   
     GoRoute(
       path: '/consejo_tecnico_screen',
       name: ConsejoTecnicoScreen.name,

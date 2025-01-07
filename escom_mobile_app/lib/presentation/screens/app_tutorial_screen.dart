@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SlideInfo {
   final String title;
@@ -54,6 +55,7 @@ class _AppTutorialScreenState extends State<AppTutorialScreen> {
 
   @override
   void initState() {
+    verificarInicio();
     super.initState();
 
     pageviewController.addListener(() {
@@ -104,10 +106,11 @@ class _AppTutorialScreenState extends State<AppTutorialScreen> {
               child: const Text('Saltar'),
               onPressed: () {
                 try {
-      GoRouter.of(context).go('/home_screen');
-    } catch (e) {
-      debugPrint('Error al navegar a /home_screen: $e');
-    }
+                  registrarInicio();
+                  //GoRouter.of(context).go('/home_screen');
+                } catch (e) {
+                  debugPrint('Error al navegar a /home_screen: $e');
+                }
               },
             ),
           ),
@@ -121,7 +124,8 @@ class _AppTutorialScreenState extends State<AppTutorialScreen> {
                 delay: const Duration(seconds: 1),
                 child: FilledButton(
                    onPressed: () {
-                      GoRouter.of(context).go('/login_screen'); // Redirige a la ruta especificada
+                      registrarInicio();
+                      //GoRouter.of(context).go('/login_screen'); // Redirige a la ruta especificada
                     },
                   child: const Text('Comenzar'),
                             ),
@@ -131,6 +135,30 @@ class _AppTutorialScreenState extends State<AppTutorialScreen> {
         ],
       ),
     );
+  }
+  
+  Future<void> verificarInicio() async {
+    final prefs = await SharedPreferences.getInstance();
+    final verificacion=prefs.getString('inicio');
+
+    if(verificacion=="1"){
+      try {
+          // ignore: use_build_context_synchronously
+          GoRouter.of(context).go('/home_screen');
+        } catch (e) {
+          debugPrint('Error al navegar a /home_screen: $e');
+        }
+    }
+  }
+  Future<void> registrarInicio() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("inicio", "1");
+
+    try {
+      GoRouter.of(context).go('/home_screen');
+    } catch (e) {
+      debugPrint('Error al navegar a /home_screen: $e');
+    }
   }
 }
 

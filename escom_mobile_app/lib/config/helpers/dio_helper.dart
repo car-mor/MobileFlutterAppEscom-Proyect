@@ -1,35 +1,31 @@
 import 'package:dio/dio.dart';
 
-class DioHelper {
-  static Dio createDio() {
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: 'YOUR_API_BASE_URL', // Replace with your actual API URL
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 3),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      ),
-    );
+class ApiService {
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: 'http://192.168.1.78:3000/api/', // Cambia a tu URL de despliegue
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 3), // Tiempo máximo de respuesta
+    ),
+  );
 
-    // Add interceptors for logging, token management, etc.
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          // You can add token here if needed
-          return handler.next(options);
-        },
-        onResponse: (response, handler) {
-          return handler.next(response);
-        },
-        onError: (DioException e, handler) {
-          return handler.next(e);
-        },
-      ),
-    );
+  Future<dynamic> getMessage() async {
+    try {
+      final response = await _dio.get('/');
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo conectar al servidor');
+    }
+  }
 
-    return dio;
+  Future<dynamic> sendData() async {
+    try {
+      final response = await _dio.post('/alumno',data:{'alumno':"2024630087"});
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo enviar la información');
+    }
   }
 }

@@ -1,18 +1,13 @@
-const express = require('express');
-const router = express.Router();
-const {
-  getProfesores,
-  getProfesorById,
-  createProfesor,
-  updateProfesor,
-  deleteProfesor,
-} = require('../controllers/profesor.controller');
+import { Router } from 'express'
+import { ProfesorController } from '../controllers/profesor.controller.js'
 
-// Rutas de profesores
-router.get('/', getProfesores); // Obtener todos los profesores
-router.get('/:id', getProfesorById); // Obtener un profesor por ID
-router.post('/', createProfesor); // Crear un nuevo profesor
-router.put('/:id', updateProfesor); // Actualizar un profesor por ID
-router.delete('/:id', deleteProfesor); // Eliminar un profesor por ID
+export const profesorRouter = (Modelos) => {
+  const profesorRouter = Router()
+  const profesorController = new ProfesorController (Modelos)
 
-module.exports = router;
+  profesorRouter.post('/horario', profesorController.obtenerHorarioProfesor)
+  profesorRouter.post('/lista/', profesorController.obtenerListaGrupo)
+
+  return profesorRouter
+}
+
