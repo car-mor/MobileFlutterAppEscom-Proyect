@@ -1,18 +1,12 @@
-const express = require('express');
-const { 
-  getAlumnos, 
-  getAlumnoById, 
-  createAlumno, 
-  updateAlumno, 
-  deleteAlumno 
-} = require('../controllers/alumno.controller');
+import { Router } from 'express'
+import { AlumnoController } from '../controllers/alumno.controller.js'
 
-const router = express.Router();
+export const alumnoRouter = (Modelos) => {
+  const alumnoRouter = Router()
+  const alumnoController = new AlumnoController (Modelos)
 
-router.get('/', getAlumnos);
-router.get('/:id', getAlumnoById);
-router.post('/', createAlumno);
-router.put('/:id', updateAlumno);
-router.delete('/:id', deleteAlumno);
+  alumnoRouter.post('/', alumnoController.obtenerHorarioAlumno)
 
-module.exports = router;
+  return alumnoRouter
+}
+
