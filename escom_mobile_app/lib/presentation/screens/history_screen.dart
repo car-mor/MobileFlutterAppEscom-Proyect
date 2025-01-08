@@ -13,7 +13,6 @@ class HistoryScreen extends ConsumerStatefulWidget {
 class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = ref.watch(themeProvider).isDarkmode;
 
     return Scaffold(
       appBar: AppBar(
