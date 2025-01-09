@@ -51,7 +51,7 @@ class _TransparencyView extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [HeaderWidget(
-              imagePath: './../../../assets/images/header.png',
+              imagePath: 'assets/images/header.png',
               onToggleTheme: themeNotifier.toggleTheme,
               isDarkMode: isDarkMode),
 

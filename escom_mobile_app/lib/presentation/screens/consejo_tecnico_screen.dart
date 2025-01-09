@@ -1,3 +1,4 @@
+import 'package:escom_mobile_app/presentation/widgets/footer.dart';
 import 'package:flutter/material.dart';
 
 class ConsejoTecnicoScreen extends StatelessWidget {
@@ -8,6 +9,9 @@ class ConsejoTecnicoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const FooterWidget(
+              imagePathTop: 'assets/images/logoSEP.png',
+              imagePathBottom: 'assets/images/logoGOB.png',
+            );
   }
 }

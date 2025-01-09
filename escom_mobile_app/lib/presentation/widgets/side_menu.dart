@@ -25,7 +25,6 @@ class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
 
-    final hasNotch = MediaQuery.of(context).viewPadding.top > 35;
     
     return Drawer(
       child: ListView(
@@ -178,6 +177,8 @@ class _SideMenuState extends State<SideMenu> {
         SnackBar(content: Text('No se pudo abrir la URL: $url')),
       );
     }
+
+    
   }
 
 

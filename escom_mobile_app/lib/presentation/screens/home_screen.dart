@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends ConsumerWidget {
-  static const String name = 'home_screen';
+  static const String name = 'home_screen'; 
 
   const HomeScreen({super.key});
 
