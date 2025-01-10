@@ -13,17 +13,20 @@ class IAScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeNotifier = ref.read(themeProvider.notifier);
     final isDarkMode = ref.watch(themeProvider).isDarkmode;
+    final Color textoColor = isDarkMode ? Colors.white : Colors.black; // Color del texto según el tema
+
     final titleStyle = Theme.of(context).textTheme.titleLarge?.copyWith(
           fontSize: 24,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: textoColor,
         );
     final subtitleStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.normal,
-          color: Colors.black87,
+          color: textoColor,
         );
-
+    //Color del texto dependiendo el tema
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('ESCOM-MOBILE'),
@@ -46,37 +49,19 @@ class IAScreen extends ConsumerWidget {
               isDarkMode: isDarkMode, // Pasa el estado
             ),
 
-            // Información de la escuela con contenedor sombreado
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.grey[200], // Fondo sombreado
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5), // Sombra
-                    spreadRadius: 2,
-                    blurRadius: 4,
-                    offset: const Offset(0, 2), // Desplazamiento de la sombra
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    'INGENIERÍA EN INTELIGENCIA ARTIFICIAL (2020)',
-                    style: titleStyle,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Oferta Educativa',
-                    style: subtitleStyle,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
+            const Padding(
+            padding: EdgeInsets.only(top: 20, bottom: 14),
+            child: TitulosHeader(
+                  titulo: "INGENIERÍA EN INTELIGENCIA ARTIFICIAL (2020)",
+                  subtitulo: "Oferta Educativa",
+                  tituloNegrita: true,
+                  subtituloNegrita: false,
+                  tamanoTitulo: 28,
+                  tamanoSubtitulo: 18,
+                  tieneFondo: true,
+                ),
+          ),
+        
 
             const SizedBox(height: 20),
 
@@ -95,11 +80,16 @@ class IAScreen extends ConsumerWidget {
                           children: [
                             Text(
                               'Objetivo',
-                              style: titleStyle,  
+                              style: titleStyle
+                                
                             ),
                             Text(
                               'Formar expertos capaces de desarrollar sistemas inteligentes utilizando diferentes metodologías en las diferentes etapas de desarrollo y aplicando algoritmos en áreas como aprendizaje de máquina, procesamiento automático de lenguaje natural, visión artificial y modelos bioinspirados para atender las necesidades de los diferentes sectores de la sociedad a través de la generación de procesos y soluciones innovadoras.',
-                              style: subtitleStyle,
+                              style: TextStyle(
+                                color: textoColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
                           ],
                         )      
@@ -118,7 +108,7 @@ class IAScreen extends ConsumerWidget {
                           children: [
                             Text(
                               'Perfil de Ingreso',
-                              style: titleStyle,  
+                              style: titleStyle, 
                             ),
                             Text(
                               'Los estudiantes que ingresen al Instituto Politécnico Nacional, en cualquiera de sus programas y niveles, deberán contar con los conocimientos y las habilidades básicas que garanticen un adecuado desempeño en el nivel al que solicitan su ingreso. Asimismo, deberán contar con las actitudes y valores necesarios para responsabilizarse de su proceso formativo y asumir una posición activa frente al estudio y al desarrollo de los proyectos y trabajos requeridos, coincidentes con el ideario y principios del IPN.',
@@ -141,7 +131,7 @@ class IAScreen extends ConsumerWidget {
                           children: [
                             Text(
                               'Perfil de Egreso',
-                              style: titleStyle,  
+                              style: titleStyle, 
                             ),
                             Text(
                               'El egresado de la Ingeniería en Inteligencia Artificial se desempeñará colaborativamente en equipos multidisciplinarios en el análisis, diseño, implementación, validación, implantación, supervisión y gestión de sistemas inteligentes, aplicando algoritmos en áreas como aprendizaje de máquina, procesamiento automático de lenguaje natural, visión artificial y modelos bioinspirados; ejerciendo su profesión con liderazgo, ética y responsabilidad social.',
@@ -188,7 +178,7 @@ class IAScreen extends ConsumerWidget {
                           children: [
                             Text(
                               'Titulación',
-                              style: titleStyle,  
+                              style: titleStyle, 
                             ),
                             Text(
                               'En la Escuela Superior de Cómputo, de conformidad con el Reglamento de Titulación Profesional vigente se considerarán 9 opciones para titulación profesional en la carrera de Ing. en Sistemas Computacionales (ISC), Ing. en Inteligencia Artificial (IIA), Lic. en Ciencia de Datos (LCD) e Ing. en Sistemas Automotrices (ISISA), debiendo cumplir cada una de ellas con requisitos y actividades propios:\n'
