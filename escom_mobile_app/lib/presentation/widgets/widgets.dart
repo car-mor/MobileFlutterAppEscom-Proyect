@@ -11,3 +11,8 @@ export 'home_screen/swiper_1.dart';
 export 'home_screen/swiper_2.dart';
 export 'titulos_header.dart';
 export 'toma_protesta_gallery.dart';
+export 'expandable_section.dart';
+export 'expandable_content_section.dart';
+export 'biblioteca_swiper.dart';
+export 'process_card_ternas.dart';
+export 'cosecovi_menu.dart';
