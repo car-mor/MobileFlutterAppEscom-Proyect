@@ -6,6 +6,7 @@ export const alumnoRouter = (Modelos) => {
   const alumnoController = new AlumnoController (Modelos)
 
   alumnoRouter.post('/', alumnoController.obtenerHorarioAlumno)
+  alumnoRouter.post('/informacion', alumnoController.obtenerInformacionAlumno)
 
   return alumnoRouter
 }
