@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
     final storedPassword = prefs.getString('password');
 
     if (_emailController.text == storedEmail &&
-        _passwordController.text == storedPassword) {
+        _passwordController.text ==storedPassword) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),

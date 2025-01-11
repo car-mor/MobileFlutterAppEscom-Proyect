@@ -79,6 +79,19 @@ class _LoginForm extends StatefulWidget {
   _LoginFormState createState() => _LoginFormState();
 }
 
+class Alumno {
+  final String alumno_nombre;
+
+  Alumno({required this.alumno_nombre});
+
+  factory Alumno.fromJson(Map<String, dynamic> json) {
+    return Alumno(
+      alumno_nombre: json['alumno_nombre'],
+    );
+  }
+}
+
+
 class _LoginFormState extends State<_LoginForm> {
   final ApiService _apiService = ApiService();
   final emailController = TextEditingController();
@@ -92,40 +105,31 @@ class _LoginFormState extends State<_LoginForm> {
   }
 
   void onFormSubmit() async {
-   /* if (formKey.currentState?.validate() ?? false) {
+    if (formKey.currentState?.validate() ?? false) {
       // Mostrar un loading mientras hacemos la solicitud
       showSnackbar(context, 'Iniciando sesión...');
 
-      final curp = emailController.text.trim();
-      final boleta = passwordController.text.trim();
+      final boleta = emailController.text.trim();
+      final contrasena = passwordController.text.trim();
 
-      try {
-        // Llamada al backend para autenticar al usuario
-        final response = await authenticateUser(curp, boleta);
+      
+        final response = await _apiService.autentificacion(boleta, contrasena);
+        if(response.statusCode==200){
+          print("hola");
+        }
+        print(response.data);
+for (var item in response.data) {
+  print(item['materia']); // Accede a 'alumno_nombre' de cada mapa
+}
 
-        if (!mounted) return;  // Asegúrate de que el widget esté montado
-
-        if (response['token'] != null) {
-          // Si la respuesta contiene un token, guardar el token
-          final token = response['token'];
-          saveToken(token);
 
           // Navegar a la siguiente pantalla, por ejemplo, el home
-          context.push('/home');
-        } else {
-          showSnackbar(context, response['message'] ?? 'Error desconocido');
-        }
-      } catch (error) {
-        if (!mounted) return;  // Asegúrate de que el widget esté montado
-        showSnackbar(context, 'Ocurrió un error: $error');
-      }
+          //context.push('/home');
+        
+      
     } else {
       showSnackbar(context, 'Por favor, revisa los campos');
-    }*/
-    final response = await _apiService.sendData();
-    print(response);
-    
-    
+    }
   }
 
   @override
@@ -147,9 +151,9 @@ class _LoginFormState extends State<_LoginForm> {
               keyboardType: TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'El CURP es requerido';
+                  return 'La boleta es requerido';
                 }
-                if (!RegExp(r"^\d{10}$").hasMatch(value)) {
+                if (value.length < 4) {
                   return 'Boleta invalida';
                 }
                 return null;
@@ -162,10 +166,10 @@ class _LoginFormState extends State<_LoginForm> {
               obscureText: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'La boleta es requerida';
+                  return 'La contraseña es requerida';
                 }
-                if (value.length < 6) {
-                  return 'La boleta debe tener al menos 6 caracteres';
+                if (value.length < 4) {
+                  return 'La contraseña debe tener al menos 4 caracteres';
                 }
                 return null;
               },
