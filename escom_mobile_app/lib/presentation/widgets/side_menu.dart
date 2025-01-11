@@ -102,29 +102,39 @@ class _SideMenuState extends State<SideMenu> {
     );
   }
 
-  Widget _buildMenuItem(MenuItem item) {
-    if (item.subItems == null || item.subItems!.isEmpty) {
-      // Elemento sin sub-items
-      return ListTile(
-        leading: _buildIcon(item.icon ?? item.icon2),
-        title: Text(item.title),
-        onTap: () {
-          handleMenuItemSelection(item.link, context);
-          widget.scaffoldKey.currentState?.closeDrawer();
-        },
-        selected: appMenuItems.indexOf(item) == selectedIndex,
-      );
-    } else {
-      // Elemento con sub-items
-      return ExpansionTile(
-        leading: _buildIcon(item.icon ?? item.icon2),
-        title: Text(item.title),
-        children: item.subItems!
-            .map((subItem) => _buildMenuItem(subItem))
-            .toList(),
-      );
-    }
+ Widget _buildMenuItem(MenuItem item) {
+  if (item.subItems == null || item.subItems!.isEmpty) {
+    // Elemento sin sub-items
+    return ListTile(
+      leading: _buildIcon(item.icon ?? item.icon2),
+      title: Text(
+        item.title,
+        style: item.link == null 
+            ? const TextStyle(fontWeight: FontWeight.bold) 
+            : null,
+      ),
+      onTap: () {
+        handleMenuItemSelection(item.link, context);
+        widget.scaffoldKey.currentState?.closeDrawer();
+      },
+      selected: appMenuItems.indexOf(item) == selectedIndex,
+    );
+  } else {
+    // Elemento con sub-items
+    return ExpansionTile(
+      leading: _buildIcon(item.icon ?? item.icon2),
+      title: Text(
+        item.title,
+        style: null, // No aplica negritas para elementos con sub-items
+      ),
+      children: item.subItems!
+          .map((subItem) => _buildMenuItem(subItem))
+          .toList(),
+    );
   }
+}
+
+
 
   Widget _buildIcon(Object? icon) {
   if (icon is IconData) {
