@@ -68,6 +68,12 @@ flutter:
     - assets/images/sliders/home_screen/slider_1/
     - assets/images/sliders/home_screen/slider_2/
     - assets/images/tomas_protesta_gallery/
+    - assets/images/denuncias/
+    - assets/images/cultural_activities/
+    - assets/images/biblioteca/
+    - assets/images/COSECOVI/
+    - assets/images/COSECOVI/Linea_de_denuncia_1.jpeg
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
