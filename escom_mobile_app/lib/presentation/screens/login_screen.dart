@@ -109,7 +109,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
         } else if (tipoUsuario == "profesor") { 
           ref.read(userProvider.notifier).logInAsTeacher(); // Cambiar estado
           showSnackbar(context, 'Inicio de sesión como docente exitoso');
-          Navigator.pushNamed(context, '/home_profesor'); // Redirigir al home
+          GoRouter.of(context).go('/home_page_profesor'); // Redirigir al home
         } 
       
     } else {
