@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:escom_mobile_app/config/router/app_router.dart';
 import 'package:escom_mobile_app/presentation/providers/theme_provider.dart';
+import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
