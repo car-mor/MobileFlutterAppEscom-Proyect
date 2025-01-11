@@ -3,10 +3,11 @@ import 'package:escom_mobile_app/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends ConsumerWidget {
-  static const String name = 'home_screen';
+  static const String name = 'home_screen'; 
 
   const HomeScreen({super.key});
 
@@ -18,14 +19,20 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ESCOM-MOBILE'),
-         actions: const [
+         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: ProfileAvatar(
-              imageUrl: null, // Pasa la URL aquí si está disponible
-              size: 40,
-            ),
-          ),
+  padding: const EdgeInsets.only(right: 20, top: BorderSide.strokeAlignCenter),
+  child: GestureDetector(
+    onTap: () {
+      // Redirige al usuario a la pantalla de inicio de sesión
+      context.go('/login_screen');
+    },
+    child: const ProfileAvatar(
+      imageUrl: null, // Pasa la URL aquí si está disponible
+      size: 40,
+    ),
+  ),
+),
         ],
       ),
       body: SingleChildScrollView(
