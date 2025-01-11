@@ -2,7 +2,8 @@
 import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 import 'package:escom_mobile_app/presentation/screens/assistence_screen.dart';
 import 'package:escom_mobile_app/presentation/screens/screens.dart';
-import 'package:escom_mobile_app/screens/home_page.dart';
+import 'package:escom_mobile_app/presentation/screens/screens_alumno/home_page_alumno.dart';
+import 'package:escom_mobile_app/presentation/screens/screens_profesor/home_page_profesor.dart';
 import 'package:go_router/go_router.dart';
 import 'package:escom_mobile_app/screens/users_screens.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,9 +24,9 @@ final appRouter = GoRouter(
             // Comprobar el estado de autenticación y tipo de usuario
             if (userState.isLoggedIn) {
               if (userState.isStudent) {
-                return const HomePage();  // Redirigir a la página de alumno
+                return const HomePageAlumno();  // Redirigir a la página de alumno
               } else if (userState.isTeacher) {
-                return const HomePage();  // Redirigir a la página de profesor
+                return const HomePageProfesor();  // Redirigir a la página de profesor
               }
             }
             
@@ -46,9 +47,14 @@ final appRouter = GoRouter(
       builder: (context, state) => const CalificacionesScreen(),
     ),
     GoRoute(
-      path: '/home_page',
-      name: HomePage.name,
-      builder: (context, state) => const HomePage(),
+      path: '/home_page_alumno',
+      name: HomePageAlumno.name,
+      builder: (context, state) => const HomePageAlumno(),
+    ),
+    GoRoute(
+      path: '/home_page_profesor',
+      name: HomePageProfesor.name,
+      builder: (context, state) => const HomePageProfesor(),
     ),
 
      GoRoute(
