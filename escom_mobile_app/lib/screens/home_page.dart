@@ -1,16 +1,28 @@
+import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
+import 'package:escom_mobile_app/presentation/screens/student_screen.dart';
+import 'package:escom_mobile_app/presentation/screens/teacher_screen.dart';
 import 'package:flutter/material.dart';
-import 'login_page.dart';
-import 'timetable_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:escom_mobile_app/presentation/providers/theme_provider.dart';
+import 'package:escom_mobile_app/presentation/widgets/side_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
+  static const String name = 'home_page';
+  const HomePage({super.key});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  bool isLoggedIn = false;
+class HomePageState extends ConsumerState<HomePage> {
+  bool isLoggedIn = true;
+  bool isStudent = true;
+  bool isTeacher = false;
   String? studentName;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -22,118 +34,155 @@ class _HomePageState extends State<HomePage> {
     final prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('email');
     final name = prefs.getString('name');
+    final role = prefs
+        .getString('role'); // Supongamos que guardamos "student" o "teacher"
 
     setState(() {
       isLoggedIn = email != null;
+      isStudent = role == 'student';
+      isTeacher = role == 'teacher';
       studentName = name;
     });
   }
 
-  void _logout() async {
+  Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('email');
-    await prefs.remove('name');
+    await prefs.clear();
 
     setState(() {
-      isLoggedIn = false;
-      studentName = null;
+      isLoggedIn = true;
+      studentName = 'Carlos';
+      isStudent = true;
+      isTeacher = false;
     });
+  }
+
+  String _getGreetingMessage() {
+    final hour = DateTime.now().hour;
+    if (hour >= 0 && hour < 6) {
+      return 'Buenas madrugadas,';
+    } else if (hour >= 6 && hour < 12) {
+      return 'Buenos días,';
+    } else if (hour >= 12 && hour < 18) {
+      return 'Buenas tardes,';
+    } else {
+      return 'Buenas noches,';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = ref.watch(themeProvider).isDarkmode;
+    final greetingMessage = _getGreetingMessage();
+
     return Scaffold(
-      appBar: AppBar(title: Text('Inicio')),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Menú de Navegación',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            if (!isLoggedIn) ...[
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text('Inicio'),
-                onTap: () => Navigator.pop(context),
-              ),
-              ListTile(
-                leading: Icon(Icons.school),
-                title: Text('Ver Carreras'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(Icons.info),
-                title: Text('Información de la Escuela'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(Icons.login),
-                title: Text('Inicio de Sesión'),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                ),
-              ),
-            ] else ...[
-              ListTile(
-                leading: Icon(Icons.group),
-                title: Text('Ver Grupos'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(Icons.schedule),
-                title: Text('Ver Horarios'),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TimetablePage()),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.search),
-                title: Text('Buscar Profesor'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(Icons.logout),
-                title: Text('Cerrar Sesión'),
-                onTap: () {
-                  _logout();
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ],
-        ),
+      key: _scaffoldKey, // Usamos _scaffoldKey para el Drawer
+      appBar: AppBar(
+        title: const Text('Inicio'),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 20, top: 8),
+            child: Icon(Icons.account_circle, size: 40),
+          ),
+        ],
       ),
+      drawer: SideMenu(
+          scaffoldKey: _scaffoldKey), // Pasamos _scaffoldKey al SideMenu
       body: isLoggedIn
           ? Center(
               child: Text(
                 'Bienvenido, $studentName',
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
             )
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      'Bienvenido a la Aplicación Informativa de nuestra escuela. Aquí encontrarás toda la información que necesitas.',
-                      style: TextStyle(fontSize: 16),
+                      '$greetingMessage${studentName != null ? ', $studentName' : ''}',
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
-                  SizedBox(height: 200, child: Placeholder()), // Widget del mapa
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Bienvenido(a) a la Aplicación Informativa de nuestra escuela. Aquí encontrarás toda la información que necesitas sobre tu semestre.',
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/aviso_saes.png',
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                        const SizedBox(height: 20),
+                        Image.asset(
+                          'assets/images/dae_saes.jpg',
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            ref
+                                .read(userProvider.notifier)
+                                .logInAsStudent(); // Actualiza el estado como estudiante
+
+                            final studentData = await fetchStudentData(); // Llama a la función para obtener los datos del estudiante
+
+                            // Navega a la pantalla del estudiante con los datos
+                            if (context.mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => StudentScreen(student: studentData),
+                                ),
+                              );
+                            }
+                          },
+                          child: const Text("Simular como Alumno"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            final teacherData =
+                                await fetchTeacherData(); // Llama a la función para obtener los datos del profesor
+                            ref
+                                .read(userProvider.notifier)
+                                .logInAsTeacher(); // Actualiza el estado como profesor
+
+                            // Navega a la pantalla del profesor con los datos
+                            if (context.mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      TeacherScreen(teacher: teacherData),
+                                ),
+                              );
+                            }
+                          },
+                          child: const Text("Simular como Profesor"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            ref
+                                .read(userProvider.notifier)
+                                .logOut(); // Simula inicio de sesión como profesor
+                          },
+                          child: const Text("Cerrar sesión"),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

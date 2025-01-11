@@ -3,14 +3,14 @@ import 'package:escom_mobile_app/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class StudentScreen extends StatefulWidget {
+class StudentsScreen extends StatefulWidget {
   static const String name = 'student_screen/1';
-  const StudentScreen({super.key});
+  const StudentsScreen({super.key});
   @override
-  State<StudentScreen> createState() => _StudentScreenState();
+  State<StudentsScreen> createState() => _StudentsScreenState();
 }
 
-class _StudentScreenState extends State<StudentScreen> {
+class _StudentsScreenState extends State<StudentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

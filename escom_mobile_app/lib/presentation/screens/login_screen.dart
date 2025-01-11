@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 import '../../config/helpers/dio_helper.dart';
 import 'package:escom_mobile_app/presentation/widgets/widgets.dart';
 
@@ -113,14 +113,14 @@ class _LoginFormState extends State<_LoginForm> {
       final contrasena = passwordController.text.trim();
 
       
-        final response = await _apiService.autentificacion(boleta, contrasena);
-        if(response.statusCode==200){
-          print("hola");
-        }
-        print(response.data);
-for (var item in response.data) {
-  print(item['materia']); // Accede a 'alumno_nombre' de cada mapa
-}
+//         final response = await _apiService.autentificacion(boleta, contrasena);
+//         if(response.statusCode==200){
+//           print("hola");
+//         }
+//         print(response.data);
+// for (var item in response.data) {
+//   print(item['materia']); // Accede a 'alumno_nombre' de cada mapa
+// }
 
 
           // Navegar a la siguiente pantalla, por ejemplo, el home

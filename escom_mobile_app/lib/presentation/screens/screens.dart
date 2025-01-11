@@ -1,4 +1,4 @@
-export 'package:escom_mobile_app/presentation/screens/teachers_screen.dart';
+export 'package:escom_mobile_app/presentation/screens/teacher_screen.dart';
 export 'package:escom_mobile_app/presentation/screens/home_screen.dart';
 export 'package:escom_mobile_app/presentation/screens/students_screen.dart';
 export 'package:escom_mobile_app/presentation/screens/licenses_screen.dart';
@@ -40,5 +40,10 @@ export 'package:escom_mobile_app/presentation/screens/eleccion_ternas_screen.dar
 export 'package:escom_mobile_app/presentation/screens/formatos_docs_screen.dart';
 export 'package:escom_mobile_app/presentation/screens/sustentabilidad_screen.dart';
 export 'package:escom_mobile_app/presentation/screens/login_screen.dart';
-
-
+export 'package:escom_mobile_app/presentation/screens/teachers_screen.dart';
+export 'package:escom_mobile_app/presentation/screens/student_screen.dart' hide build;
+export 'package:escom_mobile_app/presentation/screens/asignar_calificaciones_screen.dart';
+export 'package:escom_mobile_app/presentation/screens/calificaciones_screen.dart';
+export 'package:escom_mobile_app/presentation/screens/grupos_teacher_screen.dart';
+export 'package:escom_mobile_app/presentation/screens/horario_alumno_screen.dart';
+export 'package:escom_mobile_app/presentation/screens/horario_teacher_screen.dart';
