@@ -10,7 +10,7 @@ export class AuthModel{
                 WHEN u.idProfesores IS NOT NULL THEN u.idProfesores
             END AS usuario,
             CASE
-                WHEN u.boleta IS NOT NULL THEN 'boleta'
+                WHEN u.boleta IS NOT NULL THEN 'alumno'
                 WHEN u.idProfesores IS NOT NULL THEN 'profesor'
             END AS tipoUsuario
         FROM 
