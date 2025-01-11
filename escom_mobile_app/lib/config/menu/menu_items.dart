@@ -37,7 +37,7 @@ const List<MenuItem> appMenuItems = <MenuItem>[
       ),
       MenuItem(
         title: 'Directorio',
-        link: '/directory_screen',
+        link: '/organigrama_screen',
       ),
       MenuItem(
         title: 'Historia/Escudo',
@@ -45,7 +45,7 @@ const List<MenuItem> appMenuItems = <MenuItem>[
       ),
       MenuItem(
         title: 'Misión/Visión',
-        link: '/mission_vision_screen',
+        link: '/mission_vission_screen',
       ),
       MenuItem(
         title: 'Organigrama',
