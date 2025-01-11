@@ -83,6 +83,7 @@ class ISAScreen extends ConsumerWidget {
                             Text(
                               'Preparar ingenieros altamente especializados para atender las necesidades en ingeniería automotriz y de autopartes en sus Áreas de: manufactura, diseño, automatización, procesos, sistemas inteligentes, protección ambiental, administración e innovación tecnológica.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -118,6 +119,7 @@ class ISAScreen extends ConsumerWidget {
                               '• Disposición a conocer la problemática nacional y participar en su solución',
                               
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -162,6 +164,7 @@ class ISAScreen extends ConsumerWidget {
                               '- articipación en la economia del país\n'
                               '- Producción más limpia',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -196,6 +199,7 @@ class ISAScreen extends ConsumerWidget {
                               '• Ventas\n'
                               '• Comercialización',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -218,8 +222,9 @@ class ISAScreen extends ConsumerWidget {
                             Text(
                               '• Cubrir el Servicio Social bajo las modalidades que la legislación vigente permita\n'
                               '• Acreditación del idioma Inglés co-curricular a un nivel intermedio\n'
-                              '• Se definirán líneas de titulación curricular para fomentar esta opción',
+                              '• Se definirán líneas de titulación curricular para fomentar esta opción                                                                          ',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      

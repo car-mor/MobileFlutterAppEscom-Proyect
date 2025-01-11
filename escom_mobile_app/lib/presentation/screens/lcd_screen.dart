@@ -84,6 +84,7 @@ class LCDScreen extends ConsumerWidget {
                             Text(
                               'Formar expertos capaces de extraer conocimiento implícito y complejo, potencialmente útil a partir de grandes conjuntos de datos, utilizando métodos de inteligencia artificial, aprendizaje de máquina, estadística, sistemas de bases de datos y modelos matemáticos sobre comportamientos probables, para apoyar la toma de decisiones de alta dirección.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -105,9 +106,9 @@ class LCDScreen extends ConsumerWidget {
                               style: titleStyle,  
                             ),
                             Text(
-                              'Los estudiantes que ingresen al Instituto Politécnico Nacional, en cualquiera de sus programas y niveles, deberán contar con los conocimientos y las habilidades básicas que garanticen un adecuado desempeño en el nivel al que solicitan su ingreso. Asimismo, deberán contar con las actitudes y valores necesarios para responsabilizarse de su proceso formativo y asumir una posición activa frente al estudio y al desarrollo de los proyectos y trabajos requeridos, coincidentes con el ideario y principios del IPN.',
-                              
+                              'Los estudiantes que ingresen al Instituto Politécnico Nacional, en cualquiera de sus programas y niveles, deberán contar con los conocimientos y las habilidades básicas que garanticen un adecuado desempeño en el nivel al que solicitan su ingreso. Asimismo, deberán contar con las actitudes y valores necesarios para responsabilizarse de su proceso formativo y asumir una posición activa frente al estudio y al desarrollo de los proyectos y trabajos requeridos, coincidentes con el ideario y principios del IPN.',                             
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -131,6 +132,7 @@ class LCDScreen extends ConsumerWidget {
                             Text(
                               'El egresado de la Licenciatura de Ciencia de Datos será capaz de extraer conocimiento implícito y complejo, potencialmente útil (descubrimiento de patrones, desviaciones, anomalías, valores anómalos, situaciones interesantes, tendencias), a partir de grandes conjuntos de datos. Utiliza los métodos de la inteligencia artificial, aprendizaje de máquina, estadística y sistemas de bases de datos para la toma de decisiones de alta dirección, fundadas en los datos y modelos matemáticos sobre comportamientos probables, deseables e indeseables, participando en dinámicas de trabajo colaborativo e interdisciplinario con sentido ético y responsabilidad social.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -163,9 +165,9 @@ class LCDScreen extends ConsumerWidget {
                               '• EDUCACIÓN: Planeación y evaluación educativa\n'
                               '• NEGOCIOS: Planeación financiera, planeación de mercados, planeación de la producción\n'
                               '• SEGURIDAD: Análisis de tendencias, análisis geoestadístico, análisis delictivo\n'
-                              '• PROTECCIÓN CIVIL: Mapas de riesgos, estrategias de prevención\n'
-                              ,
+                              '• PROTECCIÓN CIVIL: Mapas de riesgos, estrategias de prevención\n',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -197,6 +199,7 @@ class LCDScreen extends ConsumerWidget {
                               '8. Curricular\n'
                               '9. Práctica profesional',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
