@@ -7,6 +7,9 @@ export const profesorRouter = (Modelos) => {
 
   profesorRouter.post('/horario', profesorController.obtenerHorarioProfesor)
   profesorRouter.post('/lista/', profesorController.obtenerListaGrupo)
+  profesorRouter.post('/informacion', profesorController.obtenerInformacionProfesor)
+  profesorRouter.post('/asistencia', profesorController.pasarAsistencia)
+  profesorRouter.post('/asistencia/obtener', profesorController.obtenerAsistencia)
 
   return profesorRouter
 }
