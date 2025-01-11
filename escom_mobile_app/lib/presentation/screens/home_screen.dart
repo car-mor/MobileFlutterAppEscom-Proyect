@@ -20,7 +20,7 @@ class HomeScreen extends ConsumerWidget {
         title: const Text('ESCOM-MOBILE'),
          actions: const [
           Padding(
-            padding: EdgeInsets.only(right: 10),
+            padding: EdgeInsets.only(right: 20, top: BorderSide.strokeAlignCenter),
             child: ProfileAvatar(
               imageUrl: null, // Pasa la URL aquí si está disponible
               size: 40,
