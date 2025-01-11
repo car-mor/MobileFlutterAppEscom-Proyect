@@ -1,6 +1,6 @@
-import 'package:escom_mobile_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../config/helpers/dio_helper.dart';
 import 'package:escom_mobile_app/presentation/widgets/widgets.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,43 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
-
-  void onFormSubmit() async {
-    if (formKey.currentState?.validate() ?? false) {
-      // Mostrar un loading mientras hacemos la solicitud
-      showSnackbar(context, 'Iniciando sesión...');
-
-      final curp = emailController.text.trim();
-      final boleta = passwordController.text.trim();
-
-      try {
-        // Llamada al backend para autenticar al usuario
-        final response = await authenticateUser(curp, boleta);
-
-        // Verificar si el widget sigue montado antes de usar el BuildContext
-        if (!mounted) return; // Si el widget ya no está montado, no hacer nada
-
-        if (response['token'] != null) {
-          // Si la respuesta contiene un token, guardar el token
-          final token = response['token'];
-          saveToken(token);
-
-          // Navegar a la siguiente pantalla
-          context.push('/home');
-        } else {
-          showSnackbar(context, response['message'] ?? 'Error desconocido');
-        }
-      } catch (error) {
-        if (mounted) { // Verificar si sigue montado antes de mostrar el snackbar
-          showSnackbar(context, 'Ocurrió un error: $error');
-        }
-      }
-    } else {
-      if (mounted) { // Verificar si sigue montado antes de mostrar el snackbar
-        showSnackbar(context, 'Por favor, revisa los campos');
-      }
-    }
   }
 
   @override
@@ -117,6 +80,7 @@ class _LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<_LoginForm> {
+  final ApiService _apiService = ApiService();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -128,7 +92,7 @@ class _LoginFormState extends State<_LoginForm> {
   }
 
   void onFormSubmit() async {
-    if (formKey.currentState?.validate() ?? false) {
+   /* if (formKey.currentState?.validate() ?? false) {
       // Mostrar un loading mientras hacemos la solicitud
       showSnackbar(context, 'Iniciando sesión...');
 
@@ -157,7 +121,11 @@ class _LoginFormState extends State<_LoginForm> {
       }
     } else {
       showSnackbar(context, 'Por favor, revisa los campos');
-    }
+    }*/
+    final response = await _apiService.sendData();
+    print(response);
+    
+    
   }
 
   @override
@@ -174,22 +142,22 @@ class _LoginFormState extends State<_LoginForm> {
             Text('Iniciar sesión', style: textStyles.titleLarge),
             const SizedBox(height: 40),
             CustomTextFormField(
-              label: 'CURP',
+              label: 'Boleta',
               controller: emailController, // Activar el controlador
               keyboardType: TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'El CURP es requerido';
                 }
-                if (!RegExp(r"^[A-Z]{4}\d{6}[A-Z]{6}\d{2}$").hasMatch(value)) {
-                  return 'CURP no válido';
+                if (!RegExp(r"^\d{10}$").hasMatch(value)) {
+                  return 'Boleta invalida';
                 }
                 return null;
               },
             ),
             const SizedBox(height: 30),
             CustomTextFormField(
-              label: 'Boleta',
+              label: 'Contraseña',
               controller: passwordController, // Activar el controlador
               obscureText: true,
               validator: (value) {
@@ -213,7 +181,7 @@ class _LoginFormState extends State<_LoginForm> {
               ),
             ),
             const Spacer(flex: 2),
-            Row(
+            /*Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('¿No tienes cuenta?'),
@@ -223,7 +191,7 @@ class _LoginFormState extends State<_LoginForm> {
                 ),
               ],
             ),
-            const Spacer(flex: 1),
+            const Spacer(flex: 1),*/
           ],
         ),
       ),

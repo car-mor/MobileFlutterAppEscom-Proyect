@@ -9,7 +9,9 @@ class TitulosHeader extends ConsumerWidget {
   final bool subtituloNegrita;
   final double tamanoTitulo;
   final double tamanoSubtitulo;
-  final bool tieneFondo; // Parámetro que indica si tiene fondo específico
+  final bool tieneFondo;
+  final MainAxisAlignment mainAxisAlignment; // Alineación vertical
+  final CrossAxisAlignment crossAxisAlignment; // Alineación horizontal// Parámetro que indica si tiene fondo específico
 
   const TitulosHeader({
     super.key,
@@ -20,6 +22,8 @@ class TitulosHeader extends ConsumerWidget {
     this.tamanoTitulo = 24,
     this.tamanoSubtitulo = 16,
     this.tieneFondo = false, // Por defecto no tiene fondo
+    this.mainAxisAlignment = MainAxisAlignment.center,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
   });
 
   @override
@@ -42,8 +46,8 @@ class TitulosHeader extends ConsumerWidget {
       color: fondoColor, // El fondo depende de tieneFondo y el tema
       padding: const EdgeInsets.symmetric(vertical: 16.0), // Relleno superior e inferior
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: mainAxisAlignment,
+        crossAxisAlignment: crossAxisAlignment,
         children: [
           if (titulo != null) // Muestra solo si 'titulo' no es nulo
             Text(

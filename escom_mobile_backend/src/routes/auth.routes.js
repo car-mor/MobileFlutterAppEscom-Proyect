@@ -1,9 +1,11 @@
-const express = require('express');
-const { authenticate } = require('../controllers/auth.controller');
+import { Router } from 'express'
+import { AuthController } from '../controllers/auth.controller.js'
 
-const router = express.Router();
+export const authRouter = (Modelos) => {
+  const authRouter = Router()
+  const authController = new AuthController (Modelos)
 
-// Ruta de login
-router.post('/login', authenticate);
+  authRouter.post('/', authController.autentificarUsuario)
 
-module.exports = router;
+  return authRouter
+}

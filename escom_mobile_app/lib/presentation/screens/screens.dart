@@ -40,6 +40,5 @@ export 'package:escom_mobile_app/presentation/screens/eleccion_ternas_screen.dar
 export 'package:escom_mobile_app/presentation/screens/formatos_docs_screen.dart';
 export 'package:escom_mobile_app/presentation/screens/sustentabilidad_screen.dart';
 export 'package:escom_mobile_app/presentation/screens/login_screen.dart';
-export 'package:escom_mobile_app/presentation/screens/register_screen.dart';
 
 

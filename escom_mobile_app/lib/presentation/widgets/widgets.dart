@@ -10,3 +10,4 @@ export 'generic_card_swiper.dart';
 export 'home_screen/swiper_1.dart';
 export 'home_screen/swiper_2.dart';
 export 'titulos_header.dart';
+export 'toma_protesta_gallery.dart';
