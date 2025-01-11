@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:escom_mobile_app/presentation/providers/theme_provider.dart';
 import 'package:escom_mobile_app/presentation/widgets/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ISAScreen extends ConsumerWidget {
 
@@ -70,7 +71,7 @@ class ISAScreen extends ConsumerWidget {
                 children: [
                   Row(
                     children: [ 
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 15),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,  // Alineamos los textos a la izquierda
@@ -93,7 +94,7 @@ class ISAScreen extends ConsumerWidget {
                   // Teléfono
                   Row(
                     children: [ 
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 15),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,  // Alineamos los textos a la izquierda
@@ -128,7 +129,7 @@ class ISAScreen extends ConsumerWidget {
                   // Correo electrónico
                   Row(
                     children: [ 
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 15),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,  // Alineamos los textos a la izquierda
@@ -172,7 +173,7 @@ class ISAScreen extends ConsumerWidget {
                 
                   Row(
                     children: [ 
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 15),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,  // Alineamos los textos a la izquierda
@@ -205,7 +206,7 @@ class ISAScreen extends ConsumerWidget {
 
                   Row(
                     children: [ 
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 15),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,  // Alineamos los textos a la izquierda
@@ -225,7 +226,20 @@ class ISAScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 25),
+
+                  InkWell(
+                    onTap: () => _launchURL('https://www.escom.ipn.mx/docs/oferta/mapaCurricularISISA2009.pdf'),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.download),
+                        SizedBox(width: 5),
+                        Text('Mapa curricular'),
+                      ],
+                    ),
+                  ),
+                const SizedBox(height: 15),
                 ],
               ),
             ),
@@ -240,5 +254,14 @@ class ISAScreen extends ConsumerWidget {
       ),
       drawer: SideMenu(scaffoldKey: GlobalKey<ScaffoldState>()),
     );
+  }
+}
+
+Future<void> _launchURL(String url) async {
+  final Uri uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  } else {
+    throw 'Could not launch URL: $url';
   }
 }
