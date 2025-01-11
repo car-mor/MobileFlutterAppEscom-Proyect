@@ -10,67 +10,90 @@ class TitulosHeader extends ConsumerWidget {
   final double tamanoTitulo;
   final double tamanoSubtitulo;
   final bool tieneFondo;
-  final MainAxisAlignment mainAxisAlignment; // Alineación vertical
-  final CrossAxisAlignment crossAxisAlignment; // Alineación horizontal// Parámetro que indica si tiene fondo específico
+  final double? lineaHeight;
+  final bool tieneLineaIzquierda; // Nueva propiedad para controlar la línea
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
+  final Widget? child;
 
   const TitulosHeader({
     super.key,
-    this.titulo, // Ahora es opcional
-    this.subtitulo, // También opcional
+    this.titulo,
+    this.subtitulo,
+    this.child,
     this.tituloNegrita = true,
     this.subtituloNegrita = false,
     this.tamanoTitulo = 24,
     this.tamanoSubtitulo = 16,
-    this.tieneFondo = false, // Por defecto no tiene fondo
+    this.tieneFondo = false,
+    this.tieneLineaIzquierda = false, // Por defecto, sin línea
+    this.lineaHeight,
     this.mainAxisAlignment = MainAxisAlignment.center,
     this.crossAxisAlignment = CrossAxisAlignment.center,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Obtener el valor de isDarkMode desde el proveedor de Riverpod
     final isDarkMode = ref.watch(themeProvider).isDarkmode;
 
-    // Color de fondo dependiendo del estado de isDarkMode y tieneFondo
     final Color fondoColor = tieneFondo
-    ? (isDarkMode ? const Color.fromARGB(255, 51, 51, 51) : const Color.fromARGB(22, 81, 81, 81)) // Fondo gris cuando tieneFondo es true
-    : Colors.transparent; // Fondo transparente cuando tieneFondo es false
- 
-    //Color del texto dependiendo el tema
-    final Color textoColor = isDarkMode ? Colors.white : Colors.black; // Color del texto según el tema
+        ? (isDarkMode
+            ? const Color.fromARGB(255, 51, 51, 51)
+            : const Color.fromARGB(22, 81, 81, 81))
+        : Colors.transparent;
 
-
+    final Color textoColor = isDarkMode ? Colors.white : Colors.black;
 
     return Container(
-      width: double.infinity, // Hace que abarque todo el ancho disponible
-      color: fondoColor, // El fondo depende de tieneFondo y el tema
-      padding: const EdgeInsets.symmetric(vertical: 16.0), // Relleno superior e inferior
-      child: Column(
-        mainAxisAlignment: mainAxisAlignment,
-        crossAxisAlignment: crossAxisAlignment,
+      width: double.infinity,
+      color: fondoColor,
+      padding: (titulo != null && subtitulo != null) ? const EdgeInsets.symmetric(vertical: 16.0) : const EdgeInsets.symmetric(vertical: 0.0), // Relleno superior e inferior
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (titulo != null) // Muestra solo si 'titulo' no es nulo
-            Text(
-              titulo!,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: tamanoTitulo,
-                fontWeight: tituloNegrita ? FontWeight.bold : FontWeight.normal,
-                color: textoColor, // Color del texto según el tema
-              ),
+          if (tieneLineaIzquierda) // Mostrar línea solo si tieneLineaIzquierda es true
+            Container(
+              width: 4,
+              height: lineaHeight ?? (titulo != null ? null : 100),
+              color: const Color.fromARGB(255, 222, 222, 224),
             ),
-          if (titulo != null && subtitulo != null)
-            const SizedBox(height: 8), // Espaciado solo si ambos están presentes
-          if (subtitulo != null) // Muestra solo si 'subtitulo' no es nulo
-            Text(
-              subtitulo!,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: tamanoSubtitulo,
-                fontWeight: subtituloNegrita ? FontWeight.bold : FontWeight.normal,
-                color: textoColor, // Color del texto según el tema
-              ),
+          if (tieneLineaIzquierda)
+            const SizedBox(width: 8), // Espaciado entre la línea y el texto
+          Expanded(
+            child: Column(
+              mainAxisAlignment: mainAxisAlignment,
+              crossAxisAlignment: crossAxisAlignment,
+              children: [
+                if (titulo != null)
+                  Text(
+                    titulo!,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: tamanoTitulo,
+                      fontWeight: tituloNegrita ? FontWeight.bold : FontWeight.normal,
+                      color: textoColor,
+                    ),
+                  ),
+                  if (child != null) ...[
+                const SizedBox(height: 8), // Espaciado entre subtitulo y el child
+                child!,
+              ],
+                if (titulo != null && subtitulo != null)
+                  const SizedBox(height: 8),
+                if (subtitulo != null)
+                  Text(
+                    subtitulo!,
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontSize: tamanoSubtitulo,
+                      fontWeight: subtituloNegrita ? FontWeight.bold : FontWeight.normal,
+                      color: textoColor,
+                    ),
+                  ),
+                  
+              ],
             ),
+          ),
         ],
       ),
     );

@@ -36,4 +36,25 @@ export class AlumnoModel{
       throw error;
     }
   }
+
+  static async obtenerInformacionAlumno (alumno) {
+    try{
+      const [usuario] = await connectionMySQL.query(`
+        SELECT 
+            CONCAT(apellidoPrimero, ' ', apellidoSegundo , ' ', nombre) AS alumno_nombre,
+            carrera,
+            telefono,
+            correo,
+            curp
+        FROM 
+            alumnos
+        WHERE 
+            boleta = ?`,alumno)
+      return usuario
+    }
+    catch(error){
+      console.error("Error al obtener todos los usuarios:", error);
+      throw error;
+    }
+  }
 }
