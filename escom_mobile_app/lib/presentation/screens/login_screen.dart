@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-// import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../config/helpers/dio_helper.dart';
 import 'package:escom_mobile_app/presentation/widgets/widgets.dart';
+import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String name = '/login_screen';
@@ -13,15 +15,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-
-  void showSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -42,29 +35,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Icon Banner
                     LayoutBuilder(
                       builder: (context, constraints) {
-                        final imageWidth = constraints.maxWidth * 0.4; // La mitad del ancho de la pantalla
+                        final imageWidth = constraints.maxWidth * 0.4;
                         return Image.asset(
                           'assets/images/escudoESCOM.png',
                           width: imageWidth,
-                          fit: BoxFit.fitWidth, // Ajusta el alto proporcionalmente
+                          fit: BoxFit.fitWidth,
                         );
                       },
                     ),
                     const SizedBox(height: 10),
                     Container(
-                      height: size.height - 260, // 80 los dos sizebox y 100 el ícono
+                      height: size.height - 260,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: scaffoldBackgroundColor,
                         borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(100)),
+                          topLeft: Radius.circular(100),
+                        ),
                       ),
                       child: const _LoginForm(),
-                    )
+                    ),
                   ],
                 ),
               );
-            }
+            },
           ),
         ),
       ),
@@ -72,27 +66,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class _LoginForm extends StatefulWidget {
+class _LoginForm extends ConsumerStatefulWidget {
   const _LoginForm();
 
   @override
   _LoginFormState createState() => _LoginFormState();
 }
 
-class Alumno {
-  final String alumno_nombre;
-
-  Alumno({required this.alumno_nombre});
-
-  factory Alumno.fromJson(Map<String, dynamic> json) {
-    return Alumno(
-      alumno_nombre: json['alumno_nombre'],
-    );
-  }
-}
-
-
-class _LoginFormState extends State<_LoginForm> {
+class _LoginFormState extends ConsumerState<_LoginForm> {
   final ApiService _apiService = ApiService();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -100,32 +81,35 @@ class _LoginFormState extends State<_LoginForm> {
 
   void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void onFormSubmit() async {
+  void onFormSubmit(WidgetRef ref) async {
     if (formKey.currentState?.validate() ?? false) {
-      // Mostrar un loading mientras hacemos la solicitud
       showSnackbar(context, 'Iniciando sesión...');
 
       final boleta = emailController.text.trim();
       final contrasena = passwordController.text.trim();
 
       
-//         final response = await _apiService.autentificacion(boleta, contrasena);
-//         if(response.statusCode==200){
-//           print("hola");
-//         }
-//         print(response.data);
-// for (var item in response.data) {
-//   print(item['materia']); // Accede a 'alumno_nombre' de cada mapa
-// }
+        final response = await _apiService.autentificacion(boleta, contrasena);
+        var tipoUsuario;
 
+        for (var item in response) {
+          if (item is Map<String, dynamic>) {
+            tipoUsuario = item['tipoUsuario'];
+          }
+        }
 
-          // Navegar a la siguiente pantalla, por ejemplo, el home
-          //context.push('/home');
-        
+        if (tipoUsuario == "alumno") {
+          ref.read(userProvider.notifier).logInAsStudent(); // Cambiar estado
+          showSnackbar(context, 'Inicio de sesión como alumno exitoso');
+          Navigator.pushNamed(context, '/home_alumno'); // Redirigir al home
+        } else if (tipoUsuario == "profesor") { 
+          ref.read(userProvider.notifier).logInAsTeacher(); // Cambiar estado
+          showSnackbar(context, 'Inicio de sesión como docente exitoso');
+          Navigator.pushNamed(context, '/home_profesor'); // Redirigir al home
+        } 
       
     } else {
       showSnackbar(context, 'Por favor, revisa los campos');
@@ -147,14 +131,14 @@ class _LoginFormState extends State<_LoginForm> {
             const SizedBox(height: 40),
             CustomTextFormField(
               label: 'Boleta',
-              controller: emailController, // Activar el controlador
+              controller: emailController,
               keyboardType: TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'La boleta es requerido';
+                  return 'La boleta es requerida';
                 }
                 if (value.length < 4) {
-                  return 'Boleta invalida';
+                  return 'Boleta inválida';
                 }
                 return null;
               },
@@ -162,7 +146,7 @@ class _LoginFormState extends State<_LoginForm> {
             const SizedBox(height: 30),
             CustomTextFormField(
               label: 'Contraseña',
-              controller: passwordController, // Activar el controlador
+              controller: passwordController,
               obscureText: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -181,25 +165,13 @@ class _LoginFormState extends State<_LoginForm> {
               child: CustomFilledButton(
                 text: 'Ingresar',
                 buttonColor: const Color.fromARGB(255, 0, 102, 153),
-                onPressed: onFormSubmit,
+                onPressed: ()=> onFormSubmit(ref),
               ),
             ),
             const Spacer(flex: 2),
-            /*Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('¿No tienes cuenta?'),
-                TextButton(
-                  onPressed: () => context.push('/register_screen'),
-                  child: const Text('Crea una aquí'),
-                ),
-              ],
-            ),
-            const Spacer(flex: 1),*/
           ],
         ),
       ),
     );
   }
 }
-

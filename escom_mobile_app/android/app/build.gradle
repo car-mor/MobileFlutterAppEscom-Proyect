@@ -31,7 +31,6 @@ apply plugin: 'org.jetbrains.kotlin.android'  // Usamos 'org.jetbrains.kotlin.an
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    namespace 'com.example.escom_mobile_app'
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
