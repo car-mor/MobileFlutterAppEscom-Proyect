@@ -1,11 +1,19 @@
 //import 'package:escom_mobile_app/config/theme/app_theme.dart';
 import 'package:escom_mobile_app/presentation/screens/screens.dart';
+import 'package:escom_mobile_app/screens/home_page.dart';
 import 'package:go_router/go_router.dart';
+import 'package:escom_mobile_app/screens/users_screens.dart';
 
 // GoRouter configuration
 final appRouter = GoRouter(
   initialLocation: '/app_tutorial_screen',
   routes: [
+    GoRoute(
+      path: '/home_page',
+      name: HomePage.name,
+      builder: (context, state) => const HomePage(),
+    ),
+
      GoRoute(
       path: '/app_tutorial_screen',
       name: AppTutorialScreen.name,

@@ -4,6 +4,10 @@ import 'timetable_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
+
+  static const String name = 'home_page'; 
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -43,12 +47,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Inicio')),
+      appBar: AppBar(title: const Text('Inicio')),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
@@ -62,23 +66,23 @@ class _HomePageState extends State<HomePage> {
             ),
             if (!isLoggedIn) ...[
               ListTile(
-                leading: Icon(Icons.home),
-                title: Text('Inicio'),
+                leading: const Icon(Icons.home),
+                title: const Text('Inicio'),
                 onTap: () => Navigator.pop(context),
               ),
               ListTile(
-                leading: Icon(Icons.school),
-                title: Text('Ver Carreras'),
+                leading: const Icon(Icons.school),
+                title: const Text('Ver Carreras'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.info),
-                title: Text('Información de la Escuela'),
+                leading: const Icon(Icons.info),
+                title: const Text('Información de la Escuela'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.login),
-                title: Text('Inicio de Sesión'),
+                leading: const Icon(Icons.login),
+                title: const Text('Inicio de Sesión'),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),
@@ -86,26 +90,26 @@ class _HomePageState extends State<HomePage> {
               ),
             ] else ...[
               ListTile(
-                leading: Icon(Icons.group),
-                title: Text('Ver Grupos'),
+                leading: const Icon(Icons.group),
+                title: const Text('Ver Grupos'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.schedule),
-                title: Text('Ver Horarios'),
+                leading: const Icon(Icons.schedule),
+                title: const Text('Ver Horarios'),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => TimetablePage()),
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.search),
-                title: Text('Buscar Profesor'),
+                leading: const Icon(Icons.search),
+                title: const Text('Buscar Profesor'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.logout),
-                title: Text('Cerrar Sesión'),
+                leading: const Icon(Icons.logout),
+                title: const Text('Cerrar Sesión'),
                 onTap: () {
                   _logout();
                   Navigator.pop(context);
@@ -119,15 +123,15 @@ class _HomePageState extends State<HomePage> {
           ? Center(
               child: Text(
                 'Bienvenido, $studentName',
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
             )
-          : SingleChildScrollView(
+          : const SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
                       'Bienvenido a la Aplicación Informativa de nuestra escuela. Aquí encontrarás toda la información que necesitas.',
                       style: TextStyle(fontSize: 16),
