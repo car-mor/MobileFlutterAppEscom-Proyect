@@ -19,10 +19,10 @@ class ApiService {
     }
   }
 
-  Future<dynamic> autentificacion(boleta, contrasena) async {
+  Future<List<dynamic>> autentificacion(boleta, contrasena) async {
     try {
       final response = await _dio.post('/auth',data:{'usuario':boleta,'contrasena':contrasena});
-      return response;
+      return response.data;
     } catch (e) {
       print('Error: $e');
       throw Exception('No se pudo enviar la información');

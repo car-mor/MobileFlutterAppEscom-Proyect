@@ -1,7 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 
 class SlideInfo {
   final String title;
@@ -37,48 +39,41 @@ final slides = <SlideInfo>[
       imageUrl: 'assets/images/bienvenida_ESCOM_MOBILE_4.png'),
 ];
 
-class AppTutorialScreen extends StatefulWidget {
+class AppTutorialScreen extends ConsumerStatefulWidget {
   static const String name = 'app_tutorial_screen';
 
   const AppTutorialScreen({super.key});
 
   @override
-  State<AppTutorialScreen> createState() => _AppTutorialScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AppTutorialScreenState();
 }
 
-class _AppTutorialScreenState extends State<AppTutorialScreen> {
 
-  //late final pageviewController = PageController();
-  //Para ahorrarse el late
+class _AppTutorialScreenState extends ConsumerState<AppTutorialScreen> {
   final PageController pageviewController = PageController();
   bool endReached = false;
 
   @override
   void initState() {
-    verificarInicio();
     super.initState();
+    verificarInicio();
+
 
     pageviewController.addListener(() {
-      //print('page: ${pageviewController.page}');
-      // if (pageviewController.page == slides.length - 1) {
-      //   context.go('/home_screen');
-      // }
       final page = pageviewController.page ?? 0;
-      if ( !endReached && page >= (slides.length - 1.5) ) {
+      if (!endReached && page >= (slides.length - 1.5)) {
         setState(() {
           endReached = true;
         });
       }
-
     });
   }
 
-@override //Para liberar recursos de listeners
+  @override
   void dispose() {
     pageviewController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +81,6 @@ class _AppTutorialScreenState extends State<AppTutorialScreen> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-
-
           PageView(
             controller: pageviewController,
             physics: const BouncingScrollPhysics(),
@@ -98,8 +91,7 @@ class _AppTutorialScreenState extends State<AppTutorialScreen> {
                     imageUrl: slideData.imageUrl))
                 .toList(),
           ),
-
-           Positioned(
+          Positioned(
             right: 20,
             top: 50,
             child: TextButton(
@@ -107,58 +99,61 @@ class _AppTutorialScreenState extends State<AppTutorialScreen> {
               onPressed: () {
                 try {
                   registrarInicio();
-                  //GoRouter.of(context).go('/home_screen');
                 } catch (e) {
                   debugPrint('Error al navegar a /home_screen: $e');
                 }
               },
             ),
           ),
-
-
-          endReached ?  Positioned(
-              bottom: 40,
-              right: 30,
-              child: FadeInRight( //animacion de entrada de animate_do
-                from: 15,
-                delay: const Duration(seconds: 1),
-                child: FilledButton(
-                   onPressed: () {
-                      registrarInicio();
-                      //GoRouter.of(context).go('/login_screen'); // Redirige a la ruta especificada
-                    },
-                  child: const Text('Comenzar'),
-                            ),
-              ),
-            ) : const SizedBox(),
-
+          endReached
+              ? Positioned(
+                  bottom: 40,
+                  right: 30,
+                  child: FadeInRight(
+                    from: 15,
+                    delay: const Duration(seconds: 1),
+                    child: FilledButton(
+                      onPressed: () {
+                        registrarInicio();
+                      },
+                      child: const Text('Comenzar'),
+                    ),
+                  ),
+                )
+              : const SizedBox(),
         ],
       ),
     );
   }
-  
+
+
   Future<void> verificarInicio() async {
     final prefs = await SharedPreferences.getInstance();
-    final verificacion=prefs.getString('inicio');
+    final verificacion = prefs.getString('inicio');
+    final bool? estudiante = prefs.getBool('isStudent');
+    final bool? profesor = prefs.getBool('isTeacher');
 
-    if(verificacion=="1"){
-      try {
-          // ignore: use_build_context_synchronously
-          GoRouter.of(context).go('/home_screen');
-        } catch (e) {
-          debugPrint('Error al navegar a /home_screen: $e');
-        }
+    if (verificacion == "1") {
+      final userState = ref.watch(userProvider);
+      print(userState.isLoggedIn); 
+        
+      if (estudiante==true) {
+        // ignore: use_build_context_synchronously
+        GoRouter.of(context).go('/home_page_alumno');
+      } else if (profesor==true) {
+        GoRouter.of(context).go('/home_page_profesor');
+      
+      } else {
+        // ignore: use_build_context_synchronously
+        GoRouter.of(context).go('/home_screen');
+      }
     }
   }
+
   Future<void> registrarInicio() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString("inicio", "1");
-
-    try {
-      GoRouter.of(context).go('/home_screen');
-    } catch (e) {
-      debugPrint('Error al navegar a /home_screen: $e');
-    }
+     GoRouter.of(context).go('/home_screen');
   }
 }
 
@@ -173,12 +168,11 @@ class _Slide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.titleLarge?.copyWith(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-      );
-    final descriptiontyle = Theme.of(context).textTheme.bodyMedium;
-
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        );
+    final descriptionStyle = Theme.of(context).textTheme.bodyMedium;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -190,12 +184,15 @@ class _Slide extends StatelessWidget {
             Image(image: AssetImage(imageUrl)),
             const SizedBox(height: 20),
             Text(
-          title,
-          style: titleStyle,
-          textAlign: TextAlign.center, // Asegúrate de que el texto esté centrado
-        ),
+              title,
+              style: titleStyle,
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 20),
-            Text(description, style: descriptiontyle,),
+            Text(
+              description,
+              style: descriptionStyle,
+            ),
           ],
         ),
       ),
