@@ -21,34 +21,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = ref.watch(themeProvider);
-    final userState = ref.watch(userProvider); // Observamos el estado de usuario
-
-    // Determinamos la ruta inicial en función del estado de autenticación
-    if (userState.isLoggedIn) {
-      if (userState.isStudent) {
-        try {
-          GoRouter.of(context).go('/home_page_alumno');
-        }
-        catch (e) {
-          debugPrint('Error al navegar a /home_page_alumno: $e');
-        }
-      } else if (userState.isTeacher) {
-        try {
-          GoRouter.of(context).go('/home_page_profesor');
-        }
-        catch (e) {
-          debugPrint('Error al navegar a /home_page_profesor: $e');
-        }
-      }
-    } else {
-      try {
-          GoRouter.of(context).go('/home_screen');
-      }
-      catch (e) {
-          debugPrint('Error al navegar a /home_screen: $e');
-      }
-    }
-
+    
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter, // Configuración del router
