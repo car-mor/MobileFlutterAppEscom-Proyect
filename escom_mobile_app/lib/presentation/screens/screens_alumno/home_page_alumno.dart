@@ -1,6 +1,6 @@
 import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 import 'package:escom_mobile_app/presentation/screens/student_screen.dart';
-import 'package:escom_mobile_app/presentation/screens/teacher_screen.dart';
+// import 'package:escom_mobile_app/presentation/screens/teacher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:escom_mobile_app/presentation/providers/theme_provider.dart';
@@ -8,15 +8,15 @@ import 'package:escom_mobile_app/presentation/widgets/side_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
-class HomePage extends ConsumerStatefulWidget {
-  static const String name = 'home_page';
-  const HomePage({super.key});
+class HomePageAlumno extends ConsumerStatefulWidget {
+  static const String name = 'home_page_alumno';
+  const HomePageAlumno({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
+  HomePageAlumnoState createState() => HomePageAlumnoState();
 }
 
-class HomePageState extends ConsumerState<HomePage> {
+class HomePageAlumnoState extends ConsumerState<HomePageAlumno> {
   bool isLoggedIn = true;
   bool isStudent = true;
   bool isTeacher = false;
@@ -150,27 +150,6 @@ class HomePageState extends ConsumerState<HomePage> {
                             }
                           },
                           child: const Text("Simular como Alumno"),
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            final teacherData =
-                                await fetchTeacherData(); // Llama a la función para obtener los datos del profesor
-                            ref
-                                .read(userProvider.notifier)
-                                .logInAsTeacher(); // Actualiza el estado como profesor
-
-                            // Navega a la pantalla del profesor con los datos
-                            if (context.mounted) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      TeacherScreen(teacher: teacherData),
-                                ),
-                              );
-                            }
-                          },
-                          child: const Text("Simular como Profesor"),
                         ),
                         ElevatedButton(
                           onPressed: () {
