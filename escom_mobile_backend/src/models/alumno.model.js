@@ -47,7 +47,7 @@ export class AlumnoModel{
             correo,
             curp
         FROM 
-            alumnos
+            moviles.alumnos
         WHERE 
             boleta = ?`,alumno)
       return usuario
