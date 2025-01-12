@@ -246,7 +246,24 @@ class ISC2020Screen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 25),
-
+                  Row(
+                    children: [ 
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,  // Alineamos los textos a la izquierda
+                          children: [
+                            Text(
+                              'Mapa Curricular',
+                              style: titleStyle, 
+                            ),
+                            Image.asset('assets/images/mapaCurricularISC2020.jpg'),
+                            
+                          ],
+                        )      
+                      ),
+                    ],
+                  ),
                   InkWell(
                     onTap: () => _launchURL('https://www.escom.ipn.mx/docs/oferta/mapaCurricularISC2020.pdf'),
                     child: const Row(

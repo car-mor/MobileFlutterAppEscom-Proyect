@@ -208,6 +208,24 @@ class LCDScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 25),
 
+                  Row(
+                    children: [ 
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,  // Alineamos los textos a la izquierda
+                          children: [
+                            Text(
+                              'Mapa Curricular',
+                              style: titleStyle, 
+                            ),
+                            Image.asset('assets/images/mapaCurricularLCD2020H.jpg'),
+                            
+                          ],
+                        )      
+                      ),
+                    ],
+                  ),
                   InkWell(
                     onTap: () => _launchURL('https://www.escom.ipn.mx/docs/oferta/mapaCurricularLCD2020H.pdf'),
                     child: const Row(

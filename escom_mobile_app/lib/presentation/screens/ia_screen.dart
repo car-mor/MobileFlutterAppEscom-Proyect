@@ -202,7 +202,23 @@ class IAScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 25),
-
+                  Row(
+                    children: [ 
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,  // Alineamos los textos a la izquierda
+                          children: [
+                            Text(
+                              'Mapa Curricular',
+                              style: titleStyle,  
+                            ),
+                            Image.asset('assets/images/mapaCurricularIIA2020.jpg'),
+                          ],
+                        )      
+                      ),
+                    ],
+                  ),
                   InkWell(
                     onTap: () => _launchURL('https://www.escom.ipn.mx/docs/oferta/mapaCurricularIIA2020.pdf'),
                     child: const Row(
@@ -214,7 +230,8 @@ class IAScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 15), //en lugar de la imagen quiero el carrusel
+                  
                 InkWell(
                     onTap: () => _launchURL('https://www.escom.ipn.mx/docs/oferta/mapaCurricularIIA2020_optativas.pdf'),
                     child: const Row(

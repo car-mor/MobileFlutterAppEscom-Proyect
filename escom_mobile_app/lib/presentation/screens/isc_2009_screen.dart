@@ -258,6 +258,23 @@ class ISC2009Screen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 25),
+                  Row(
+                    children: [ 
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,  // Alineamos los textos a la izquierda
+                          children: [
+                            Text(
+                              'Mapa Curricular',
+                              style: titleStyle,  
+                            ),
+                            Image.asset('assets/images/mapaCurricularISC2009.jpg'), 
+                          ],
+                        )      
+                      ),
+                    ],
+                  ),
                   InkWell(
                     onTap: () => _launchURL('https://www.escom.ipn.mx/docs/oferta/mapaCurricularISC2009.pdf'),
                     child: const Row(
