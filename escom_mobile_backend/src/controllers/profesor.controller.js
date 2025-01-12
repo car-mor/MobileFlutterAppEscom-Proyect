@@ -49,5 +49,14 @@ export class ProfesorController{
         res.status(501).json({ error: error.message });
       }
     }; 
+    guardarCalificacion = async (req, res) => {
+      try {
+        const { calificaciones } = req.body
+        const alumnos = await this.profesorModel.guardarCalificacion(calificaciones);
+        res.json(alumnos);
+      } catch (error) {
+        res.status(501).json({ error: error.message });
+      }
+    }; 
   }
   
