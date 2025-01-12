@@ -1,5 +1,10 @@
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
@@ -13,12 +18,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    flutterVersionCode = '2'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    flutterVersionName = '1.1'
 }
 
 apply plugin: 'com.android.application'
@@ -26,12 +31,22 @@ apply plugin: 'org.jetbrains.kotlin.android'  // Usamos 'org.jetbrains.kotlin.an
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    namespace 'com.escom_app_7cv2.escom_mobile_app'
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    signingConfigs {
+        release {
+            keyAlias = keystoreProperties['keyAlias']
+            keyPassword = keystoreProperties['keyPassword']
+            storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword = keystoreProperties['storePassword']
+        }
     }
 
     kotlinOptions {
@@ -43,7 +58,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.escom_mobile_app"  // Cambia este valor según tu aplicación
+        applicationId "com.escom_app_7cv2.escom_mobile_app"  // Cambia este valor según tu aplicación
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -52,7 +67,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            signingConfig = signingConfigs.release
         }
     }
 }
@@ -68,7 +83,7 @@ dependencies {
 
 configurations.all {
     resolutionStrategy {
-        force 'com.android.tools.build:gradle:7.3.1'
+        force 'com.android.tools.build:gradle:8.1.1'
         force 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24'
     }
 }

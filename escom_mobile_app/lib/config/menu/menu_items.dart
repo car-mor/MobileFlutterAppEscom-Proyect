@@ -1,3 +1,4 @@
+import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //import 'package:flutter/material.dart' show IconData; es lo ideal para que no se importe todo el paquete, pero ya se ha importado en el main.dart
@@ -8,6 +9,7 @@ class MenuItem {
   final IconData? icon;
   final FaIcon? icon2;
   final List<MenuItem>? subItems;
+  final bool Function(UserState)? shouldShow;
 
   const MenuItem({
     required this.title,
@@ -15,6 +17,7 @@ class MenuItem {
     this.icon,
     this.icon2,
     this.subItems,
+    this.shouldShow,
   });
 }
 

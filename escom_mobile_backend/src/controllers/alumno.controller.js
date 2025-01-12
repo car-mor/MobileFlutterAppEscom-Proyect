@@ -12,4 +12,14 @@ export class AlumnoController{
       res.status(500).json({ error: error.message });
     }
   }; 
+  
+  obtenerInformacionAlumno = async (req, res) => {
+    try {
+      const { alumno } = req.body
+      const alumnos = await this.alumnoModel.obtenerInformacionAlumno(alumno);
+      res.json(alumnos);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
 }

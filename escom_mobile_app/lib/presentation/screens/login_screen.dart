@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../config/helpers/dio_helper.dart';
 import 'package:escom_mobile_app/presentation/widgets/widgets.dart';
+import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String name = '/login_screen';
@@ -13,15 +16,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-
-  void showSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -42,29 +36,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Icon Banner
                     LayoutBuilder(
                       builder: (context, constraints) {
-                        final imageWidth = constraints.maxWidth * 0.4; // La mitad del ancho de la pantalla
+                        final imageWidth = constraints.maxWidth * 0.4;
                         return Image.asset(
                           'assets/images/escudoESCOM.png',
                           width: imageWidth,
-                          fit: BoxFit.fitWidth, // Ajusta el alto proporcionalmente
+                          fit: BoxFit.fitWidth,
                         );
                       },
                     ),
                     const SizedBox(height: 10),
                     Container(
-                      height: size.height - 260, // 80 los dos sizebox y 100 el ícono
+                      height: size.height - 260,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: scaffoldBackgroundColor,
                         borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(100)),
+                          topLeft: Radius.circular(100),
+                        ),
                       ),
                       child: const _LoginForm(),
-                    )
+                    ),
                   ],
                 ),
               );
-            }
+            },
           ),
         ),
       ),
@@ -72,14 +67,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class _LoginForm extends StatefulWidget {
+class _LoginForm extends ConsumerStatefulWidget {
   const _LoginForm();
 
   @override
   _LoginFormState createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<_LoginForm> {
+class _LoginFormState extends ConsumerState<_LoginForm> {
   final ApiService _apiService = ApiService();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -87,45 +82,39 @@ class _LoginFormState extends State<_LoginForm> {
 
   void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void onFormSubmit() async {
-   /* if (formKey.currentState?.validate() ?? false) {
-      // Mostrar un loading mientras hacemos la solicitud
+  void onFormSubmit(WidgetRef ref) async {
+    if (formKey.currentState?.validate() ?? false) {
       showSnackbar(context, 'Iniciando sesión...');
 
-      final curp = emailController.text.trim();
-      final boleta = passwordController.text.trim();
+      final boleta = emailController.text.trim();
+      final contrasena = passwordController.text.trim();
 
-      try {
-        // Llamada al backend para autenticar al usuario
-        final response = await authenticateUser(curp, boleta);
+      
+        final response = await _apiService.autentificacion(boleta, contrasena);
+        var tipoUsuario;
 
-        if (!mounted) return;  // Asegúrate de que el widget esté montado
-
-        if (response['token'] != null) {
-          // Si la respuesta contiene un token, guardar el token
-          final token = response['token'];
-          saveToken(token);
-
-          // Navegar a la siguiente pantalla, por ejemplo, el home
-          context.push('/home');
-        } else {
-          showSnackbar(context, response['message'] ?? 'Error desconocido');
+        for (var item in response) {
+          if (item is Map<String, dynamic>) {
+            tipoUsuario = item['tipoUsuario'];
+          }
         }
-      } catch (error) {
-        if (!mounted) return;  // Asegúrate de que el widget esté montado
-        showSnackbar(context, 'Ocurrió un error: $error');
-      }
+
+        if (tipoUsuario == "alumno") {
+          ref.read(userProvider.notifier).logInAsStudent(); // Cambiar estado
+          showSnackbar(context, 'Inicio de sesión como alumno exitoso');
+          GoRouter.of(context).go('/home_page_alumno'); // Redirigir al home
+        } else if (tipoUsuario == "profesor") { 
+          ref.read(userProvider.notifier).logInAsTeacher(); // Cambiar estado
+          showSnackbar(context, 'Inicio de sesión como docente exitoso');
+          GoRouter.of(context).go('/home_page_profesor'); // Redirigir al home
+        } 
+      
     } else {
       showSnackbar(context, 'Por favor, revisa los campos');
-    }*/
-    final response = await _apiService.sendData();
-    print(response);
-    
-    
+    }
   }
 
   @override
@@ -143,14 +132,14 @@ class _LoginFormState extends State<_LoginForm> {
             const SizedBox(height: 40),
             CustomTextFormField(
               label: 'Boleta',
-              controller: emailController, // Activar el controlador
+              controller: emailController,
               keyboardType: TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'El CURP es requerido';
+                  return 'La boleta es requerida';
                 }
-                if (!RegExp(r"^\d{10}$").hasMatch(value)) {
-                  return 'Boleta invalida';
+                if (value.length < 4) {
+                  return 'Boleta inválida';
                 }
                 return null;
               },
@@ -158,14 +147,14 @@ class _LoginFormState extends State<_LoginForm> {
             const SizedBox(height: 30),
             CustomTextFormField(
               label: 'Contraseña',
-              controller: passwordController, // Activar el controlador
+              controller: passwordController,
               obscureText: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'La boleta es requerida';
+                  return 'La contraseña es requerida';
                 }
-                if (value.length < 6) {
-                  return 'La boleta debe tener al menos 6 caracteres';
+                if (value.length < 4) {
+                  return 'La contraseña debe tener al menos 4 caracteres';
                 }
                 return null;
               },
@@ -177,25 +166,13 @@ class _LoginFormState extends State<_LoginForm> {
               child: CustomFilledButton(
                 text: 'Ingresar',
                 buttonColor: const Color.fromARGB(255, 0, 102, 153),
-                onPressed: onFormSubmit,
+                onPressed: ()=> onFormSubmit(ref),
               ),
             ),
             const Spacer(flex: 2),
-            /*Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('¿No tienes cuenta?'),
-                TextButton(
-                  onPressed: () => context.push('/register_screen'),
-                  child: const Text('Crea una aquí'),
-                ),
-              ],
-            ),
-            const Spacer(flex: 1),*/
           ],
         ),
       ),
     );
   }
 }
-

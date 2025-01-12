@@ -1,5 +1,6 @@
+import 'package:escom_mobile_app/presentation/screens/screens_alumno/home_page_alumno.dart';
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import '../presentation/screens/screens_profesor/home_page_profesor.dart';
 import 'register_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,17 +19,17 @@ class _LoginPageState extends State<LoginPage> {
     final storedPassword = prefs.getString('password');
 
     if (_emailController.text == storedEmail &&
-        _passwordController.text == storedPassword) {
+        _passwordController.text ==storedPassword) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => const HomePageAlumno()),
       );
     } else {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Correo o contraseña incorrectos'),
+          title: const Text('Error'),
+          content: const Text('Correo o contraseña incorrectos'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),

@@ -1,32 +1,30 @@
 import 'package:escom_mobile_app/config/menu/menu_items.dart';
+import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
+import 'package:escom_mobile_app/presentation/screens/student_screen.dart';
+import 'package:escom_mobile_app/presentation/screens/teacher_screen.dart';
 import 'package:escom_mobile_app/presentation/widgets/titulos_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SideMenu extends StatefulWidget { 
-
+class SideMenu extends ConsumerStatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const SideMenu({
-    super.key, 
-    required this.scaffoldKey
-  });
+  const SideMenu({super.key, required this.scaffoldKey});
 
   @override
-  State<SideMenu> createState() => _SideMenuState();
+  ConsumerState<SideMenu> createState() => _SideMenuState();
 }
 
-class _SideMenuState extends State<SideMenu> {
-
-  int selectedIndex = -1; //Cual es la opcion seleccionada del menú
+class _SideMenuState extends ConsumerState<SideMenu> {
+  int selectedIndex = -1; // ¿Cuál es la opción seleccionada del menú?
 
   @override
   Widget build(BuildContext context) {
+    final userState = ref.watch(userProvider);
 
-    final hasNotch = MediaQuery.of(context).viewPadding.top > 35;
-    
     return Drawer(
       child: ListView(
         children: [
@@ -34,59 +32,60 @@ class _SideMenuState extends State<SideMenu> {
           Padding(
             padding: const EdgeInsets.all(1),
             child: Center(
-              //padding: EdgeInsets.fromLTRB(14, hasNotch ? 0 : 10, 10, 8),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center, // Para que los links estén alineados a la izquierda
+                mainAxisAlignment: MainAxisAlignment
+                    .center, // Para que los links estén alineados a la izquierda
                 children: [
                   Flexible(
                     child: _buildLink(
-            const TitulosHeader(
-              titulo: "Directorio",
-              tituloNegrita: false,
-              tamanoTitulo: 12,
-              tieneFondo: false,
-            ),
-            Uri.parse('https://www.ipn.mx/directorio-telefonico.html'), 
-            context
+                      const TitulosHeader(
+                        titulo: "Directorio",
+                        tituloNegrita: false,
+                        tamanoTitulo: 12,
+                        tieneFondo: false,
+                      ),
+                      Uri.parse(
+                          'https://www.ipn.mx/directorio-telefonico.html'),
+                      context,
                     ),
                   ),
                   const SizedBox(width: 10),
                   Flexible(
                     child: _buildLink(
-            const TitulosHeader(
-              titulo: "Correo",
-              tituloNegrita: false,
-              tamanoTitulo: 12,
-              tieneFondo: false,
-            ),
-            Uri.parse('https://www.ipn.mx/correo-electronico.html'), 
-            context
+                      const TitulosHeader(
+                        titulo: "Correo",
+                        tituloNegrita: false,
+                        tamanoTitulo: 12,
+                        tieneFondo: false,
+                      ),
+                      Uri.parse('https://www.ipn.mx/correo-electronico.html'),
+                      context,
                     ),
                   ),
                   const SizedBox(width: 10),
                   Flexible(
                     child: _buildLink(
-            const TitulosHeader(
-              titulo: "Calendario",
-              tituloNegrita: false,
-              tamanoTitulo: 12,
-              tieneFondo: false,
-            ),
-            Uri.parse('https://www.ipn.mx/calendario-academico.html'), 
-            context
+                      const TitulosHeader(
+                        titulo: "Calendario",
+                        tituloNegrita: false,
+                        tamanoTitulo: 12,
+                        tieneFondo: false,
+                      ),
+                      Uri.parse('https://www.ipn.mx/calendario-academico.html'),
+                      context,
                     ),
                   ),
                   const SizedBox(width: 10),
                   Flexible(
                     child: _buildLink(
-            const TitulosHeader(
-              titulo: "Buzón",
-              tituloNegrita: false,
-              tamanoTitulo: 12,
-              tieneFondo: false,
-            ),
-            Uri.parse('https://www.ipn.mx/buzon.html'), 
-            context
+                      const TitulosHeader(
+                        titulo: "Buzón",
+                        tituloNegrita: false,
+                        tamanoTitulo: 12,
+                        tieneFondo: false,
+                      ),
+                      Uri.parse('https://www.ipn.mx/buzon.html'),
+                      context,
                     ),
                   ),
                 ],
@@ -94,13 +93,64 @@ class _SideMenuState extends State<SideMenu> {
             ),
           ),
 
-
           // Menú con sub-items
           const Divider(),
-          ...appMenuItems.map((item) => _buildMenuItem(item)),
+
+          // Usamos el filtro de _filterMenuItems aquí
+          ..._filterMenuItems(userState).map((item) => _buildMenuItem(item)),
         ],
       ),
     );
+  }
+
+  List<MenuItem> _filterMenuItems(UserState userState) {
+    if (!userState.isLoggedIn) {
+      // Si no está logueado, mostramos solo las opciones públicas
+      return appMenuItems;
+    } else if (userState.isStudent) {
+      // Opciones exclusivas para estudiantes
+      return [
+        const MenuItem(
+            title: 'Mi perfil', link: '/student_screen', icon: Icons.schedule),
+        const MenuItem(
+            title: 'Horario',
+            link: '/horario_alumno_screen',
+            icon: Icons.schedule),
+        const MenuItem(
+            title: 'Calificaciones',
+            link: '/calificaciones_screen',
+            icon: Icons.grade),
+        const MenuItem(
+            title: 'ISC 2020', link: '/isc_2020_screen', icon: Icons.book),
+        const MenuItem(
+            title: 'Profesores', link: '/teachers_screen', icon: Icons.people),
+        const MenuItem(
+            title: 'Cerrar sesión', link: '/home_screen', icon: Icons.logout),
+      ];
+    } else if (userState.isTeacher) {
+      // Opciones exclusivas para profesores
+      return [
+        const MenuItem(
+            title: 'Mi perfil', link: '/teacher_screen', icon: Icons.schedule),
+        const MenuItem(
+            title: 'Horario',
+            link: '/horario_teacher_screen',
+            icon: Icons.schedule),
+        const MenuItem(
+            title: 'Grupos', link: '/grupos_teacher_screen', icon: Icons.group),
+        const MenuItem(
+            title: 'Asistencias',
+            link: '/assistence_screen',
+            icon: Icons.check_circle),
+        const MenuItem(
+            title: 'Asignar Calificaciones',
+            link: '/asignar_calificaciones_screen',
+            icon: Icons.edit),
+        const MenuItem(
+            title: 'Cerrar sesión', link: '/home_screen', icon: Icons.logout),
+      ];
+    }
+    return appMenuItems; // En caso de que no sea alumno ni profesor
   }
 
   Widget _buildMenuItem(MenuItem item) {
@@ -108,9 +158,44 @@ class _SideMenuState extends State<SideMenu> {
       // Elemento sin sub-items
       return ListTile(
         leading: _buildIcon(item.icon ?? item.icon2),
-        title: Text(item.title),
+        title: Text(
+          item.title,
+          style: item.link == null
+              ? const TextStyle(fontWeight: FontWeight.bold)
+              : null,
+        ),
         onTap: () {
-          handleMenuItemSelection(item.link, context);
+          if (item.link == '/teacher_screen') {
+            context.push(
+              '/teacher_screen',
+              extra: Teacher(
+                id: 1,
+                name: 'Carlos Moreno',
+                email: 'hola@email.com',
+                employeeId: '2021630034',
+                departamento: 'Sistemas',
+              ),
+            );
+          } else if (item.link == '/student_screen') {
+            context.push(
+              '/student_screen',
+              extra: Student(
+                name: 'Ana Pérez',
+                email: 'ana.perez@email.com',
+                boleta: '2021203045',
+                curp: 'PEPA020101MDFRNS02',
+                carrera: 'Ingeniería en Sistemas Computacionales',
+                id: 1,
+              ),
+            );
+          } else if (item.link == '/home_screen') {
+            context.push(
+              '/home_screen',
+            );
+            ref.read(userProvider.notifier).logOut();
+          } else {
+            handleMenuItemSelection(item.link, context);
+          }
           widget.scaffoldKey.currentState?.closeDrawer();
         },
         selected: appMenuItems.indexOf(item) == selectedIndex,
@@ -120,25 +205,25 @@ class _SideMenuState extends State<SideMenu> {
       return ExpansionTile(
         leading: _buildIcon(item.icon ?? item.icon2),
         title: Text(item.title),
-        children: item.subItems!
-            .map((subItem) => _buildMenuItem(subItem))
-            .toList(),
+        children:
+            item.subItems!.map((subItem) => _buildMenuItem(subItem)).toList(),
       );
     }
   }
 
   Widget _buildIcon(Object? icon) {
-  if (icon is IconData) {
-    // Si el icono es un IconData, lo mostramos con el widget Icon estándar
-    return Icon(icon);
-  } else if (icon is FaIcon) {
-    // Si el icono es un FaIcon, lo mostramos con el widget FaIcon
-    return FaIcon(icon.icon); // Usamos .icon para acceder a IconData en FaIcon
+    if (icon is IconData) {
+      // Si el icono es un IconData, lo mostramos con el widget Icon estándar
+      return Icon(icon);
+    } else if (icon is FaIcon) {
+      // Si el icono es un FaIcon, lo mostramos con el widget FaIcon
+      return FaIcon(
+          icon.icon); // Usamos .icon para acceder a IconData en FaIcon
+    }
+    return const SizedBox(); // Si no es ninguno, mostramos un ícono por defecto
   }
-  return const SizedBox(); // Si no es ninguno, mostramos un ícono por defecto
-}
 
-    /// Función para manejar la selección de un elemento del menú
+  /// Función para manejar la selección de un elemento del menú
   void handleMenuItemSelection(String? link, BuildContext context) async {
     if (link == null) return;
 
@@ -158,16 +243,14 @@ class _SideMenuState extends State<SideMenu> {
       context.push(link);
     }
   }
-    
-  }
 
   /// Función para construir un enlace personalizado
- Widget _buildLink(Widget tituloWidget, Uri url, BuildContext context) {
-  return InkWell(
-    onTap: () => _launchURL(url, context),
-    child: tituloWidget, // Renderiza el widget personalizado directamente
-  );
-}
+  Widget _buildLink(Widget tituloWidget, Uri url, BuildContext context) {
+    return InkWell(
+      onTap: () => _launchURL(url, context),
+      child: tituloWidget, // Renderiza el widget personalizado directamente
+    );
+  }
 
   /// Función para abrir un enlace externo
   Future<void> _launchURL(Uri url, BuildContext context) async {
@@ -179,5 +262,4 @@ class _SideMenuState extends State<SideMenu> {
       );
     }
   }
-
-
+}

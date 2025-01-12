@@ -164,30 +164,34 @@ class CustomSlider extends StatelessWidget {
         itemCount: slides.length,
         itemBuilder: (BuildContext context, int index) {
           final slide = slides[index];
-          return Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(slide['image']),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  const Color.fromARGB(255, 237, 237, 237).withOpacity(0.3),
-                  BlendMode.darken,
+          return OverflowBox(
+            maxHeight: double.infinity,
+            child: Container(
+              
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(slide['image']),
+                  fit: BoxFit.contain,
+                  colorFilter: ColorFilter.mode(
+                    const Color.fromARGB(255, 237, 237, 237).withOpacity(0.3),
+                    BlendMode.darken,
+                  ),
                 ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Botón principal
-                  FadeInDown(
-                    child: _buildMainButton(slide['mainButton']),
-                  ),
-                  const SizedBox(height: 20),
-                  // Botones secundarios
-                  _buildSecondaryButtons(slide['buttons']),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Botón principal
+                    FadeInDown(
+                      child: _buildMainButton(slide['mainButton']),
+                    ),
+                    const SizedBox(height: 20),
+                    // Botones secundarios
+                    _buildSecondaryButtons(slide['buttons']),
+                  ],
+                ),
               ),
             ),
           );
