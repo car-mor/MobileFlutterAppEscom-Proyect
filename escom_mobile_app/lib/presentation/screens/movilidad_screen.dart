@@ -90,6 +90,7 @@ class MovilidadScreen extends ConsumerWidget {
                             Text(
                               'Este Programa permite a los estudiantes del IPN fortalecer su nivel académico propiciando su participación en actividades de integración e intercambio de conocimientos mediante semestres académicos, permitiendo el enriquecimiento de su experiencia formativa de manera vivencial, fomentando el conocimiento e intercambio de ideas y formas de aprendizaje, aunado a la generación de redes del conocimiento.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -113,6 +114,7 @@ class MovilidadScreen extends ConsumerWidget {
                             Text(
                               'Los estudiantes podrán mantener su beca durante el tiempo que participen en un programa de movilidad académica, de acuerdo con la normatividad existente. Así como el apoyo económico que otorga la Dirección de Relaciones Internacionales - DRI (antes CCA), la cual es para sufragar los gastos de manutención durante su estancia de movilidad, siempre y cuando la realicen en una institución que se encuentre en otra localidad diferente a donde se encuentra la escuela de origen (ESCOM). Lo anterior, como parte para alimentación, alojamiento y transporte durante la estancia de movilidad internacional, por un máximo de 5 meses y por una sola ocasión en un programa académico.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -275,6 +277,7 @@ class _ExpansionTileExampleState extends State<ExpansionTileExample1> {
                       ),
                       Text(
                         'Algunos de los estados con los que se tienen convenio actualmente son: Aguascalientes, Baja California, Campeche, Chiapas, Chihuahua, Colima, Estado de México, Guerrero, Hidalgo, Jalisco, Nuevo León, Oaxaca, Puebla, Querétaro, San Luis Potosí, Sinaloa, Sonora, Tamaulipas, Tlaxcala, Veracruz, Yucatán, Zacatecas. Aproximadamente 31 estados y 154 universidades.',  
+                        textAlign: TextAlign.justify,
                       ),
                       SizedBox(height: 20),
                       Text(
@@ -294,6 +297,7 @@ class _ExpansionTileExampleState extends State<ExpansionTileExample1> {
                         '• No encontrarse participando en algún otro programa de movilidad académica del IPN y que cuente con apoyo económico de la DRI.\n'
                         '• El alumnado inscrito en el IPN con nacionalidad extranjera deberá acreditar su estancia legal mediante su calidad migratoria o carta de naturalización, en caso de aplicar.\n'
                         '• Cumplir con las restricciones sanitarias y/o vacunas requeridas por la ID (Institución Destino)..',  
+                        textAlign: TextAlign.justify,
                       ),
                     ],
                   )      
@@ -323,6 +327,7 @@ class _ExpansionTileExampleState extends State<ExpansionTileExample1> {
                       ),
                       Text(
                         'Algunos de los países con los que se tienen convenio actualmente son: Alemania, Argentina, Bélgica, Brasil, Canadá, Chile, China, Colombia, Costa Rica, Corea del Sur, Ecuador, España, Francia, India, Italia, Perú, Polonia, Portugal, República Checa, República Dominicana, Suecia y Vietnam . Aproximadamente 27 países y 120 universidades.',  
+                        textAlign: TextAlign.justify,
                       ),
                       SizedBox(height: 20),
                       Text(
@@ -343,6 +348,7 @@ class _ExpansionTileExampleState extends State<ExpansionTileExample1> {
                         '• No encontrarse participando en algún otro programa de movilidad académica del IPN y que cuente con apoyo económico de la DRI.\n'
                         '• El alumnado inscrito en el IPN con nacionalidad extranjera deberá acreditar su estancia legal mediante su calidad migratoria o carta de naturalización, en caso de aplicar.\n'
                         '• Cumplir con las restricciones sanitarias y/o vacunas requeridas por el país de la ID (Institución Destino).',  
+                        textAlign: TextAlign.justify,
                       ),
                     ],
                   )      
@@ -407,6 +413,7 @@ class _ExpansionTileExampleState2 extends State<ExpansionTileExample2> {
                         '7. El alumno llena el formato "Solicitud de Participación en el Programa de Movilidad (Formato DRI02). Estudiante-IPN".\n'
                         '8. El alumno elabora con asesoría del jefe del Departamento de Innovación Educativa el formato de equivalencias de materias (Formato DRI07) con un mínimo de 5 Unidades de Aprendizaje (UA), indicando el número de créditos. Sí pueden inscribirse UA que no vayan a ofertarse el siguiente semestre en la ESCOM, pero que estén en la Currícula de la carrera.\n'
                         '9. El alumno entrega a la UPIS el expediente con toda la documentación y en el orden solicitado en la convocatoria. El expediente, se entregará en un folder tamaño carta, sin broche ni grapas y con su nombre en la pestaña: apellido paterno, materno y nombre(s).',  
+                        textAlign: TextAlign.justify,
                       ),
                       SizedBox(height: 20),
                       Text(
@@ -425,6 +432,7 @@ class _ExpansionTileExampleState2 extends State<ExpansionTileExample2> {
                         '5. Copia del comprobante del dominio de idioma requerido por la institución de destino.\n'
                         '6. Carta de motivos redactada en idioma Español e Inglés.\n'
                         '7. Currículum Vitae resumido (máximo dos hojas, formato europeo).',  
+                        textAlign: TextAlign.justify,
                       ),
                     ],
                   )      
@@ -457,6 +465,7 @@ class _ExpansionTileExampleState2 extends State<ExpansionTileExample2> {
                         '3. El alumno integra la documentación según el checklist y la entrega a la DRI, con la persona y fecha que se indica.\n'
                         '4. La DRI recibe y revisa la documentación. Realiza los trámites correspondientes al interior del Instituto para que se analice y apruebe académicamente la movilidad. La DRI o la Universidad destino envía al alumno la carta de aceptación. A partir de ahí el alumno puede establecer contacto directo con la Universidad destino. La DRI determina el apoyo económico y envía una carta al alumno. El tiempo aproximado para todos los trámites es de 2 meses.\n'
                         '5. El alumno tramita un seguro de gastos médicos mayores. Con este seguro, su carta de aceptación Universidad destino; carta apoyo económico y demás requisitos tramita su visa de estudiante. Con visa y todo lo necesario compra un boleto redondo para el viaje. ANTES DE IRSE, se inscribe normalmente en la ESCOM a su siguiente semestre. Aparecerá en SAES como estudiante en movilidad . No aparecerá en listas por lo que no habrá caificación a reportar en la Unidad.',  
+                        textAlign: TextAlign.justify,
                       ),
                       SizedBox(height: 20),
                       Text(
@@ -478,8 +487,8 @@ class _ExpansionTileExampleState2 extends State<ExpansionTileExample2> {
                         '8. Carta compromiso (Formato DRI05).**\n'
                         '9. Carta de Apoyo Económico o cuenta bancaria con monto estipulado por la insititución destino, en caso de que sea requerida por la misma.**\n'
                         '10. Otros\n\n'
-                        '** No todas las instituciones lo solicitan. Verificar los requisitos de cada Universidad o país destino para más información.'
-                        ,  
+                        '** No todas las instituciones lo solicitan. Verificar los requisitos de cada Universidad o país destino para más información.',
+                        textAlign: TextAlign.justify,  
                       ),
                     ],
                   )      
@@ -512,6 +521,7 @@ class _ExpansionTileExampleState2 extends State<ExpansionTileExample2> {
                         '3. La UPIS envía a Innovación Educativa el comprobante de inscripción y los programas de los cursos para que elabore el análisis de equivalencia de las unidades de aprendizaje para DRI07 Definitivo.\n'
                         '4. El alumno cursa y acredita las materias inscritas en la institución de destino.\n'
                         '5. Al concluir su movilidad, el alumno, deberá asegurarse de que se le emita su Certificado de Fin de Estancia; así como de realizar los trámites necesarios para que se emita su boleta de calificaciones de los cursos realizados; y de no dejar algún pendiente en la institución de destino en la que se participó (académico, administrativo o económico).',  
+                        textAlign: TextAlign.justify,
                       ), 
                     ],
                   )      
@@ -544,6 +554,7 @@ class _ExpansionTileExampleState2 extends State<ExpansionTileExample2> {
                         '4. Innovación Educativa envía a la DES (mediante oficio) DRI07 definitivo así como boleta global de calificaciones para dictamen técnico de equivalencia de UA cursadas en movilidad.\n'
                         '5. La DES emite (en el transcurso de mes y medio aproximadamente) el Dictamen de Revalidación correspondiente y solicita a la DAE emita la Equivalencia respectiva.\n'
                         '6. La DAE emite la Constancia de Equivalencia (Revalidación de estudios) que sacará fotocopia para que la ing. Patricia Escamilla rubrique y entregará al alumn@ para que lleve a Gestión Escolar de la ESCOM para su registro en el SAES, a su vez, deberá también entregar una copia en las oficinas de la UPIS para la finalización del proceso en su expediente.',  
+                        textAlign: TextAlign.justify,
                       ), 
                     ],
                   )      

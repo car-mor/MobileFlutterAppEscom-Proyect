@@ -25,6 +25,7 @@ class IAScreen extends ConsumerWidget {
           fontSize: 14,
           fontWeight: FontWeight.normal,
           color: textoColor,
+          
         );
     //Color del texto dependiendo el tema
     
@@ -86,11 +87,8 @@ class IAScreen extends ConsumerWidget {
                             ),
                             Text(
                               'Formar expertos capaces de desarrollar sistemas inteligentes utilizando diferentes metodologías en las diferentes etapas de desarrollo y aplicando algoritmos en áreas como aprendizaje de máquina, procesamiento automático de lenguaje natural, visión artificial y modelos bioinspirados para atender las necesidades de los diferentes sectores de la sociedad a través de la generación de procesos y soluciones innovadoras.',
-                              style: TextStyle(
-                                color: textoColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                              ),
+                              style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -114,6 +112,7 @@ class IAScreen extends ConsumerWidget {
                             Text(
                               'Los estudiantes que ingresen al Instituto Politécnico Nacional, en cualquiera de sus programas y niveles, deberán contar con los conocimientos y las habilidades básicas que garanticen un adecuado desempeño en el nivel al que solicitan su ingreso. Asimismo, deberán contar con las actitudes y valores necesarios para responsabilizarse de su proceso formativo y asumir una posición activa frente al estudio y al desarrollo de los proyectos y trabajos requeridos, coincidentes con el ideario y principios del IPN.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -137,6 +136,7 @@ class IAScreen extends ConsumerWidget {
                             Text(
                               'El egresado de la Ingeniería en Inteligencia Artificial se desempeñará colaborativamente en equipos multidisciplinarios en el análisis, diseño, implementación, validación, implantación, supervisión y gestión de sistemas inteligentes, aplicando algoritmos en áreas como aprendizaje de máquina, procesamiento automático de lenguaje natural, visión artificial y modelos bioinspirados; ejerciendo su profesión con liderazgo, ética y responsabilidad social.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -163,6 +163,7 @@ class IAScreen extends ConsumerWidget {
                               '• ASISTENCIA Y MOVILIDAD PARA PERSONAS CON DISCAPACIDAD O DE LA TERCERA EDAD: Recursos que faciliten la movilidad y el acceso a servicios a través de diferentes medios, como: sillas de ruedas autónomas, guías inteligentes, traductores automáticos, generadores de texto, software de terapia y de acompañamiento.\n\n'
                               '• CIUDADES INTELIGENTES Y SOSTENIBLES: Sistemas inteligentes para mejorar la calidad de vida aplicados al transporte autónomo, identificación biométrica, detección de fraude, prevención y detección de accidentes, tutores inteligentes, control de tráfico vehicular, monitoreo y alertamiento ambiental, protección civil.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -193,6 +194,7 @@ class IAScreen extends ConsumerWidget {
                               '8. Curricular\n'
                               '9. Práctica profesional.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -200,7 +202,23 @@ class IAScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 25),
-
+                  Row(
+                    children: [ 
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,  // Alineamos los textos a la izquierda
+                          children: [
+                            Text(
+                              'Mapa Curricular',
+                              style: titleStyle,  
+                            ),
+                            Image.asset('assets/images/mapaCurricularIIA2020.jpg'),
+                          ],
+                        )      
+                      ),
+                    ],
+                  ),
                   InkWell(
                     onTap: () => _launchURL('https://www.escom.ipn.mx/docs/oferta/mapaCurricularIIA2020.pdf'),
                     child: const Row(
@@ -212,7 +230,8 @@ class IAScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 15), //en lugar de la imagen quiero el carrusel
+                  
                 InkWell(
                     onTap: () => _launchURL('https://www.escom.ipn.mx/docs/oferta/mapaCurricularIIA2020_optativas.pdf'),
                     child: const Row(

@@ -83,13 +83,14 @@ class MissionVissionScreen extends ConsumerWidget {
                             Text(
                               'La Escuela Superior de Cómputo es una Unidad Académica líder en la formación de profesionales integrales en las áreas de Sistemas Computacionales, Inteligencia Artificial y Ciencia de Datos, con amplio sentido social, contribuyendo al desarrollo tecnológico, científico y económico del país, coadyuvando a la sustentabilidad y observando estándares internacionales de calidad educativa.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 15),
 
                   Row(
                     children: [ 
@@ -106,13 +107,14 @@ class MissionVissionScreen extends ConsumerWidget {
                             Text(
                               'La Escuela Superior de Cómputo será líder en Latinoamérica en la formación integral de profesionales en el área de la computación, con estándares internacionales de calidad educativa, promoviendo la responsabilidad en sus alumnos para con su entorno, el sentido social y el respeto a la pluralidad. Propiciando la innovación y el emprendimiento para contribuir al desarrollo económico y tecnológico del país.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 15),
 
                   Row(
                     children: [ 
@@ -129,6 +131,7 @@ class MissionVissionScreen extends ConsumerWidget {
                             Text(
                               'Nuestro compromiso es proporcionar servicios y productos educativos de calidad mediante la oferta de programas académicos, científicos y tecnológicos de educación superior pertinentes, que nos permitan contribuir con la misión y visión institucionales, con alto compromiso de responsabilidad social, procesos de transparencia, medidas de seguridad y protección de datos, así como gestión de la propiedad intelectual y la mejora continua del Sistema de Gestión para Organizaciones Educativas (SGOE) a través del cumplimiento de sus requisitos.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      

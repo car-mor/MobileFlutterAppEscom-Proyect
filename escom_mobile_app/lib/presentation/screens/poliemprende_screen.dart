@@ -123,6 +123,7 @@ class PoliemprendeScreen extends ConsumerWidget {
                             Text(
                               'Es el programa Institucional de Emprendedores, coordinado por la Dirección de Incubación de Empresas Tecnológicas - DIET(antes CIEBT).',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -146,6 +147,7 @@ class PoliemprendeScreen extends ConsumerWidget {
                             Text(
                               'Apoyos para desarrollar habilidades emprendedoras y transformar una idea de negocio en una empresa innovadora, contribuyendo a formar profesionistas exitosos. Todo esto bajo el respaldo de la DIET.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -172,9 +174,9 @@ class PoliemprendeScreen extends ConsumerWidget {
                               'Acceso a foros empresariales, nacionales e internacionales.\n'
                               'Acceso a estancias de formación en México y en el extranjero.\n'
                               'Tener la oportunidad de liberar el servicio social.\n'
-                              'Aplicar conocimientos técnicos para la solución de problemas reales.\n',
-                              
+                              'Aplicar conocimientos técnicos para la solución de problemas reales.\n',                             
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -200,9 +202,9 @@ class PoliemprendeScreen extends ConsumerWidget {
                               'Perseverancia\n'
                               'Curiosidad por aprender.\n'
                               'Tener una idea posible de negocio.\n'
-                              'Llenar un formato.\n',
-                              
+                              'Llenar un formato.\n',                      
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
