@@ -83,6 +83,7 @@ class ISC2009Screen extends ConsumerWidget {
                             Text(
                               'Formar Ingenieros en Sistemas Computacionales que cuenten con una sólida formación integral que les permita proponer, analizar, diseñar, desarrollar, implementar, gestionar y administrar sistemas computacionales usando tecnologías de vanguardia y aplicando metodologías, normas y estándares nacionales e internacionales de calidad, con el propósito de crear, mejorar y sistematizar procesos administrativos e industriales en el área computacional. Integrar y administrar equipos de trabajo inter y multidisciplinarios, así como multiculturales, con actitud de liderazgo, ética y responsabilidad. Actualizándose permanentemente para responder a las necesidades de la sociedad y al desarrollo sustentable de la nación.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -112,6 +113,7 @@ class ISC2009Screen extends ConsumerWidget {
                               '• Interesado en las ciencias básicas y tecnologías de cómputo'
                               '• Asumir una posición activa con respecto al estudio y al desarrollo de los proyectos y trabajos requeridos, coincidentes con el ideario y principios del IPN',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -135,6 +137,7 @@ class ISC2009Screen extends ConsumerWidget {
                             Text(
                               'Los egresados cuentan con una sólida formación integral, para proponer, analizar, diseñar, desarrollar, implementar, gestionar y administrar sistemas computacionales usando tecnologías de cómputo de vanguardia y aplicando metodologías, normas y estándares nacionales e internacionales de calidad para crear, mejorar y sistematizar procesos administrativos e industriales. Por lo que son capaces de desempeñarse en los sectores privado, público y de investigación, e integrar y administrar equipos de trabajo inter y multidisciplinarios, con actitud de liderazgo, ética y responsabilidad. Actualizándose permanentemente para responder a las necesidades de la sociedad y al desarrollo sustentable de la nación.',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -162,6 +165,7 @@ class ISC2009Screen extends ConsumerWidget {
                               '3. Integrar habilidades de liderazgo, comunicación efectiva y trabajo colaborativo para la planificación de tareas, cumplimiento de metas y análisis de riesgos\n\n'
                               '4. Asumir una actitud ética y crítica en su desempeño académico considerando su impacto económico, social y ambiental; reconociendo sus necesidades de actualización permanente',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -187,6 +191,7 @@ class ISC2009Screen extends ConsumerWidget {
                               '• Sector privado: Se desempeñan como diseñadores y desarrolladores, líderes y administradores de proyectos computacionales, en empresas de transformación, servicios y comerciales, nacionales e internacionales\n'
                               '• Sector académico: Incorporándose a instituciones educativas de nivel medio superior y/o superior como docentes e investigadores. Incorporándose a centros de investigación nacionales e internacionales en sus planes de posgrado, participando en actividades tales como: desarrollo de nuevas tecnologías, divulgación del conocimiento y docencia\n',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -213,6 +218,7 @@ class ISC2009Screen extends ConsumerWidget {
                               '3. Integra y administra equipos de trabajo inter y multidisciplinarios, así como multiculturales, con actitud de liderazgo, ética y responsabilidad\n'
                               '4. Permanece actualizado para responder a las necesidades de la sociedad y al desarrollo sustentable de la nación\n',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -244,6 +250,7 @@ class ISC2009Screen extends ConsumerWidget {
                               '8. Curricular\n'
                               '9. Práctica profesional',
                               style: subtitleStyle,
+                              textAlign: TextAlign.justify,
                             ),
                           ],
                         )      
@@ -251,6 +258,23 @@ class ISC2009Screen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 25),
+                  Row(
+                    children: [ 
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,  // Alineamos los textos a la izquierda
+                          children: [
+                            Text(
+                              'Mapa Curricular',
+                              style: titleStyle,  
+                            ),
+                            Image.asset('assets/images/mapaCurricularISC2009.jpg'), 
+                          ],
+                        )      
+                      ),
+                    ],
+                  ),
                   InkWell(
                     onTap: () => _launchURL('https://www.escom.ipn.mx/docs/oferta/mapaCurricularISC2009.pdf'),
                     child: const Row(
