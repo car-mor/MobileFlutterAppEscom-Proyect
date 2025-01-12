@@ -38,9 +38,8 @@ export class ProfesorModel{
       const [usuario] = await connectionMySQL.query(`
         SELECT 
             a.boleta,
-            a.nombre AS alumno_nombre,
-            a.apellidoPrimero AS alumno_apellido1,
-            a.apellidoSegundo AS alumno_apellido2,
+            CONCAT(a.apellidoPrimero, ' ', a.apellidoSegundo , ' ', a.nombre) AS alumno_nombre,
+            h.calificaciones as calificacion,
             m.materia AS materia_nombre,
             m.idMateria as id_materia,
             m.grupo AS grupo,
@@ -53,7 +52,9 @@ export class ProfesorModel{
         JOIN 
             moviles.materias m ON h.idMateria = m.idMateria
         WHERE 
-            h.idMateria = ?;`,grupo)
+            h.idMateria = ?
+        ORDER BY
+            alumno_nombre ASC`,grupo)
       return usuario
     }
     catch(error){
@@ -136,4 +137,24 @@ export class ProfesorModel{
       throw error;
     }
   }
+
+  static async guardarCalificacion (calificaciones) {
+    if (!calificaciones || !Array.isArray(calificaciones)) {
+      return { error: 'Datos inválidos. Asegúrate de enviar un array de calificaciones.' };
+    }
+  
+    try {
+      for (const { calificaciones: calificacion, boleta, materia } of calificaciones) {
+        console.log(calificacion);
+        const query = `UPDATE moviles.horarios SET calificaciones = ? WHERE boleta = ? and idMateria = ?`;
+        await connectionMySQL.query(query, [calificacion, boleta, materia]);
+      }
+      
+      return { message: 'Calificaciones actualizadas exitosamente.' };
+    } catch (error) {
+      console.error("Error al actualizar las calificaciones:", error);
+      throw error;
+    }
+  }
+  
 }
