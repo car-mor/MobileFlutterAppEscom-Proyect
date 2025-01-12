@@ -95,7 +95,7 @@ export class ProfesorModel{
 
     try {
       // Inserción masiva
-      const query = `INSERT INTO asistencia (boleta, materia, dia, asistencia) VALUES ?`;
+      const query = `INSERT INTO moviles.asistencia (boleta, materia, dia, asistencia) VALUES ?`;
       const values = asistencia.map(({ boleta, materia, dia, presente }) => [boleta, materia, dia, presente]);
 
       await connectionMySQL.query(query, [values]);
@@ -121,10 +121,10 @@ export class ProfesorModel{
                 )
             ) AS asistencia
         FROM 
-            asistencia asis
-        INNER JOIN horarios h ON asis.boleta = h.boleta AND asis.materia = h.idMateria
-        INNER JOIN alumnos a ON h.boleta = a.boleta
-        INNER JOIN materias m ON h.idMateria = m.idMateria
+            moviles.asistencia asis
+        INNER JOIN moviles.horarios h ON asis.boleta = h.boleta AND asis.materia = h.idMateria
+        INNER JOIN moviles.alumnos a ON h.boleta = a.boleta
+        INNER JOIN moviles.materias m ON h.idMateria = m.idMateria
         WHERE 
             asis.materia = ? 
         GROUP BY a.boleta, m.grupo
