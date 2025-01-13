@@ -42,4 +42,14 @@ Future<List<dynamic>> alumnoInformacion(boleta) async {
     }
   }
 
+Future<List<dynamic>> profesorInformacion(id) async {
+    try {
+      final response = await _dio.post('/profesor/informacion/',data:{'profesor':id});
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo enviar la información');
+    }
+  }
+
 }

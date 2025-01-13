@@ -1,6 +1,7 @@
 //import 'package:escom_mobile_app/config/theme/app_theme.dart';
 import 'package:escom_mobile_app/presentation/providers/alumno_provider.dart';
 import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
+import 'package:escom_mobile_app/presentation/providers/profesor_provider.dart';
 import 'package:escom_mobile_app/presentation/screens/assistence_screen.dart';
 import 'package:escom_mobile_app/presentation/screens/screens.dart';
 import 'package:escom_mobile_app/presentation/screens/screens_alumno/home_page_alumno.dart';
@@ -12,36 +13,38 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // GoRouter configuration
 final appRouter = GoRouter(
-  initialLocation: '/app_tutorial_screen',
+  initialLocation: '/home_screen',
   routes: [
-     // Ruta inicial con ConsumerWidget para escuchar el provider
+    // Ruta inicial con ConsumerWidget para escuchar el provider
     GoRoute(
-  path: '/',
-  builder: (context, state) {
-    // Aquí utilizamos un ConsumerWidget para leer el estado del provider
-    return Consumer(
-      builder: (context, ref, _) {
-        final userState = ref.watch(userProvider); // Estado del usuario
-        // final studentData = ref.watch(studentInfoProvider); // Datos del estudiante
+      path: '/home_screen',
+      builder: (context, state) {
+        // Aquí utilizamos un ConsumerWidget para leer el estado del provider
+        return Consumer(
+          builder: (context, ref, _) {
+            final userState = ref.watch(userProvider); // Estado del usuario
+            // final studentData = ref.watch(studentInfoProvider); // Datos del estudiante
 
-        // Comprobar el estado de autenticación y tipo de usuario
-        if (userState.isLoggedIn) {
-          if (userState.isStudent) {
-            // Si no hay datos del estudiante cargados, invocamos la función fetchStudentInfo
-            
-            // Una vez que los datos estén disponibles, redirige a la página del alumno
-            return const HomePageAlumno(studentData: {},); // Redirige a la página de alumno
-          } else if (userState.isTeacher) {
-            return const HomePageProfesor();  // Redirige a la página de profesor
-          }
-        }
-        
-        // Si no está autenticado o es invitado, redirige a la pantalla HomeScreen
-        return const HomeScreen();
+            // Comprobar el estado de autenticación y tipo de usuario
+            if (userState.isLoggedIn) {
+              if (userState.isStudent) {
+                // Si no hay datos del estudiante cargados, invocamos la función fetchStudentInfo
+
+                // Una vez que los datos estén disponibles, redirige a la página del alumno
+                return const HomePageAlumno(
+                  studentData: {},
+                ); // Redirige a la página de alumno
+              } else if (userState.isTeacher) {
+                return const HomePageProfesor(profesorData: {},); // Redirige a la página de profesor
+              }
+            }
+
+            // Si no está autenticado o es invitado, redirige a la pantalla HomeScreen
+            return const HomeScreen();
+          },
+        );
       },
-    );
-  },
-),
+    ),
     GoRoute(
       path: '/horario_alumno_screen',
       name: HorarioAlumnoScreen.name,
@@ -53,33 +56,44 @@ final appRouter = GoRouter(
       builder: (context, state) => const CalificacionesScreen(),
     ),
     GoRoute(
-  path: '/home_page_alumno',
-  name: 'home_page_alumno',
+      path: '/home_page_alumno',
+      name: 'home_page_alumno',
+      builder: (context, state) {
+        return Consumer(
+          builder: (context, ref, _) {
+            final student = ref.watch(studentInfoProvider);
+            return HomePageAlumno(studentData: {
+              'alumno_nombre': student.name,
+              'carrera': student.carrera,
+              'telefono': student.telefono,
+              'correo': student.correo,
+              'curp': student.curp,
+            });
+          },
+        );
+      },
+    ),
+GoRoute(
+  path: '/home_page_profesor',
+  name: 'home_page_profesor',
   builder: (context, state) {
     return Consumer(
       builder: (context, ref, _) {
-        final student = ref.watch(studentInfoProvider);
-        return HomePageAlumno(
-          studentData: {
-            'alumno_nombre': student.name,
-            'carrera': student.carrera,
-            'telefono': student.telefono,
-            'correo': student.correo,
-            'curp': student.curp,
-          }
-        );
+        final profesor = ref.watch(profesorInfoProvider);
+        return HomePageProfesor(profesorData: {
+          'profesor_nombre': profesor.name,
+          'cargo': profesor.cargo,
+          'departamento': profesor.departamento,
+          'telefono': profesor.telefono,
+          'correo': profesor.correo,
+          'curp': profesor.curp,
+        });
       },
     );
   },
 ),
 
     GoRoute(
-      path: '/home_page_profesor',
-      name: HomePageProfesor.name,
-      builder: (context, state) => const HomePageProfesor(),
-    ),
-
-     GoRoute(
       path: '/app_tutorial_screen',
       name: AppTutorialScreen.name,
       builder: (context, state) => const AppTutorialScreen(),
@@ -107,10 +121,12 @@ final appRouter = GoRouter(
   path: '/student_screen',
   name: StudentScreen.name,
   builder: (context, state) {
-    final student = state.extra as Student; // Asegúrate de que el tipo sea correcto
-    return StudentScreen(student: student);
+    final student = state.extra as Student;
+   
+    return StudentScreen(student: student); // Pasa el objeto Student a la pantalla
   },
 ),
+
 
     GoRoute(
       path: '/consejo_tecnico_screen',
@@ -132,12 +148,12 @@ final appRouter = GoRouter(
       name: MissionVissionScreen.name,
       builder: (context, state) => const MissionVissionScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/organigrama_screen',
       name: OrganigramaScreen.name,
       builder: (context, state) => const OrganigramaScreen(),
     ),
-   GoRoute(
+    GoRoute(
       path: '/transparency_screen',
       name: TransparencyScreen.name,
       builder: (context, state) => const TransparencyScreen(),
@@ -147,7 +163,7 @@ final appRouter = GoRouter(
       name: PosgradoScreen.name,
       builder: (context, state) => const PosgradoScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/academies_screen',
       name: AcademiesScreen.name,
       builder: (context, state) => const AcademiesScreen(),
@@ -162,45 +178,45 @@ final appRouter = GoRouter(
       name: COSECOVIScreen.name,
       builder: (context, state) => const COSECOVIScreen(),
     ),
- GoRoute(
+    GoRoute(
       path: '/location_screen',
       name: LocationScreen.name,
       builder: (context, state) => const LocationScreen(),
     ),
 
-   GoRoute(
+    GoRoute(
       path: '/isc_2020_screen',
-      name:ISC2020Screen.name,
+      name: ISC2020Screen.name,
       builder: (context, state) => const ISC2020Screen(),
     ),
     GoRoute(
       path: '/isc_2009_screen',
-      name:ISC2009Screen.name,
+      name: ISC2009Screen.name,
       builder: (context, state) => const ISC2009Screen(),
     ),
     GoRoute(
       path: '/ia_screen',
-      name:IAScreen.name,
+      name: IAScreen.name,
       builder: (context, state) => const IAScreen(),
     ),
     GoRoute(
       path: '/lcd_screen',
-      name:LCDScreen.name,
+      name: LCDScreen.name,
       builder: (context, state) => const LCDScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/isa_screen',
-      name:ISAScreen.name,
+      name: ISAScreen.name,
       builder: (context, state) => const ISAScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/cultural_activities_screen',
-      name:CulturalActivitiesScreen.name,
+      name: CulturalActivitiesScreen.name,
       builder: (context, state) => const CulturalActivitiesScreen(),
     ),
     GoRoute(
       path: '/sports_screen',
-      name:SportsScreen.name,
+      name: SportsScreen.name,
       builder: (context, state) => const SportsScreen(),
     ),
     GoRoute(
@@ -228,7 +244,7 @@ final appRouter = GoRouter(
       name: MaterialDidacticoScreen.name,
       builder: (context, state) => const MaterialDidacticoScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/movilidad_screen',
       name: MovilidadScreen.name,
       builder: (context, state) => const MovilidadScreen(),
@@ -248,17 +264,17 @@ final appRouter = GoRouter(
       name: ServiciosSaludScreen.name,
       builder: (context, state) => const ServiciosSaludScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/trabajos_terminales_screen',
       name: TrabajosTerminalesScreen.name,
       builder: (context, state) => const TrabajosTerminalesScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/bolsa_trabajo_screen',
       name: BolsaTrabajoScreen.name,
       builder: (context, state) => const BolsaTrabajoScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/galeria_toma_protesta_screen',
       name: GaleriaTomaProtestaScreen.name,
       builder: (context, state) => const GaleriaTomaProtestaScreen(),
@@ -273,17 +289,17 @@ final appRouter = GoRouter(
       name: PropiedadIntelectualScreen.name,
       builder: (context, state) => const PropiedadIntelectualScreen(),
     ),
-  GoRoute(
+    GoRoute(
       path: '/eleccion_ternas_screen',
-      name:EleccionTernasScreen.name,
+      name: EleccionTernasScreen.name,
       builder: (context, state) => const EleccionTernasScreen(),
     ),
- GoRoute(
+    GoRoute(
       path: '/formatos_docs_screen',
       name: FormatosDocsScreen.name,
       builder: (context, state) => const FormatosDocsScreen(),
     ),
-GoRoute(
+    GoRoute(
       path: '/susentabilidad_screen',
       name: SustentabilidadScreen.name,
       builder: (context, state) => const SustentabilidadScreen(),
@@ -294,13 +310,13 @@ GoRoute(
       name: GruposTeacherScreen.name,
       builder: (context, state) => const GruposTeacherScreen(),
     ),
-    
+
     GoRoute(
       path: '/asignar_calificaciones_screen',
       name: AsignarCalificacionesScreen.name,
       builder: (context, state) => const AsignarCalificacionesScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/assistence_screen',
       name: AssistenceScreen.name,
       builder: (context, state) => const AssistenceScreen(),
@@ -311,16 +327,15 @@ GoRoute(
       builder: (context, state) => const HorarioTeacherScreen(),
     ),
 
-    
-
-GoRoute(
-  path: '/teacher_screen',
-  name: TeacherScreen.name,
-  builder: (context, state) {
-    final teacher = state.extra as Teacher; // Asegúrate de que el tipo sea correcto
-    return TeacherScreen(teacher: teacher);
-  },
-),
+    GoRoute(
+      path: '/teacher_screen',
+      name: ProfesorScreen.name,
+      builder: (context, state) {
+        final profesor =
+            state.extra as Profesor; // Asegúrate de que el tipo sea correcto
+        return ProfesorScreen(profesor: profesor);
+      },
+    ),
 
     GoRoute(
       path: '/teachers_screen',

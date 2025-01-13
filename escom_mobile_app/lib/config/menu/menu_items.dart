@@ -53,7 +53,7 @@ const List<MenuItem> appMenuItems = <MenuItem>[
         title: 'Misión/Visión',
         link: '/mission_vission_screen',
       ),
-      MenuItem(
+      MenuItem( 
         title: 'Organigrama',
         link: '/organigrama_screen',
       ),

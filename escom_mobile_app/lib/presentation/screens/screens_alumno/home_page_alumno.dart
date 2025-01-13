@@ -101,7 +101,9 @@ void initState() {
           ),
         ],
       ),
-      drawer: SideMenu(scaffoldKey: _scaffoldKey),
+      drawer: SideMenu(
+  scaffoldKey: _scaffoldKey // Pasamos `student` solo si el rol es estudiante
+),
       body: isLoggedIn && isStudent
           ? SingleChildScrollView(
               child: Column(

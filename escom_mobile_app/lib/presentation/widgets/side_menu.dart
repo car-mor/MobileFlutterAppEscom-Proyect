@@ -13,7 +13,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SideMenu extends ConsumerStatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
-
   const SideMenu({super.key, required this.scaffoldKey});
 
   @override
@@ -22,7 +21,7 @@ class SideMenu extends ConsumerStatefulWidget {
 
 class _SideMenuState extends ConsumerState<SideMenu> {
   int selectedIndex = -1; // ¿Cuál es la opción seleccionada del menú?
-
+  late final Student student;
   @override
   Widget build(BuildContext context) {
     final userState = ref.watch(userProvider);
@@ -112,8 +111,24 @@ class _SideMenuState extends ConsumerState<SideMenu> {
     } else if (userState.isStudent) {
       // Opciones exclusivas para estudiantes
       return [
-        const MenuItem(
-            title: 'Mi perfil', link: '/student_screen', icon: Icons.schedule),
+        MenuItem(
+          title: 'Mi perfil',
+          link: '/student_screen',
+          icon: Icons.person,
+          onTap: (context, ref) async {
+            if (context.mounted) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StudentScreen(
+                    student:
+                        student, // Asegúrate de que `student` esté definido en el contexto adecuado.
+                  ),
+                ),
+              );
+            }
+          },
+        ),
         const MenuItem(
             title: 'Horario',
             link: '/horario_alumno_screen',
@@ -127,13 +142,14 @@ class _SideMenuState extends ConsumerState<SideMenu> {
         const MenuItem(
             title: 'Profesores', link: '/teachers_screen', icon: Icons.people),
         const MenuItem(
-            title: 'Cerrar sesión', link: '/home_screen', icon: Icons.logout, ),
+          title: 'Cerrar sesión',
+          link: '/home_screen',
+          icon: Icons.logout,
+        ),
       ];
     } else if (userState.isTeacher) {
       // Opciones exclusivas para profesores
       return [
-        const MenuItem(
-            title: 'Mi perfil', link: '/teacher_screen', icon: Icons.schedule),
         const MenuItem(
             title: 'Horario',
             link: '/horario_teacher_screen',
@@ -149,21 +165,21 @@ class _SideMenuState extends ConsumerState<SideMenu> {
             link: '/asignar_calificaciones_screen',
             icon: Icons.edit),
         MenuItem(
-  title: 'Cerrar sesión',
-  link: '/home_screen',
-  icon: Icons.logout,
-  onTap: (context, ref) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-    
-    ref.read(userProvider.notifier).logOut();
-    ref.invalidate(studentInfoProvider);
-    
-    if (context.mounted) {
-      GoRouter.of(context).go('/home_screen');
-    }
-  },
-),
+          title: 'Cerrar sesión',
+          link: '/home_screen',
+          icon: Icons.logout,
+          onTap: (context, ref) async {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.clear();
+
+            ref.read(userProvider.notifier).logOut();
+            ref.invalidate(studentInfoProvider);
+
+            if (context.mounted) {
+              GoRouter.of(context).go('/home_screen');
+            }
+          },
+        ),
       ];
     }
     return appMenuItems; // En caso de que no sea alumno ni profesor
@@ -182,26 +198,12 @@ class _SideMenuState extends ConsumerState<SideMenu> {
         ),
         onTap: () {
           if (item.link == '/teacher_screen') {
-            context.push(
-              '/teacher_screen',
-              extra: Teacher(
-                id: 1,
-                name: 'Carlos Moreno',
-                email: 'hola@email.com',
-                employeeId: '2021630034',
-                departamento: 'Sistemas',
-              ),
-            );
-          } else if (item.link == '/student_screen') {
-            context.push(
-              '/student_screen',
-              extra: Student(
-                name: 'Ana Pérez',
-                correo: 'ana.perez@email.com',
-                curp: '2021203045',
-                carrera: 'Ingeniería en Sistemas Computacionales',
-                telefono: '55 1234 5678',
-              ),
+            GoRoute(
+              path: '/teacher_screen',
+              builder: (context, state) {
+                final profesor = state.extra as Profesor; // Cast al modelo
+                return ProfesorScreen(profesor: profesor);
+              },
             );
           } else if (item.link == '/home_screen') {
             context.push(

@@ -1,4 +1,5 @@
 import 'package:escom_mobile_app/presentation/providers/alumno_provider.dart';
+import 'package:escom_mobile_app/presentation/providers/profesor_provider.dart';
 import 'package:escom_mobile_app/presentation/screens/student_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -128,10 +129,22 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
             }
           }
         } else if (tipoUsuario == "profesor") {
-          ref.read(userProvider.notifier).logInAsTeacher();
-          showSnackbar(context, 'Inicio de sesión como docente exitoso');
-          GoRouter.of(context).go('/home_page_profesor');
-        } else {
+  ref.read(userProvider.notifier).logInAsTeacher();
+
+  try {
+    // Aquí puedes agregar una función similar a fetchStudentInfo pero para profesores.
+    await ref.read(profesorInfoProvider.notifier).fetchProfesorInfo(boleta);
+
+    if (context.mounted) {
+      showSnackbar(context, 'Inicio de sesión como docente exitoso');
+      GoRouter.of(context).go('/home_page_profesor');
+    }
+  } catch (e) {
+    if (context.mounted) {
+      showSnackbar(context, 'Error al obtener información del docente');
+    }
+  }
+}else {
           showSnackbar(context, 'Rol desconocido');
         }
       } catch (e) {

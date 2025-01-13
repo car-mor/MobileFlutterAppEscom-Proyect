@@ -1,166 +1,121 @@
-// import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
-// Modelo de datos del profesor
-class Teacher {
+// Modelo de datos del Profesor
+class Profesor {
   final String name;
-  final String email;
-  final String employeeId;
+  final String cargo;
   final String departamento;
+  final String telefono;
+  final String correo;
+  final String curp;
 
-  Teacher({
+  Profesor({
     required this.name,
-    required this.email,
-    required this.employeeId,
-    required this.departamento, required int id, 
+    required this.cargo,
+    required this.departamento,
+    required this.telefono,
+    required this.correo,
+    required this.curp,
   });
+
+  // Método para convertir un Map en un objeto Student
+  factory Profesor.fromMap(Map<String, dynamic> map) {
+  return Profesor(
+    name: map['profesor_nombre'] ?? 'Desconocido',
+      cargo: map['cargo'] ?? 'Desconocido',
+      departamento: map['departamento'] ?? 'Desconocido',
+      telefono: map['telefono'] ?? 'Desconocido',
+      correo: map['correo'] ?? 'Desconocido',
+      curp: map['curp'] ?? 'Desconocido',
+  );
+}
 }
 
-class TeacherScreen extends StatelessWidget {
-  static const String name = 'teacher_screen';
+class ProfesorScreen extends StatelessWidget {
+  static const String name = 'profesor_screen';
 
-  final Teacher teacher; // Recibimos el objeto Teacher
+  final  Profesor profesor; // Identificador del profesor para buscar la información
 
-  const TeacherScreen({super.key, required this.teacher});
+  const ProfesorScreen({super.key, required this.profesor});
 
   @override
   Widget build(BuildContext context) {
+    // Escuchamos el provider para obtener el estado del Profesor
     return Scaffold(
       appBar: AppBar(
         title: const Text('Perfil del Profesor'),
-        backgroundColor: const Color(0xFF006699),
+        backgroundColor: Colors.blueAccent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView(
+        child: Column(
           children: [
-            // Nombre del Profesor
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: ListTile(
-                leading: const Icon(Icons.person, color: Color(0xFF006699)),
-                title: const Text('Nombre'),
-                subtitle: Text(teacher.name), // Usamos los datos del profesor
-              ),
-            ),
-            const SizedBox(height: 10),
- 
-            // Correo del Profesor
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: ListTile(
-                leading: const Icon(Icons.email, color: Color(0xFF006699)),
-                title: const Text('Correo Electrónico'),
-                subtitle: Text(teacher.email), // Usamos los datos del profesor
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            // ID de Empleado del Profesor
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: ListTile(
-                leading: const Icon(Icons.badge, color: Color(0xFF006699)),
-                title: const Text('ID de Empleado'),
-                subtitle: Text(teacher.employeeId), // Usamos los datos del profesor
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            // Departamento del Profesor
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: ListTile(
-                leading: const Icon(Icons.business, color: Color(0xFF006699)),
-                title: const Text('Departamento'),
-                subtitle: Text(teacher.departamento), // Usamos los datos del profesor
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            // Cargo del Profesor
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const ListTile(
-                leading: Icon(Icons.work, color: Color(0xFF006699)),
-                title: Text('Cargo'),
-              ),
+            // Botón para cargar datos del profesor
+            // Mostramos los datos del profesor si están disponibles
+            Expanded(
+              child: ListView(
+                      children: [
+                        _buildProfesorInfoCard(
+                          icon: Icons.person,
+                          title: 'Nombre',
+                          subtitle: profesor.name,
+                        ),
+                        const SizedBox(height: 10),
+                        _buildProfesorInfoCard(
+                          icon: Icons.work,
+                          title: 'Cargo',
+                          subtitle: profesor.cargo,
+                        ),
+                        const SizedBox(height: 10),
+                        _buildProfesorInfoCard(
+                          icon: Icons.account_balance,
+                          title: 'Departamento',
+                          subtitle: profesor.departamento,
+                        ),
+                        const SizedBox(height: 10),
+                        _buildProfesorInfoCard(
+                          icon: Icons.phone,
+                          title: 'Teléfono',
+                          subtitle: profesor.telefono,
+                        ),
+                        const SizedBox(height: 10),
+                        _buildProfesorInfoCard(
+                          icon: Icons.email,
+                          title: 'Correo Electrónico',
+                          subtitle: profesor.correo,
+                        ),
+                        const SizedBox(height: 10),
+                        _buildProfesorInfoCard(
+                          icon: Icons.assignment_ind,
+                          title: 'CURP',
+                          subtitle: profesor.curp,
+                        ),
+                      ],
+                    )
+                  
             ),
           ],
         ),
       ),
     );
   }
+
+  /// Widget reutilizable para las tarjetas de información del profesor
+  Widget _buildProfesorInfoCard({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+  }) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: ListTile(
+        leading: Icon(icon, color: Colors.blue),
+        title: Text(title),
+        subtitle: Text(subtitle),
+      ),
+    );
+  }
 }
-
-
-
-Future<Teacher> fetchTeacherData() async {
-  // Aquí iría la lógica para obtener los datos del backend
-  // Simularemos con un objeto de ejemplo
-  await Future.delayed(const Duration(seconds: 2)); // Simulando una espera
-  return Teacher(
-    id: 1,
-    name: "Dr. Ana López",
-    email: "ana.lopez@example.com",
-    employeeId: "T-2023-001",
-    departamento: "Matemáticas", 
-  );
-}
-
-@override
-Widget build(BuildContext context) {
-  return FutureBuilder<Teacher>(
-    future: fetchTeacherData(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (snapshot.hasError) {
-        return Center(child: Text('Error: ${snapshot.error}'));
-      } else if (snapshot.hasData) {
-        return TeacherScreen(teacher: snapshot.data!);
-      } else {
-        return const Center(child: Text('No data available'));
-      }
-    },
-  );
-}
-
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
-
-// Future<Teacher> fetchTeacherData() async {
-//   final response = await http.get(Uri.parse('https://mi-api.com/teacher'));
-
-//   if (response.statusCode == 200) {
-//     // Parseamos los datos de la respuesta JSON
-//     final Map<String, dynamic> data = jsonDecode(response.body);
-//     return Teacher(
-//       name: data['name'],
-//       email: data['email'],
-//       employeeId: data['employeeId'],
-//       departamento: data['departamento'],
-//     );
-//   } else {
-//     throw Exception('Failed to load teacher data');
-//   }
-// }
-
-
-
