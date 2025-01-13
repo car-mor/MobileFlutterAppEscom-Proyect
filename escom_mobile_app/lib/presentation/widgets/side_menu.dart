@@ -1,4 +1,5 @@
 import 'package:escom_mobile_app/config/menu/menu_items.dart';
+import 'package:escom_mobile_app/presentation/providers/alumno_provider.dart';
 import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 import 'package:escom_mobile_app/presentation/screens/student_screen.dart';
 import 'package:escom_mobile_app/presentation/screens/teacher_screen.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SideMenu extends ConsumerStatefulWidget {
@@ -125,7 +127,7 @@ class _SideMenuState extends ConsumerState<SideMenu> {
         const MenuItem(
             title: 'Profesores', link: '/teachers_screen', icon: Icons.people),
         const MenuItem(
-            title: 'Cerrar sesión', link: '/home_screen', icon: Icons.logout),
+            title: 'Cerrar sesión', link: '/home_screen', icon: Icons.logout, ),
       ];
     } else if (userState.isTeacher) {
       // Opciones exclusivas para profesores
@@ -146,8 +148,22 @@ class _SideMenuState extends ConsumerState<SideMenu> {
             title: 'Asignar Calificaciones',
             link: '/asignar_calificaciones_screen',
             icon: Icons.edit),
-        const MenuItem(
-            title: 'Cerrar sesión', link: '/home_screen', icon: Icons.logout),
+        MenuItem(
+  title: 'Cerrar sesión',
+  link: '/home_screen',
+  icon: Icons.logout,
+  onTap: (context, ref) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    
+    ref.read(userProvider.notifier).logOut();
+    ref.invalidate(studentInfoProvider);
+    
+    if (context.mounted) {
+      GoRouter.of(context).go('/home_screen');
+    }
+  },
+),
       ];
     }
     return appMenuItems; // En caso de que no sea alumno ni profesor
@@ -181,11 +197,10 @@ class _SideMenuState extends ConsumerState<SideMenu> {
               '/student_screen',
               extra: Student(
                 name: 'Ana Pérez',
-                email: 'ana.perez@email.com',
-                boleta: '2021203045',
-                curp: 'PEPA020101MDFRNS02',
+                correo: 'ana.perez@email.com',
+                curp: '2021203045',
                 carrera: 'Ingeniería en Sistemas Computacionales',
-                id: 1,
+                telefono: '55 1234 5678',
               ),
             );
           } else if (item.link == '/home_screen') {

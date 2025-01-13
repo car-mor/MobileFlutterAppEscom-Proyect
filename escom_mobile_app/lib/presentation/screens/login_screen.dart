@@ -1,3 +1,5 @@
+import 'package:escom_mobile_app/presentation/providers/alumno_provider.dart';
+import 'package:escom_mobile_app/presentation/screens/student_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -82,7 +84,8 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
 
   void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   void onFormSubmit(WidgetRef ref) async {
@@ -92,10 +95,15 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
       final boleta = emailController.text.trim();
       final contrasena = passwordController.text.trim();
 
-      
+      try {
         final response = await _apiService.autentificacion(boleta, contrasena);
-        var tipoUsuario;
 
+        if (response.isEmpty || response[0]['error'] != null) {
+          showSnackbar(context, 'Usuario o contraseña incorrectos');
+          return;
+        }
+
+        var tipoUsuario;
         for (var item in response) {
           if (item is Map<String, dynamic>) {
             tipoUsuario = item['tipoUsuario'];
@@ -103,15 +111,32 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
         }
 
         if (tipoUsuario == "alumno") {
-          ref.read(userProvider.notifier).logInAsStudent(); // Cambiar estado
-          showSnackbar(context, 'Inicio de sesión como alumno exitoso');
-          GoRouter.of(context).go('/home_page_alumno'); // Redirigir al home
-        } else if (tipoUsuario == "profesor") { 
-          ref.read(userProvider.notifier).logInAsTeacher(); // Cambiar estado
+          ref.read(userProvider.notifier).logInAsStudent();
+
+          try {
+            await ref
+                .read(studentInfoProvider.notifier)
+                .fetchStudentInfo(boleta);
+
+            if (context.mounted) {
+              showSnackbar(context, 'Inicio de sesión como alumno exitoso');
+              GoRouter.of(context).go('/home_page_alumno');
+            }
+          } catch (e) {
+            if (context.mounted) {
+              showSnackbar(context, 'Error al obtener información del alumno');
+            }
+          }
+        } else if (tipoUsuario == "profesor") {
+          ref.read(userProvider.notifier).logInAsTeacher();
           showSnackbar(context, 'Inicio de sesión como docente exitoso');
-          GoRouter.of(context).go('/home_page_profesor'); // Redirigir al home
-        } 
-      
+          GoRouter.of(context).go('/home_page_profesor');
+        } else {
+          showSnackbar(context, 'Rol desconocido');
+        }
+      } catch (e) {
+        showSnackbar(context, 'Error al iniciar sesión');
+      }
     } else {
       showSnackbar(context, 'Por favor, revisa los campos');
     }
@@ -166,7 +191,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
               child: CustomFilledButton(
                 text: 'Ingresar',
                 buttonColor: const Color.fromARGB(255, 0, 102, 153),
-                onPressed: ()=> onFormSubmit(ref),
+                onPressed: () => onFormSubmit(ref),
               ),
             ),
             const Spacer(flex: 2),

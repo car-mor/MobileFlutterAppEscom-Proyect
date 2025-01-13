@@ -1,6 +1,6 @@
 import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 import 'package:escom_mobile_app/presentation/screens/student_screen.dart';
-// import 'package:escom_mobile_app/presentation/screens/teacher_screen.dart';
+import 'package:escom_mobile_app/presentation/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:escom_mobile_app/presentation/providers/theme_provider.dart';
@@ -10,13 +10,17 @@ import 'dart:async';
 
 class HomePageAlumno extends ConsumerStatefulWidget {
   static const String name = 'home_page_alumno';
-  const HomePageAlumno({super.key});
+
+  final Map<String, dynamic>  studentData; // Ajusta el tipo según tus datos, por ejemplo, Map<String, dynamic>
+  
+  const HomePageAlumno({super.key, required this.studentData});
 
   @override
   HomePageAlumnoState createState() => HomePageAlumnoState();
 }
 
 class HomePageAlumnoState extends ConsumerState<HomePageAlumno> {
+  late final Student student;
   bool isLoggedIn = true;
   bool isStudent = true;
   bool isTeacher = false;
@@ -25,35 +29,31 @@ class HomePageAlumnoState extends ConsumerState<HomePageAlumno> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
-  void initState() {
-    super.initState();
-    _checkLoginStatus();
-  }
+void initState() {
+  super.initState();
+  print("Datos recibidos en HomePageAlumno: ${widget.studentData}");
+  student = Student(
+    name: widget.studentData['alumno_nombre'] ?? '',
+    carrera: widget.studentData['carrera'] ?? '',
+    telefono: widget.studentData['telefono'] ?? '',
+    correo: widget.studentData['correo'] ?? '',
+    curp: widget.studentData['curp'] ?? '',
+  );
+  print("Student object creado: $student");
+}
+
 
   Future<void> _checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('email');
     final name = prefs.getString('name');
-    final role = prefs
-        .getString('role'); // Supongamos que guardamos "student" o "teacher"
+    final role = prefs.getString('role'); // Supongamos que guardamos "student" o "teacher"
 
     setState(() {
       isLoggedIn = email != null;
       isStudent = role == 'student';
       isTeacher = role == 'teacher';
       studentName = name;
-    });
-  }
-
-  Future<void> _logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-
-    setState(() {
-      isLoggedIn = true;
-      studentName = 'Carlos';
-      isStudent = true;
-      isTeacher = false;
     });
   }
 
@@ -76,26 +76,34 @@ class HomePageAlumnoState extends ConsumerState<HomePageAlumno> {
     final greetingMessage = _getGreetingMessage();
 
     return Scaffold(
-      key: _scaffoldKey, // Usamos _scaffoldKey para el Drawer
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Inicio'),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 20, top: 8),
-            child: Icon(Icons.account_circle, size: 40),
+            padding: const EdgeInsets.only(right: 20, top: 8),
+            child: GestureDetector(
+              onTap:  () async {
+                if (context.mounted) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StudentScreen(student: student),
+                    ),
+                  );
+                }
+              },
+              child: const ProfileAvatar(
+                imageUrl: null, // Pasa la URL aquí si está disponible
+                size: 40,
+              ),
+            ),
           ),
         ],
       ),
-      drawer: SideMenu(
-          scaffoldKey: _scaffoldKey), // Pasamos _scaffoldKey al SideMenu
-      body: isLoggedIn
-          ? Center(
-              child: Text(
-                'Bienvenido, $studentName',
-                style: const TextStyle(fontSize: 20),
-              ),
-            )
-          : SingleChildScrollView(
+      drawer: SideMenu(scaffoldKey: _scaffoldKey),
+      body: isLoggedIn && isStudent
+          ? SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -103,9 +111,9 @@ class HomePageAlumnoState extends ConsumerState<HomePageAlumno> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      '$greetingMessage${studentName != null ? ', $studentName' : ''}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
+                  _getGreetingMessage() + ' ${student.name ?? 'Estudiante'}',
+  style: Theme.of(context).textTheme.headlineSmall,
+                ),
                   ),
                   const Padding(
                     padding: EdgeInsets.all(16.0),
@@ -131,38 +139,38 @@ class HomePageAlumnoState extends ConsumerState<HomePageAlumno> {
                           width: double.infinity,
                           fit: BoxFit.cover,
                         ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            ref
-                                .read(userProvider.notifier)
-                                .logInAsStudent(); // Actualiza el estado como estudiante
+                        // ElevatedButton(
+                        //   onPressed: () async {
+                        //     ref
+                        //         .read(userProvider.notifier)
+                        //         .logInAsStudent(); // Actualiza el estado como estudiante
 
-                            final studentData = await fetchStudentData(); // Llama a la función para obtener los datos del estudiante
+                        //     final studentData =
+                        //         await fetchStudentData(); // Llama a la función para obtener los datos del estudiante
 
-                            // Navega a la pantalla del estudiante con los datos
-                            if (context.mounted) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => StudentScreen(student: studentData),
-                                ),
-                              );
-                            }
-                          },
-                          child: const Text("Simular como Alumno"),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            ref
-                                .read(userProvider.notifier)
-                                .logOut(); // Simula inicio de sesión como profesor
-                          },
-                          child: const Text("Cerrar sesión"),
-                        ),
+                        //     // Navega a la pantalla del estudiante con los datos
+                        //     if (context.mounted) {
+                        //       Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //           builder: (context) =>
+                        //               StudentScreen(student: studentData),
+                        //         ),
+                        //       );
+                        //     }
+                        //   },
+                        //   child: const Text("Simular como Alumno"),
+                        // ),
                       ],
                     ),
                   ),
                 ],
+              ),
+            )
+          : const Center(
+              child: Text(
+                'No se pudo cargar la información del estudiante',
+                style: TextStyle(fontSize: 16),
               ),
             ),
     );

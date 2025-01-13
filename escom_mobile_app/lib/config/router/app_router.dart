@@ -1,9 +1,11 @@
 //import 'package:escom_mobile_app/config/theme/app_theme.dart';
+import 'package:escom_mobile_app/presentation/providers/alumno_provider.dart';
 import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 import 'package:escom_mobile_app/presentation/screens/assistence_screen.dart';
 import 'package:escom_mobile_app/presentation/screens/screens.dart';
 import 'package:escom_mobile_app/presentation/screens/screens_alumno/home_page_alumno.dart';
 import 'package:escom_mobile_app/presentation/screens/screens_profesor/home_page_profesor.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:escom_mobile_app/screens/users_screens.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,28 +16,32 @@ final appRouter = GoRouter(
   routes: [
      // Ruta inicial con ConsumerWidget para escuchar el provider
     GoRoute(
-      path: '/',
-      builder: (context, state) {
-        // Aquí utilizamos un ConsumerWidget para leer el estado del provider
-        return Consumer(
-          builder: (context, ref, _) {
-            final userState = ref.watch(userProvider);
+  path: '/',
+  builder: (context, state) {
+    // Aquí utilizamos un ConsumerWidget para leer el estado del provider
+    return Consumer(
+      builder: (context, ref, _) {
+        final userState = ref.watch(userProvider); // Estado del usuario
+        // final studentData = ref.watch(studentInfoProvider); // Datos del estudiante
 
-            // Comprobar el estado de autenticación y tipo de usuario
-            if (userState.isLoggedIn) {
-              if (userState.isStudent) {
-                return const HomePageAlumno();  // Redirigir a la página de alumno
-              } else if (userState.isTeacher) {
-                return const HomePageProfesor();  // Redirigir a la página de profesor
-              }
-            }
+        // Comprobar el estado de autenticación y tipo de usuario
+        if (userState.isLoggedIn) {
+          if (userState.isStudent) {
+            // Si no hay datos del estudiante cargados, invocamos la función fetchStudentInfo
             
-            // Si no está autenticado o es invitado, redirige a la pantalla HomeScreen
-            return const HomeScreen();
-          },
-        );
+            // Una vez que los datos estén disponibles, redirige a la página del alumno
+            return const HomePageAlumno(studentData: {},); // Redirige a la página de alumno
+          } else if (userState.isTeacher) {
+            return const HomePageProfesor();  // Redirige a la página de profesor
+          }
+        }
+        
+        // Si no está autenticado o es invitado, redirige a la pantalla HomeScreen
+        return const HomeScreen();
       },
-    ),
+    );
+  },
+),
     GoRoute(
       path: '/horario_alumno_screen',
       name: HorarioAlumnoScreen.name,
@@ -47,10 +53,26 @@ final appRouter = GoRouter(
       builder: (context, state) => const CalificacionesScreen(),
     ),
     GoRoute(
-      path: '/home_page_alumno',
-      name: HomePageAlumno.name,
-      builder: (context, state) => const HomePageAlumno(),
-    ),
+  path: '/home_page_alumno',
+  name: 'home_page_alumno',
+  builder: (context, state) {
+    return Consumer(
+      builder: (context, ref, _) {
+        final student = ref.watch(studentInfoProvider);
+        return HomePageAlumno(
+          studentData: {
+            'alumno_nombre': student.name,
+            'carrera': student.carrera,
+            'telefono': student.telefono,
+            'correo': student.correo,
+            'curp': student.curp,
+          }
+        );
+      },
+    );
+  },
+),
+
     GoRoute(
       path: '/home_page_profesor',
       name: HomePageProfesor.name,
