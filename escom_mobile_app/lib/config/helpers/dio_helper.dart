@@ -5,7 +5,7 @@ class ApiService {
 
     
     BaseOptions(
-      baseUrl: 'http://192.168.1.103:3000/api/', // Cambia a tu URL de despliegue
+      baseUrl: 'http://192.168.1.78:3000/api/', // Cambia a tu URL de despliegue
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 3), // Tiempo máximo de respuesta
     ),
@@ -31,10 +31,28 @@ class ApiService {
       throw Exception('No se pudo enviar la información');
     }
   }
+  Future<List<dynamic>> alumnoHorario(boleta) async {
+    try {
+      final response = await _dio.post('/alumno',data:{'alumno':boleta});
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo enviar la información');
+    }
+  }
 
 Future<List<dynamic>> alumnoInformacion(boleta) async {
     try {
       final response = await _dio.post('/alumno/informacion',data:{'alumno':boleta});
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo enviar la información');
+    }
+  }
+  Future<List<dynamic>> profesorHorario(idProfesor) async {
+    try {
+      final response = await _dio.post('/profesor/horario',data:{'profesor':idProfesor});
       return response.data;
     } catch (e) {
       print('Error: $e');

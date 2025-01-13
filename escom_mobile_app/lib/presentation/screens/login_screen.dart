@@ -97,6 +97,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
       final contrasena = passwordController.text.trim();
 
       try {
+        final prefs = await SharedPreferences.getInstance();
         final response = await _apiService.autentificacion(boleta, contrasena);
 
         if (response.isEmpty || response[0]['error'] != null) {
@@ -120,6 +121,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
                 .fetchStudentInfo(boleta);
 
             if (context.mounted) {
+              await prefs.setString("boleta", boleta);
               showSnackbar(context, 'Inicio de sesión como alumno exitoso');
               GoRouter.of(context).go('/home_page_alumno');
             }
@@ -129,28 +131,30 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
             }
           }
         } else if (tipoUsuario == "profesor") {
-  ref.read(userProvider.notifier).logInAsTeacher();
+            ref.read(userProvider.notifier).logInAsTeacher();
 
-  try {
-    // Aquí puedes agregar una función similar a fetchStudentInfo pero para profesores.
-    await ref.read(profesorInfoProvider.notifier).fetchProfesorInfo(boleta);
+            try {
+              // Aquí puedes agregar una función similar a fetchStudentInfo pero para profesores.
+              await ref.read(profesorInfoProvider.notifier).fetchProfesorInfo(boleta);
 
-    if (context.mounted) {
-      showSnackbar(context, 'Inicio de sesión como docente exitoso');
-      GoRouter.of(context).go('/home_page_profesor');
-    }
-  } catch (e) {
-    if (context.mounted) {
-      showSnackbar(context, 'Error al obtener información del docente');
-    }
-  }
-}else {
+              if (context.mounted) {
+                await prefs.setString("idProfesor", boleta);
+                showSnackbar(context, 'Inicio de sesión como docente exitoso');
+                GoRouter.of(context).go('/home_page_profesor');
+              }
+            } catch (e) {
+              if (context.mounted) {
+                showSnackbar(context, 'Error al obtener información del docente');
+              }
+            }
+        }else {
           showSnackbar(context, 'Rol desconocido');
         }
       } catch (e) {
         showSnackbar(context, 'Error al iniciar sesión');
       }
-    } else {
+    } 
+    else {
       showSnackbar(context, 'Por favor, revisa los campos');
     }
   }

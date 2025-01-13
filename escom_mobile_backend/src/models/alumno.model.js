@@ -5,8 +5,7 @@ export class AlumnoModel{
     try{
       const [usuario] = await connectionMySQL.query(`
         SELECT 
-            a.nombre AS alumno_nombre,
-            a.apellidoPrimero AS alumno_apellido,
+            CONCAT(apellidoPrimero, ' ', apellidoSegundo , ' ', nombre) AS alumno_nombre,
             m.materia AS materia,
             m.grupo AS grupo,
             m.salon AS salon,
