@@ -1,5 +1,6 @@
 import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //import 'package:flutter/material.dart' show IconData; es lo ideal para que no se importe todo el paquete, pero ya se ha importado en el main.dart
 
@@ -10,9 +11,11 @@ class MenuItem {
   final FaIcon? icon2;
   final List<MenuItem>? subItems;
   final bool Function(UserState)? shouldShow;
+  final void Function(BuildContext, WidgetRef)? onTap; 
 
   const MenuItem({
     required this.title,
+    this.onTap,
     this.link,
     this.icon,
     this.icon2,
@@ -50,7 +53,7 @@ const List<MenuItem> appMenuItems = <MenuItem>[
         title: 'Misión/Visión',
         link: '/mission_vission_screen',
       ),
-      MenuItem(
+      MenuItem( 
         title: 'Organigrama',
         link: '/organigrama_screen',
       ),

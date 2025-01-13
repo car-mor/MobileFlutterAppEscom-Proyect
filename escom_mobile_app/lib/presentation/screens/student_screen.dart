@@ -3,18 +3,29 @@ import 'package:flutter/material.dart';
 // Modelo de datos del alumno
 class Student {
   final String name;
-  final String email;
-  final String boleta;
-  final String curp;
   final String carrera;
+  final String telefono;
+  final String correo;
+  final String curp;
 
   Student({
     required this.name,
-    required this.email,
-    required this.boleta,
+    required this.carrera,
+    required this.telefono,
+    required this.correo,
     required this.curp,
-    required this.carrera,required int id, 
   });
+
+  // Método para convertir un Map en un objeto Student
+  factory Student.fromMap(Map<String, dynamic> map) {
+  return Student(
+    name: map['alumno_nombre'] ?? 'Desconocido',  // Changed from 'name' to 'alumno_nombre'
+    correo: map['correo'] ?? 'Desconocido',
+    curp: map['curp'] ?? 'Desconocido',
+    carrera: map['carrera'] ?? 'Desconocida', 
+    telefono: map['telefono'] ?? 'Desconocido',
+  );
+}
 }
 
 class StudentScreen extends StatelessWidget {
@@ -35,108 +46,70 @@ class StudentScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            // Nombre del Alumno
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: ListTile(
-                leading: const Icon(Icons.person, color: Colors.blue),
-                title: const Text('Nombre'),
-                subtitle: Text(student.name), // Usamos los datos del alumno
-              ),
+            _buildStudentInfoCard(
+              icon: Icons.person,
+              title: 'Nombre',
+              subtitle: student.name,
             ),
             const SizedBox(height: 10),
-
-            // Correo del Alumno
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: ListTile(
-                leading: const Icon(Icons.email, color: Colors.blue),
-                title: const Text('Correo Electrónico'),
-                subtitle: Text(student.email), // Usamos los datos del alumno
-              ),
+            _buildStudentInfoCard(
+              icon: Icons.email,
+              title: 'Correo Electrónico',
+              subtitle: student.correo,
             ),
             const SizedBox(height: 10),
-
-            // Boleta del Alumno
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: ListTile(
-                leading: const Icon(Icons.assignment_ind, color: Colors.blue),
-                title: const Text('Boleta'),
-                subtitle: Text(student.boleta), // Usamos los datos del alumno
-              ),
+            _buildStudentInfoCard(
+              icon: Icons.assignment_ind,
+              title: 'Boleta',
+              subtitle: student.curp,
             ),
             const SizedBox(height: 10),
-
-            // CURP del Alumno
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: ListTile(
-                leading: const Icon(Icons.credit_card, color: Colors.blue),
-                title: const Text('CURP'),
-                subtitle: Text(student.curp), // Usamos los datos del alumno
-              ),
+            _buildStudentInfoCard(
+              icon: Icons.credit_card,
+              title: 'CURP',
+              subtitle: student.curp,
             ),
             const SizedBox(height: 10),
-
-            // Carrera del Alumno
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: ListTile(
-                leading: const Icon(Icons.school, color: Colors.blue),
-                title: const Text('Carrera'),
-                subtitle: Text(student.carrera), // Usamos los datos del alumno
-              ),
+            _buildStudentInfoCard(
+              icon: Icons.school,
+              title: 'Carrera',
+              subtitle: student.carrera,
             ),
           ],
         ),
       ),
     );
   }
+
+  /// Widget reutilizable para las tarjetas de información del alumno
+  Widget _buildStudentInfoCard({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+  }) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: ListTile(
+        leading: Icon(icon, color: Colors.blue),
+        title: Text(title),
+        subtitle: Text(subtitle),
+      ),
+    );
+  }
 }
 
-Future<Student> fetchStudentData() async {
-  // Aquí iría la lógica para obtener los datos del backend
-  // Simulamos con un objeto de ejemplo
-  await Future.delayed(const Duration(seconds: 2)); // Simulando una espera
-  return Student(
-    name: "Juan Pérez",
-    email: "juan.perez@example.com",
-    boleta: "20192020345",
-    curp: "PEPJ980101HDFRNS08",
-    carrera: "Ingeniería en Sistemas Computacionales", id: 1,
-  );
-}
-
-@override
-Widget build(BuildContext context) {
-  return FutureBuilder<Student>(
-    future: fetchStudentData(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (snapshot.hasError) {
-        return Center(child: Text('Error: ${snapshot.error}'));
-      } else if (snapshot.hasData) {
-        return StudentScreen(student: snapshot.data!);
-      } else {
-        return const Center(child: Text('No data available'));
-      }
-    },
-  );
-}
+// Función para obtener los datos del estudiante desde el backend
+// Future<Student> fetchStudentData() async {
+//   // Simulación de llamada a backend para obtener datos
+//   await Future.delayed(const Duration(seconds: 2)); // Simulamos un delay
+//   return Student(
+//     name: "Juan Pérez",
+//     email: "juan.perez@example.com",
+//     boleta: "20192020345",
+//     curp: "PEPJ980101HDFRNS08",
+//     carrera: "Ingeniería en Sistemas Computacionales",
+//   );
+// }

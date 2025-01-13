@@ -1,6 +1,6 @@
 import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 import 'package:escom_mobile_app/presentation/screens/teacher_screen.dart';
-import 'package:escom_mobile_app/presentation/widgets/header.dart';
+import 'package:escom_mobile_app/presentation/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:escom_mobile_app/presentation/providers/theme_provider.dart';
@@ -10,50 +10,50 @@ import 'dart:async';
 
 class HomePageProfesor extends ConsumerStatefulWidget {
   static const String name = 'home_page_profesor';
-  const HomePageProfesor({super.key});
+
+  final Map<String, dynamic> profesorData;
+
+  const HomePageProfesor({super.key, required this.profesorData});
 
   @override
   HomePageProfesorState createState() => HomePageProfesorState();
 }
 
 class HomePageProfesorState extends ConsumerState<HomePageProfesor> {
+  late final Profesor profesor;
   bool isLoggedIn = true;
-  bool isStudent = true;
-  bool isTeacher = false;
-  String? studentName;
+  bool isStudent = false;
+  bool isTeacher = true;
+  String? teacherName;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _checkLoginStatus();
+    print("Datos recibidos en HomePageProfesor: ${widget.profesorData}");
+    profesor = Profesor(
+      name: widget.profesorData['profesor_nombre'] ?? '',
+      cargo: widget.profesorData['cargo'] ?? '',
+      departamento: widget.profesorData['departamento'] ?? '',
+      telefono: widget.profesorData['telefono'] ?? '',
+      correo: widget.profesorData['correo'] ?? '',
+      curp: widget.profesorData['curp'] ?? '',
+    );
+    print("Profesor object creado: $profesor");
   }
 
   Future<void> _checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('email');
     final name = prefs.getString('name');
-    final role = prefs
-        .getString('role'); // Supongamos que guardamos "student" o "teacher"
+    final role = prefs.getString('role'); // Supongamos que guardamos "student" o "teacher"
 
     setState(() {
       isLoggedIn = email != null;
       isStudent = role == 'student';
       isTeacher = role == 'teacher';
-      studentName = name;
-    });
-  }
-
-  Future<void> _logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-
-    setState(() {
-      isLoggedIn = true;
-      studentName = 'Carlos';
-      isStudent = true;
-      isTeacher = false;
+      teacherName = name;
     });
   }
 
@@ -73,50 +73,54 @@ class HomePageProfesorState extends ConsumerState<HomePageProfesor> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = ref.watch(themeProvider).isDarkmode;
-    final themeNotifier = ref.read(themeProvider.notifier);
     final greetingMessage = _getGreetingMessage();
 
     return Scaffold(
-      key: _scaffoldKey, // Usamos _scaffoldKey para el Drawer
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Inicio'),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 20, top: 8),
-            child: Icon(Icons.account_circle, size: 40),
+            padding: const EdgeInsets.only(right: 20, top: 8),
+            child: GestureDetector(
+              onTap: () async {
+                if (context.mounted) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfesorScreen(profesor: profesor),
+                    ),
+                  );
+                }
+              },
+              child: const ProfileAvatar(
+                imageUrl: null, // Pasa la URL aquí si está disponible
+                size: 40,
+              ),
+            ),
           ),
         ],
       ),
       drawer: SideMenu(
-          scaffoldKey: _scaffoldKey), // Pasamos _scaffoldKey al SideMenu
-      body: isLoggedIn
-          ? Center(
-              child: Text(
-                'Bienvenido, $studentName',
-                style: const TextStyle(fontSize: 20),
-              ),
-            )
-          : SingleChildScrollView(
+        scaffoldKey: _scaffoldKey,
+      ),
+      body: isLoggedIn && isTeacher
+          ? SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  HeaderWidget(
-                    imagePath: 'assets/images/header.png',
-                    onToggleTheme: themeNotifier.toggleTheme, // Pasa la función
-                    isDarkMode: isDarkMode, // Pasa el estado
-                  ),
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      '$greetingMessage${studentName != null ? ', $studentName' : ''}',
-                      style: const TextStyle(fontSize: 16),
+                      _getGreetingMessage() + ' ${profesor.name ?? 'Profesor'}',
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                   const Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Text(
-                      'Bienvenido(a) a la Aplicación Informativa de nuestra escuela. Aquí encontrarás toda la información que necesitas sobre tu semestre.',
+                      'Bienvenido(a) a la Aplicación Informativa de nuestra escuela. Aquí encontrarás toda la información que necesitas como profesor.',
                       style: TextStyle(fontSize: 16),
                       textAlign: TextAlign.justify,
                     ),
@@ -137,40 +141,16 @@ class HomePageProfesorState extends ConsumerState<HomePageProfesor> {
                           width: double.infinity,
                           fit: BoxFit.cover,
                         ),
-
-                        ElevatedButton(
-                          onPressed: () async {
-                            final teacherData =
-                                await fetchTeacherData(); // Llama a la función para obtener los datos del profesor
-                            ref
-                                .read(userProvider.notifier)
-                                .logInAsTeacher(); // Actualiza el estado como profesor
-
-                            // Navega a la pantalla del profesor con los datos
-                            if (context.mounted) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      TeacherScreen(teacher: teacherData),
-                                ),
-                              );
-                            }
-                          },
-                          child: const Text("Simular como Profesor"),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            ref
-                                .read(userProvider.notifier)
-                                .logOut(); // Simula inicio de sesión como profesor
-                          },
-                          child: const Text("Cerrar sesión"),
-                        ),
                       ],
                     ),
                   ),
                 ],
+              ),
+            )
+          : const Center(
+              child: Text(
+                'No se pudo cargar la información del profesor',
+                style: TextStyle(fontSize: 16),
               ),
             ),
     );

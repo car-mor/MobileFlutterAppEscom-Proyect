@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 
 class ApiService {
   final Dio _dio = Dio(
+
+    
     BaseOptions(
-      baseUrl: 'http://192.168.1.78:3000/api/', // Cambia a tu URL de despliegue
+      baseUrl: 'http://192.168.1.103:3000/api/', // Cambia a tu URL de despliegue
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 3), // Tiempo máximo de respuesta
     ),
@@ -12,7 +14,8 @@ class ApiService {
   Future<dynamic> getMessage() async {
     try {
       final response = await _dio.get('/');
-      return response.data;
+      print(response.data);
+      return response.data; 
     } catch (e) {
       print('Error: $e');
       throw Exception('No se pudo conectar al servidor');
@@ -37,6 +40,16 @@ class ApiService {
       throw Exception('No se pudo enviar la información');
     }
   }
+
+Future<List<dynamic>> alumnoInformacion(boleta) async {
+    try {
+      final response = await _dio.post('/alumno/informacion',data:{'alumno':boleta});
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo enviar la información');
+    }
+  }
   Future<List<dynamic>> profesorHorario(idProfesor) async {
     try {
       final response = await _dio.post('/profesor/horario',data:{'profesor':idProfesor});
@@ -46,4 +59,15 @@ class ApiService {
       throw Exception('No se pudo enviar la información');
     }
   }
+
+Future<List<dynamic>> profesorInformacion(id) async {
+    try {
+      final response = await _dio.post('/profesor/informacion/',data:{'profesor':id});
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo enviar la información');
+    }
+  }
+
 }
