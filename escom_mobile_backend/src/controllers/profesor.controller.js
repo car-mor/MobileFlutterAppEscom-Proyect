@@ -58,5 +58,14 @@ export class ProfesorController{
         res.status(501).json({ error: error.message });
       }
     }; 
+    obtenerGruposProfesor = async (req, res) => {
+      try {
+        const { profesor } = req.body
+        const grupos = await this.profesorModel.obtenerGruposProfesor(profesor);
+        res.json(grupos);
+      } catch (error) {
+        res.status(501).json({ error: error.message });
+      }
+    }; 
   }
   

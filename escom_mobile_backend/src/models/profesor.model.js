@@ -155,5 +155,24 @@ export class ProfesorModel{
       throw error;
     }
   }
-  
+  static async obtenerGruposProfesor (profesor) {
+    try{
+      const [usuario] = await connectionMySQL.query(`
+        SELECT
+            m.idMateria AS materia
+        FROM 
+            moviles.horarios h
+        JOIN 
+            moviles.profesores p ON h.idProfesor = p.idProfesores
+        JOIN 
+            moviles.materias m ON h.idMateria = m.idMateria
+        WHERE 
+            p.idProfesores = ?`,profesor)
+      return usuario
+    }
+    catch(error){
+      console.error("Error al obtener usuario:", error);
+      throw error;
+    }
+  }
 }
