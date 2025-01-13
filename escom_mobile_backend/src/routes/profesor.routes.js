@@ -11,6 +11,7 @@ export const profesorRouter = (Modelos) => {
   profesorRouter.post('/asistencia', profesorController.pasarAsistencia)
   profesorRouter.post('/asistencia/obtener', profesorController.obtenerAsistencia)
   profesorRouter.post('/calificacion', profesorController.guardarCalificacion)
+  profesorRouter.post('/grupos', profesorController.obtenerGruposProfesor)
 
   return profesorRouter
 }
