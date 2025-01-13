@@ -102,11 +102,16 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
           }
         }
 
+        final prefs = await SharedPreferences.getInstance();
+        
         if (tipoUsuario == "alumno") {
+          
+          await prefs.setString("boleta", boleta);
           ref.read(userProvider.notifier).logInAsStudent(); // Cambiar estado
           showSnackbar(context, 'Inicio de sesión como alumno exitoso');
           GoRouter.of(context).go('/home_page_alumno'); // Redirigir al home
         } else if (tipoUsuario == "profesor") { 
+          await prefs.setString("idProfesor", boleta);
           ref.read(userProvider.notifier).logInAsTeacher(); // Cambiar estado
           showSnackbar(context, 'Inicio de sesión como docente exitoso');
           GoRouter.of(context).go('/home_page_profesor'); // Redirigir al home

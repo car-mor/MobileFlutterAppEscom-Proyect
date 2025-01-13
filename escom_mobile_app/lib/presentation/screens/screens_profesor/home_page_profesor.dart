@@ -1,6 +1,6 @@
 import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
-// import 'package:escom_mobile_app/presentation/screens/student_screen.dart';
 import 'package:escom_mobile_app/presentation/screens/teacher_screen.dart';
+import 'package:escom_mobile_app/presentation/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:escom_mobile_app/presentation/providers/theme_provider.dart';
@@ -73,6 +73,7 @@ class HomePageProfesorState extends ConsumerState<HomePageProfesor> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = ref.watch(themeProvider).isDarkmode;
+    final themeNotifier = ref.read(themeProvider.notifier);
     final greetingMessage = _getGreetingMessage();
 
     return Scaffold(
@@ -99,6 +100,11 @@ class HomePageProfesorState extends ConsumerState<HomePageProfesor> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  HeaderWidget(
+                    imagePath: 'assets/images/header.png',
+                    onToggleTheme: themeNotifier.toggleTheme, // Pasa la función
+                    isDarkMode: isDarkMode, // Pasa el estado
+                  ),
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.all(16.0),

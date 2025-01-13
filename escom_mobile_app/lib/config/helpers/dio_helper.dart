@@ -28,4 +28,22 @@ class ApiService {
       throw Exception('No se pudo enviar la información');
     }
   }
+  Future<List<dynamic>> alumnoHorario(boleta) async {
+    try {
+      final response = await _dio.post('/alumno',data:{'alumno':boleta});
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo enviar la información');
+    }
+  }
+  Future<List<dynamic>> profesorHorario(idProfesor) async {
+    try {
+      final response = await _dio.post('/profesor/horario',data:{'profesor':idProfesor});
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo enviar la información');
+    }
+  }
 }
