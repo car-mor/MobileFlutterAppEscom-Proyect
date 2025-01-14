@@ -79,7 +79,7 @@ class _HorarioTeacherScreenState extends ConsumerState<HorarioTeacherScreen> {
 
     if (isLoading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Horario Alumno')),
+        appBar: AppBar(title: const Text('Horario Profesor')),
         body: const Center(
           child: CircularProgressIndicator(), // Indicador de carga
         ),
@@ -90,7 +90,7 @@ class _HorarioTeacherScreenState extends ConsumerState<HorarioTeacherScreen> {
       ? datoP.first.horarioTabla.first['profesor_nombre'] ?? 'N/A'
       : 'Sin datos';
     return Scaffold(
-      appBar: AppBar(title: const Text('Horario Alumno')),
+      appBar: AppBar(title: const Text('Horario Profesor(a)')),
       body: SingleChildScrollView(
         child:Column(
           crossAxisAlignment: CrossAxisAlignment.start, // Alinear al inicio
@@ -99,7 +99,7 @@ class _HorarioTeacherScreenState extends ConsumerState<HorarioTeacherScreen> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Nombre: $nombreAlumno\nBoleta: $idProfesor',
+                'Nombre: $nombreAlumno\nNum. epleado: $idProfesor',
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               

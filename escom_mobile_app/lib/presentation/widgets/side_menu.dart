@@ -1,6 +1,7 @@
 import 'package:escom_mobile_app/config/menu/menu_items.dart';
 import 'package:escom_mobile_app/presentation/providers/alumno_provider.dart';
 import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
+import 'package:escom_mobile_app/presentation/screens/home_screen.dart';
 import 'package:escom_mobile_app/presentation/screens/student_screen.dart';
 import 'package:escom_mobile_app/presentation/screens/teacher_screen.dart';
 import 'package:escom_mobile_app/presentation/widgets/titulos_header.dart';
@@ -13,7 +14,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SideMenu extends ConsumerStatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
-  const SideMenu({super.key, required this.scaffoldKey});
+  final Student? student;
+  const SideMenu({super.key, required this.scaffoldKey, this.student,});
 
   @override
   ConsumerState<SideMenu> createState() => _SideMenuState();
@@ -115,14 +117,13 @@ class _SideMenuState extends ConsumerState<SideMenu> {
           title: 'Mi perfil',
           link: '/student_screen',
           icon: Icons.person,
-          onTap: (context, ref) async {
+          onTap: (context, ref) {
             if (context.mounted) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => StudentScreen(
-                    student:
-                        student, // Asegúrate de que `student` esté definido en el contexto adecuado.
+                    student: widget.student!, // Usa el student del widget
                   ),
                 ),
               );
@@ -141,11 +142,22 @@ class _SideMenuState extends ConsumerState<SideMenu> {
             title: 'ISC 2020', link: '/isc_2020_screen', icon: Icons.book),
         const MenuItem(
             title: 'Profesores', link: '/teachers_screen', icon: Icons.people),
-        const MenuItem(
-          title: 'Cerrar sesión',
-          link: '/home_screen',
-          icon: Icons.logout,
-        ),
+          MenuItem(
+  title: 'Cerrar sesión',
+  link: '/home_screen',
+  icon: Icons.logout,
+  onTap: (context, ref) async {
+    await ref.read(userProvider.notifier).performLogout();
+    
+    if (context.mounted) {
+      context.go('/home_screen');
+    }
+    
+    if (widget.scaffoldKey.currentState?.isDrawerOpen ?? false) {
+      Navigator.of(context).pop();
+    }
+  },
+),
       ];
     } else if (userState.isTeacher) {
       // Opciones exclusivas para profesores
@@ -197,20 +209,9 @@ class _SideMenuState extends ConsumerState<SideMenu> {
               : null,
         ),
         onTap: () {
-          if (item.link == '/teacher_screen') {
-            GoRoute(
-              path: '/teacher_screen',
-              builder: (context, state) {
-                final profesor = state.extra as Profesor; // Cast al modelo
-                return ProfesorScreen(profesor: profesor);
-              },
-            );
-          } else if (item.link == '/home_screen') {
-            context.push(
-              '/home_screen',
-            );
-            ref.read(userProvider.notifier).logOut();
-          } else {
+          if (item.onTap != null) {
+            item.onTap!(context, ref);
+          } else if (item.link != null) {
             handleMenuItemSelection(item.link, context);
           }
           widget.scaffoldKey.currentState?.closeDrawer();

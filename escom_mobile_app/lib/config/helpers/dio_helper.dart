@@ -5,7 +5,7 @@ class ApiService {
 
     
     BaseOptions(
-      baseUrl: 'http://192.168.1.78:3000/api/', // Cambia a tu URL de despliegue
+      baseUrl: 'http://192.168.1.103:3000/api/', // Cambia a tu URL de despliegue
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 3), // Tiempo máximo de respuesta
     ),

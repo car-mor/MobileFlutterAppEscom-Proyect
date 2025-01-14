@@ -117,13 +117,15 @@ GoRoute(
     //   builder: (context, state) => const StudentScreen(),
     // ),
 
-    GoRoute(
+
+GoRoute(
   path: '/student_screen',
   name: StudentScreen.name,
   builder: (context, state) {
+    // Extra contiene el objeto pasado desde `goNamed`
     final student = state.extra as Student;
-   
-    return StudentScreen(student: student); // Pasa el objeto Student a la pantalla
+
+    return StudentScreen(student: student);
   },
 ),
 
