@@ -339,8 +339,17 @@ GoRoute(
 
     GoRoute(
       path: '/teachers_screen',
-      name: TeachersScreen.name,
-      builder: (context, state) => const TeachersScreen(),
+      name: ProfesoresScreen.name,
+      builder: (context, state) => const ProfesoresScreen(),
+    ),
+
+    GoRoute(
+      path: '/informacion_profesor_screen/:id',
+      name: InformacionProfesorScreen.name,
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return InformacionProfesorScreen(id: id);
+      },
     ),
 
     GoRoute(

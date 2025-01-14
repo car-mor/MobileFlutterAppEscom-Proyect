@@ -7,6 +7,7 @@ export const alumnoRouter = (Modelos) => {
 
   alumnoRouter.post('/', alumnoController.obtenerHorarioAlumno)
   alumnoRouter.post('/informacion', alumnoController.obtenerInformacionAlumno)
+  alumnoRouter.get('/profesores', alumnoController.obtenerProfesores)
 
   return alumnoRouter
 }
