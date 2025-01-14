@@ -43,14 +43,5 @@ final registrarAsistenciaProvider =
   },
 );
 
-final materiasProvider =
-    FutureProvider.family<Map<String, String>, String>((ref, grupoId) async {
-  final apiService = ref.read(apiServiceProvider);
-  final response = await apiService.profesorLista(grupoId);
 
-  // Crea un mapa {boleta: materia_nombre}.
-  return Map.fromEntries(response.map((e) {
-    return MapEntry(e['boleta'].toString(), e['materia_nombre']);
-  }));
-});
 
