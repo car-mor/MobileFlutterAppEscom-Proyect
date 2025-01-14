@@ -167,11 +167,12 @@ class _SideMenuState extends ConsumerState<SideMenu> {
             link: '/horario_teacher_screen',
             icon: Icons.schedule),
         const MenuItem(
-            title: 'Grupos', link: '/grupos_teacher_screen', icon: Icons.group),
+            title: 'Obtener Asistencias', link: '/obtener_asistencias_screen', icon: Icons.group),
         const MenuItem(
-            title: 'Asistencias',
-            link: '/assistence_screen',
+            title: 'Registrar Asistencias',
+            link: '/asistencia_screen',
             icon: Icons.check_circle),
+            
         const MenuItem(
             title: 'Asignar Calificaciones',
             link: '/asignar_calificaciones_screen',

@@ -34,7 +34,7 @@ class _HorarioTutorialScreenState extends ConsumerState<HorarioAlumnoScreen> {
   void initState() {
     super.initState();
     cargarApi();
-  }
+  } 
 
   Future<void> cargarApi() async {
     setState(() {

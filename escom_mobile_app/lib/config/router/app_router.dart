@@ -6,6 +6,7 @@ import 'package:escom_mobile_app/presentation/screens/assistence_screen.dart';
 import 'package:escom_mobile_app/presentation/screens/screens.dart';
 import 'package:escom_mobile_app/presentation/screens/screens_alumno/home_page_alumno.dart';
 import 'package:escom_mobile_app/presentation/screens/screens_profesor/home_page_profesor.dart';
+import 'package:escom_mobile_app/presentation/screens/screens_profesor/registrar_asistencia_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:escom_mobile_app/screens/users_screens.dart';
@@ -49,6 +50,11 @@ final appRouter = GoRouter(
       path: '/horario_alumno_screen',
       name: HorarioAlumnoScreen.name,
       builder: (context, state) => const HorarioAlumnoScreen(),
+    ),
+    GoRoute(
+      path: '/asistencia_screen',
+      name: AsistenciaScreen.name,
+      builder: (context, state) => const AsistenciaScreen(),
     ),
     GoRoute(
       path: '/calificaciones_screen',
@@ -308,9 +314,9 @@ GoRoute(
     ),
 
     GoRoute(
-      path: '/grupos_teacher_screen',
-      name: GruposTeacherScreen.name,
-      builder: (context, state) => const GruposTeacherScreen(),
+      path: '/obtener_asistencias_screen',
+      name: ObtenerAsistenciasScreen.name,
+      builder: (context, state) => const ObtenerAsistenciasScreen(),
     ),
 
     GoRoute(

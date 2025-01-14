@@ -1,5 +1,6 @@
 import 'package:escom_mobile_app/presentation/providers/auth_provider.dart';
 import 'package:escom_mobile_app/presentation/screens/student_screen.dart';
+import 'package:escom_mobile_app/presentation/widgets/footer.dart';
 import 'package:escom_mobile_app/presentation/widgets/header.dart';
 import 'package:escom_mobile_app/presentation/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,6 @@ class HomePageAlumnoState extends ConsumerState<HomePageAlumno> {
   @override
 void initState() {
   super.initState();
-  print("Datos recibidos en HomePageAlumno: ${widget.studentData}");
   student = Student(
     name: widget.studentData['alumno_nombre'] ?? '',
     carrera: widget.studentData['carrera'] ?? '',
@@ -40,7 +40,6 @@ void initState() {
     correo: widget.studentData['correo'] ?? '',
     curp: widget.studentData['curp'] ?? '',
   );
-  print("Student object creado: $student");
 }
 
 
@@ -174,8 +173,16 @@ void initState() {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 80),
+
+                  const FooterWidget(
+              imagePathTop: 'assets/images/logoSEP.png',
+              imagePathBottom: 'assets/images/logoGOB.png',
+            ),
                 ],
+                
               ),
+              
             )
           : const Center(
               child: Text(

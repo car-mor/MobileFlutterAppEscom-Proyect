@@ -70,6 +70,49 @@ Future<List<dynamic>> profesorInformacion(id) async {
     }
   }
 
+  Future<List<dynamic>> profesorGrupos(id) async {
+    try {
+      final response = await _dio.post('/profesor/grupos/',data:{'profesor':id});
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo enviar la información');
+    }
+  }
+
+ Future<List<Map<String, dynamic>>> profesorLista(String grupoId) async {
+  try {
+    final response = await _dio.post('/profesor/lista/', data: {'grupo': grupoId});
+
+    // Asegurarte de que la respuesta sea una lista de mapas.
+    return (response.data as List).map((e) => Map<String, dynamic>.from(e)).toList();
+  } catch (e) {
+    print('Error al obtener la lista de estudiantes: $e');
+    throw Exception('No se pudo obtener la lista de estudiantes');
+  }
+}
+
+Future<void> registrarAsistencia(Map<String, dynamic> asistencia) async {
+  try {
+    final response = await _dio.post('/profesor/asistencia', data: asistencia);
+    print('Respuesta del servidor: ${response.data}');
+  } catch (e) {
+    print('Error al registrar la asistencia: $e');
+    throw Exception('No se pudo registrar la asistencia');
+  }
+}
+
+
+  Future<List<dynamic>> obtenerAsistencia(id) async {
+    try {
+      final response = await _dio.post('/profesor/asistencia/obtener',data:{'materia':id});
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo enviar la información');
+    }
+  }
+
 
 
 
