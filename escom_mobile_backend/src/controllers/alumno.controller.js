@@ -23,4 +23,14 @@ export class AlumnoController{
       res.status(500).json({ error: error.message });
     }
   };
+
+  obtenerProfesores = async (req, res) => {
+    try {
+      const alumnos = await this.alumnoModel.obtenerProfesores();
+      res.json(alumnos);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: error.message });
+    }
+  };
 }

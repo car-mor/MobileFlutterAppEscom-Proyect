@@ -70,4 +70,51 @@ Future<List<dynamic>> profesorInformacion(id) async {
     }
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Future<List<dynamic>> consultarProfesores() async {
+    try {
+      final response = await _dio.get('/alumno/profesores/');
+      return response.data;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('No se pudo enviar la información');
+    }
+  }
+
 }
