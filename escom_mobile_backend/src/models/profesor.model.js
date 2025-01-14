@@ -118,6 +118,7 @@ export class ProfesorModel{
             CONCAT(a.apellidoPrimero, ' ', a.apellidoSegundo , ' ', a.nombre) AS alumno_nombre,
             a.boleta,
             m.grupo,
+            m.materia AS materia_nombre,
             JSON_ARRAYAGG(
                 JSON_OBJECT(
                     'dia', asis.dia,
