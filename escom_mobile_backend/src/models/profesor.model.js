@@ -159,8 +159,12 @@ export class ProfesorModel{
     try{
       const [usuario] = await connectionMySQL.query(`
         SELECT
-            m.idMateria AS materia
-        FROM 
+            m.idMateria AS materia,
+            m.materia AS nombre_materia,
+            m.grupo AS grupo,
+            m.salon AS salon,
+            m.laboratorio AS laboratorio
+                FROM 
             moviles.horarios h
         JOIN 
             moviles.profesores p ON h.idProfesor = p.idProfesores
