@@ -72,6 +72,14 @@ class UserNotifier extends StateNotifier<UserState> {
       isTeacher: isTeacher,
     );
   }
+  Future<void> performLogout() async {
+    // Limpiar SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    // Actualizar estado
+    state = UserState.initial();
+  }
 }
 
 final userProvider = StateNotifierProvider<UserNotifier, UserState>((ref) => UserNotifier());

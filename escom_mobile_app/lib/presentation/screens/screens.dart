@@ -44,7 +44,7 @@ export 'package:escom_mobile_app/presentation/screens/screens_alumno/buscar_prof
 export 'package:escom_mobile_app/presentation/screens/student_screen.dart' hide build;
 export 'package:escom_mobile_app/presentation/screens/asignar_calificaciones_screen.dart';
 export 'package:escom_mobile_app/presentation/screens/calificaciones_screen.dart';
-export 'package:escom_mobile_app/presentation/screens/grupos_teacher_screen.dart';
+export 'package:escom_mobile_app/presentation/screens/obtener_asistencias_screen.dart';
 export 'package:escom_mobile_app/presentation/screens/screens_alumno/horario_alumno_screen.dart';
 export 'package:escom_mobile_app/presentation/screens/screens_profesor/horario_teacher_screen.dart';
 export 'package:escom_mobile_app/presentation/screens/screens_alumno/informacion_profesor_screen.dart';
