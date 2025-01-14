@@ -56,6 +56,8 @@ class _HorarioTeacherScreenState extends ConsumerState<HorarioTeacherScreen> {
         for (var item in response) {
           if (item is Map<String, dynamic>) {
             datoP.first.horarioTabla.add({
+              'salon': item['salon'] ?? '',
+              'laboratorio': item['laboratorio'] ?? '',
               'profesor_nombre': item['profesor_nombre'] ?? '',
               'grupo': item['grupo'] ?? '',
               'materia': item['materia'] ?? '',
@@ -112,7 +114,8 @@ class _HorarioTeacherScreenState extends ConsumerState<HorarioTeacherScreen> {
                 columns: const [
                   DataColumn(label: Text('Grupo')),
                   DataColumn(label: Text('Materia')),
-                  DataColumn(label: Text('Profesor')),
+                  DataColumn(label: Text('Salón')),
+                  DataColumn(label: Text('Laboratorio')),
                   DataColumn(label: Text('Lunes')),
                   DataColumn(label: Text('Martes')),
                   DataColumn(label: Text('Miércoles')),
@@ -125,7 +128,8 @@ class _HorarioTeacherScreenState extends ConsumerState<HorarioTeacherScreen> {
                         cells: [
                           DataCell(Text(row['grupo']!)),
                           DataCell(Text(row['materia']!)),
-                          DataCell(Text(row['profesor_nombre']!)),
+                          DataCell(Text(row['salon']!)),
+                          DataCell(Text(row['laboratorio']!)),
                           DataCell(Text(row['lunes']!)),
                           DataCell(Text(row['martes']!)),
                           DataCell(Text(row['miercoles']!)),

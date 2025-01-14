@@ -6,6 +6,8 @@ export class ProfesorModel{
       const [usuario] = await connectionMySQL.query(`
         SELECT
             CONCAT(p.apellidoPrimero, ' ', p.apellidoSegundo , ' ', p.nombre)as profesor_nombre,
+            p.cargo,
+            d.nombre as departamento,
             m.idmateria as id_materia,
             m.materia AS materia,
             m.grupo AS grupo,
@@ -22,6 +24,8 @@ export class ProfesorModel{
             moviles.profesores p ON h.idProfesor = p.idProfesores
         JOIN 
             moviles.materias m ON h.idMateria = m.idMateria
+        JOIN
+            moviles.academias d ON p.departamento=d.departamento
         WHERE 
             p.idProfesores = ?`,profesor)
       return usuario

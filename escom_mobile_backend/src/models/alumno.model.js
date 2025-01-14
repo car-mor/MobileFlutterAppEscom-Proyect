@@ -56,4 +56,28 @@ export class AlumnoModel{
       throw error;
     }
   }
+
+  static async obtenerProfesores () {
+    try{
+      const [usuario] = await connectionMySQL.query(`
+        SELECT 
+            idProfesores,
+            CONCAT(apellidoPrimero, ' ', apellidoSegundo , ' ', nombre) AS profesor_nombre
+        FROM 
+            moviles.profesores
+        WHERE
+            nombre NOT IN (
+              SELECT
+                nombre
+              FROM
+                moviles.profesores
+              WHERE nombre = 'SIN ASIGNAR  ')
+        ORDER BY profesor_nombre ASC`)
+      return usuario
+    }
+    catch(error){
+      console.error("Error al obtener todos los usuarios:", error);
+      throw error;
+    }
+  }
 }
