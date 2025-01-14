@@ -61,18 +61,18 @@ const List<MenuItem> appMenuItems = <MenuItem>[
         title: 'Transparencia',
         link: '/transparency_screen',
       ),
-      MenuItem(
-        title: 'Posgrado',
-        link: '/posgrado_screen',
-      ),
+      // MenuItem(
+      //   title: 'Posgrado',
+      //   link: '/posgrado_screen',
+      // ),
       MenuItem(
         title: 'SSEIS',
         subItems: [
-          MenuItem(
-            title: 'Academias',
-            link: '/academies_screen',
-            icon: Icons.computer,
-          ),
+          // MenuItem(
+          //   title: 'Academias',
+          //   link: '/academies_screen',
+          //   icon: Icons.computer,
+          // ),
           MenuItem(
             title: 'Buzón de denuncias',
             link: '/denunciations_screen',
@@ -180,10 +180,10 @@ const List<MenuItem> appMenuItems = <MenuItem>[
         title: 'Justificante médico',
         link: 'https://docs.google.com/forms/d/e/1FAIpQLSdA5w0hig1SviBkxWsH19wqd4wiqDpyD9bgy4fOANAkIuMHkw/viewform',
       ),
-      MenuItem(
-        title: 'Material didáctico',
-        link: '/material_didactico_screen',
-      ),
+      // MenuItem(
+      //   title: 'Material didáctico',
+      //   link: '/material_didactico_screen',
+      // ),
       MenuItem(
         title: 'Movilidad',
         link: '/movilidad_screen',
@@ -200,10 +200,10 @@ const List<MenuItem> appMenuItems = <MenuItem>[
         title: 'Servicios de salud',
         link: '/servicios_salud_screen',
       ),
-      MenuItem(
-        title: 'Trabajos terminales',
-        link: '/trabajos_terminales_screen',
-      ),
+      // MenuItem(
+      //   title: 'Trabajos terminales',
+      //   link: '/trabajos_terminales_screen',
+      // ),
 
       //Su url es no seguro y manda a imagen de logos
       // MenuItem(
@@ -272,10 +272,10 @@ const List<MenuItem> appMenuItems = <MenuItem>[
         title: 'Producción de recursos didácticos digitales',
         link: 'https://www.ipn.mx/dev/servicios/evaluacion-rdd.html',
       ),
-      MenuItem(
-        title: 'Propiedad intelectual',
-        link: '/propiedad_intelectual_screen',
-        ),   
+      // MenuItem(
+      //   title: 'Propiedad intelectual',
+      //   link: '/propiedad_intelectual_screen',
+      //   ),   
       MenuItem(
         title: 'Trámites, servicios y prestaciones',
         link: 'https://www.ipn.mx/dch/',
@@ -323,10 +323,10 @@ const List<MenuItem> appMenuItems = <MenuItem>[
       //   title: 'Protección civil',
       //   link: '',
       // ),
-      MenuItem(
-        title: 'Sustentabilidad',
-        link: '/sustentabilidad_screen',
-      ),
+      // MenuItem(
+      //   title: 'Sustentabilidad',
+      //   link: '/sustentabilidad_screen',
+      // ),
       //ERROR NOT FOUND en página oficial de ESCOM
       // MenuItem(
       //   title: 'Informe anual dirección 2023',
@@ -371,11 +371,11 @@ const List<MenuItem> appMenuItems = <MenuItem>[
     ],
   ),
 
-  MenuItem(
-      title: 'Red de género',
-      link: '/gender_network_screen',
-      icon2: FaIcon(FontAwesomeIcons.users),
-),
+//   MenuItem(
+//       title: 'Red de género',
+//       link: '/gender_network_screen',
+//       icon2: FaIcon(FontAwesomeIcons.users),
+// ),
 
   MenuItem(
       title: 'Redes sociales', 
@@ -419,23 +419,10 @@ const List<MenuItem> appMenuItems = <MenuItem>[
     ],
       ),
 
-
-MenuItem(
-      title: 'Profesores',
-      link: '/teachers_screen',
-      icon2: FaIcon(FontAwesomeIcons.chalkboardUser),
-
-  ),
-
   MenuItem(
       title: 'Galería de imágenes',
       link: '/infinite_scroll_screen',
       icon: Icons.image),
-
-  MenuItem(
-     title: 'Licencias',
-     link: '/licenses_screen',
-     icon: Icons.document_scanner),
 
   MenuItem(
      title: 'Iniciar sesión',
