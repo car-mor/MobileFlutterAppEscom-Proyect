@@ -46,7 +46,7 @@ class Swiper2 extends StatelessWidget {
           final item = items[index];
           return GestureDetector(
             onTap: () async {
-              await _launchURL(item['url']!); // Llamar a la función para abrir el enlace
+              _launchURL(item['url']!); // Llamar a la función para abrir el enlace
             },
             child: Card(
               elevation: 4,
@@ -82,12 +82,10 @@ class Swiper2 extends StatelessWidget {
     );
   }
 
-  Future<void> _launchURL(String url) async {
+  void _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw 'Could not launch $url';
+    if (!await launchUrl(uri)) {
+      throw Exception('No se pudo abrir $url');
     }
   }
 }

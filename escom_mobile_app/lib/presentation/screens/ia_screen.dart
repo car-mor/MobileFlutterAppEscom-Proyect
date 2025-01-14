@@ -262,11 +262,9 @@ class IAScreen extends ConsumerWidget {
 }
 
 
-Future<void> _launchURL(String url) async {
-  final Uri uri = Uri.parse(url);
-  if (await canLaunchUrl(uri)) {
-    await launchUrl(uri);
-  } else {
-    throw 'Could not launch URL: $url';
+void _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw Exception('No se pudo abrir $url');
+    }
   }
-}

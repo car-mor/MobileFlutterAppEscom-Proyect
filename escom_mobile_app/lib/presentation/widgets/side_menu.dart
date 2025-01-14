@@ -264,19 +264,15 @@ class _SideMenuState extends ConsumerState<SideMenu> {
   /// Función para construir un enlace personalizado
   Widget _buildLink(Widget tituloWidget, Uri url, BuildContext context) {
     return InkWell(
-      onTap: () => _launchURL(url, context),
+      onTap: () => _launchURL(url),
       child: tituloWidget, // Renderiza el widget personalizado directamente
     );
   }
 
   /// Función para abrir un enlace externo
-  Future<void> _launchURL(Uri url, BuildContext context) async {
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No se pudo abrir la URL: $url')),
-      );
+  void _launchURL(Uri url) async {
+    if (!await launchUrl(url)) {
+      throw Exception('No se pudo abrir $url');
     }
   }
 }

@@ -257,12 +257,12 @@ class _ExpandableMenuState extends State<ExpandableMenu> {
             ),
             onTap: () async {
               const url = 'https://www.gob.mx/aem/documentos/protocolo-para-la-prevencion-atencion-y-sancion-del-hostigamiento-sexual-y-acoso-sexual-dof-03-01-2020';
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw 'No se puede abrir el URL $url';
-    }
+              final Uri uri = Uri.parse(url);
+              
+              if (!await launchUrl(uri)) {
+                throw Exception('No se pudo abrir $url');
+              }
+  
             },
           ),
           ListTile(
@@ -273,13 +273,12 @@ class _ExpandableMenuState extends State<ExpandableMenu> {
             ),
             onTap: () async {
               const url = 'https://www.ipn.mx/assets/files/zacatecas/docs/genero/Protocolo.pdf';
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw 'No se puede abrir el URL $url';
-    }
-            },
+              
+                final Uri uri = Uri.parse(url);
+                if (!await launchUrl(uri)) {
+                  throw Exception('No se pudo abrir $url');
+                }
+              },
           ),
           ListTile(
             leading: const Icon(Icons.picture_as_pdf),
@@ -289,12 +288,12 @@ class _ExpandableMenuState extends State<ExpandableMenu> {
             ),
             onTap: () async {
               const url = 'https://www.escom.ipn.mx/SSEIS/cosecovi/docs/protocolos/PROTOCOLO_DE_ATENCION_COMUNIDAD_POLITECNICA.pdf';
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw 'No se puede abrir el URL $url';
-    }
+              
+                final Uri uri = Uri.parse(url);
+                if (!await launchUrl(uri)) {
+                  throw Exception('No se pudo abrir $url');
+                }
+              
             },
           ),
           ListTile(
@@ -305,12 +304,12 @@ class _ExpandableMenuState extends State<ExpandableMenu> {
             ),
             onTap: () async {
               const url = 'https://escom.ipn.mx/SSEIS/cosecovi/docs/protocolos/Triptico_APP_Mi_Policia.pdf';
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw 'No se puede abrir el URL $url';
-    }
+                
+                final Uri uri = Uri.parse(url);
+                if (!await launchUrl(uri)) {
+                  throw Exception('No se pudo abrir $url');
+                }
+              
             },
           ),
         ],
